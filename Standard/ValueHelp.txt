@@ -1,0 +1,10 @@
+CDS Entity VH
+Key             Name                            Element             Description             Fields                      
+CUKY5           I_Currency                      Currency            Currency Code           Currency
+Inco1           I_IncotermsClassification       Incoterms           Incoterms               IncotermsClassification & _Text.IncotermsClassificationName
+Kunnr           I_Customer_VH                   Customer            Customer
+Lgort           I_StorageLocation               Storage Location    Storage Location Name   StorageLocation & StorageLocationName                               
+Lifnr           I_Supplier                      Supplier            Supplier                Supplier & SupplierFullName
+Matnr           I_ProductText                   Material            Product                 Product & ProductName
+Oig_vhlnmr      I_NominationVehicleIdVH         Vehicle Number      Vehicle Description     VehicleId & VehicleDescription
+Werks           I_Plant                         Plant               Plant Name              Plant & PlantName
