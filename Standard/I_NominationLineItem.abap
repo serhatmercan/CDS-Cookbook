@@ -1,8 +1,8 @@
 CDS         : I_NominationLineItem
 Definition  : Nomination Ticket Main
 
-Using       : I_NominationLineItem as _NLI on _NLI.NominationDoc     = $projection.nominationDocDQ
-                                          and _NLI.NominationDocItem = $projection.nominationDocItemDQ
+Using       : I_NominationLineItem as _NLI on _NLI.NominationDoc     = $projection.NominationDocDQ
+                                          and _NLI.NominationDocItem = $projection.NominationDocItemDQ
               
               association [0..1] to I_Supplier as _CarrierName  on _CarrierName.Supplier  = $projection.NominationCarrier
               association [0..1] to I_Supplier as _ContractName on _ContractName.Supplier = $projection.ContractPartner
@@ -53,5 +53,10 @@ Fields      : key _NLI.NominationDoc                                            
                   _NLI.VehicleId                                                                 as VehicleId,
                   _NLI._NominationVehicleIdVH.VehicleDescription                                 as VehicleDescription,            
 
-Where       : _NLI.NominationScheduleType like 'D%'
-Group       : 
+Where       :   _NLI.NominationReferenceDocument <> '' or
+                _NLI.NominationReferenceDocType = 'T' or
+                _NLI.NominationReferenceDocType = 'P' or
+                _NLI.NominationScheduleType like 'D%' || 'O%'
+              
+Group       :   _NLI.NominationReferenceDocument,
+                _NLI.NominationReferenceDocItem

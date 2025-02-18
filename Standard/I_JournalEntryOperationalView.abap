@@ -1,7 +1,38 @@
-CDS         : I_JournalEntryOperationalView
-Definition  : Operational View on Journal Entry Item
-Using       : I_JournalEntryOperationalView as _JEOV on _JEOV.CompanyCode          = Bkpf.bukrs
-                                                    and _JEOV.AccountingDocument   = Bkpf.belnr
-                                                    and _JEOV.FiscalYear           = Bkpf.gjahr
-                                                    and _JEOV.FinancialAccountType = 'D'
-Fields      : 
+CDS         :   I_JournalEntryOperationalView
+Definition  :   Operational View on Journal Entry Item
+
+Using       :   as select from I_JournalEntryOperationalView as JEOV on JEOV.AccountingDocument   = Bkpf.Belnr
+                                                                    and JEOV.CompanyCode          = Bkpf.Bukrs
+                                                                    and JEOV.FiscalYear           = Bkpf.Gjahr
+                                                                    and JEOV.FinancialAccountType = 'D'
+Fields      :   key JEOV.CompanyCode,
+                key JEOV.FiscalYear,
+                key JEOV.AccountingDocument,
+                key JEOV.LedgerGLLineItem,
+
+                    JEOV.AmountInBalanceTransacCrcy,
+                    JEOV.AmountInCompanyCodeCurrency,
+                    JEOV.AmountInTransactionCurrency,
+                    JEOV.BalanceTransactionCurrency,
+                    JEOV.ClearingCreationDate,
+                    JEOV.ClearingJournalEntry,
+                    JEOV.CompanyCodeCurrency,
+                    JEOV.DocumentDate,
+                    JEOV.HouseBank,
+                    JEOV.HouseBankAccount,
+                    JEOV.NetDueDate,
+                    JEOV.PaymentMethod,
+                    JEOV.PaymentMethodSupplement,
+                    JEOV.PaymentTerms,
+                    JEOV.PostingDate,
+                    JEOV.Supplier,
+                    JEOV.TransactionCurrency,
+                    
+                    JEOV._OperationalAcctgDocItem.BPBankAccountInternalID   as BPBankAccountInternalID,
+
+Where       :   JEOV.AccountingDocumentType <> 'GM'  and
+                JEOV.FinancialAccountType    = 'K'   and
+                JEOV.Ledger                  = 'L2'  and
+                JEOV.SourceLedger            = 'L2'  
+
+Group       :   

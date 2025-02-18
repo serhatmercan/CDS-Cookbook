@@ -1,21 +1,22 @@
-CDS         : I_NominationEvent
-Definition  : Nomination Events
+CDS         :   I_NominationEvent
+Definition  :   Nomination Events
 
-Using       : I_NominationEvent as _NE on _NE.NominationDoc         = $projection.NominationDoc
-                                      and _NE.NominationDocItem     = $projection.NominationDocItem
-                                      and _NE.NominationEventNumber = $projection.NominationEventNumber  
-                                      and _NE.NominationEventType   = 'COD' || 'ETA' || 'NOR'
+Using       :   association [0..1] to I_NominationEvent as _NE on _NE.NominationDoc         = $projection.NominationDoc
+                                                              and _NE.NominationDocItem     = $projection.NominationDocItem
+                                                              and _NE.NominationEventNumber = $projection.NominationEventNumber
+                                                              and _NE.delind                = ''  
+                                                              and _NE.NominationEventType   = 'COD' || 'ETA' || 'NOR'
 
-Fields      : key NominationDoc,
-              key NominationDocItem,
-              key NominationEventType,
+Fields      :   key NominationDoc,
+                key NominationDocItem,
+                key NominationEventType,
               
-              max(NominationEventNumber) as NominationEventNumber,
+                max(NominationEventNumber) as NominationEventNumber,
               
-              ActualStartDateFrom        as ActualEtaDate,
-              PlannedStartDateFrom       as PlanningNorDate              
+                ActualStartDateFrom        as ActualEtaDate,
+                PlannedStartDateFrom       as PlanningNorDate              
 
-Where       : delind = ''
+Where       : 
 
 Group       : NominationDoc,
               NominationDocItem,
