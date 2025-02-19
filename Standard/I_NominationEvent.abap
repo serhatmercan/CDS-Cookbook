@@ -11,10 +11,10 @@ Fields      :   key NominationDoc,
                 key NominationDocItem,
                 key NominationEventType,
               
-                max(NominationEventNumber) as NominationEventNumber,
+                    max(NominationEventNumber) as NominationEventNumber,
               
-                ActualStartDateFrom        as ActualEtaDate,
-                PlannedStartDateFrom       as PlanningNorDate              
+                    ActualStartDateFrom        as ActualEtaDate,
+                    PlannedStartDateFrom       as PlanningNorDate              
 
 Where       : 
 

@@ -1,7 +1,11 @@
 CDS         : I_PurgDocScheduleLine
 Definition  : Purchasing Document Schedule Line
 
-Using       : I_PurgDocScheduleLine as _PDSL on _PDSL.PurchasingDocument     = $projection.NominationReferenceDocumentOq
-                                            and _PDSL.PurchasingDocumentItem = $projection.NominationReferenceDocItemOqR5
+Using       : left outer join I_PurgDocScheduleLine as PDSL on PDSL.PurchasingDocument     = $projection.NominationReferenceDocumentOq
+                                                           and PDSL.PurchasingDocumentItem = $projection.NominationReferenceDocItemOqR5
 
-Fields      : _PDSL.SchedLineStscDeliveryDate as PlannedPaymentDate
+Fields      :   key PurchasingDocument,
+                key PurchasingDocumentItem,
+                key ScheduleLine,
+                
+                    PDSL.SchedLineStscDeliveryDate as PlannedPaymentDate

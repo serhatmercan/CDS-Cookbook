@@ -1,24 +1,43 @@
-CDS         : I_SalesDocument & I_SalesDocumentItem
-Definition  : Sales Document
+CDS         :   I_SalesDocument & I_SalesDocumentItem
+Definition  :   Sales Document & Sales Document Item
 
-Using       : as select from I_SalesDocument     as SD             
-                  inner join I_SalesDocumentItem as SDI on SDI.SalesDocument = SD.SalesDocument
+Using       :   as select from I_SalesDocument              as SD             
+                    inner join I_SalesDocumentItem          as SDI on SDI.SalesDocument = SD.SalesDocument
 
-              association [0..1] to I_SalesDocumentItem as _SalesQuoteFilter on _SalesQuoteFilter.ReferenceSDDocument     = $projection.SalesDocument
-                                                                            and _SalesQuoteFilter.ReferenceSDDocumentItem = $projection.SalesDocumentItem
+                association [0..1] to I_SalesDocumentItem   as _SalesQuoteFilter on _SalesQuoteFilter.ReferenceSDDocument     = $projection.SalesDocument
+                                                                                and _SalesQuoteFilter.ReferenceSDDocumentItem = $projection.SalesDocumentItem
 
-              association [0..1] to I_Supplier          as _Supplier         on _Supplier.Supplier                        = $projection.Supplier
+                association [0..1] to I_Supplier            as _Supplier         on _Supplier.Supplier                        = $projection.Supplier
 
 
 Fields      :   key SDI.SalesDocument,
                 key SDI.SalesDocumentItem,
 
+                    " Sales Document
                     SD.AdditionalValueDays,
                     SD.CreationDate,
                     SD.CreationTime,
                     SD.CustomerGroup,
                     SD.CustomerPaymentTerms,
                     SD.DistributionChannel,
+                    SD.OrganizationDivision,
+                    SD.OverallSDDocumentRejectionSts,
+                    SD.PricingDate,
+                    SD.SalesDocumentCondition,
+                    SD.SalesDocumentType,
+                    SD.SalesGroup,
+                    SD.SalesOrganization,
+                    SD.SalesOffice,
+                    SD.SDDocumentCategory,
+                    SD.SDPricingProcedure,
+
+                    SD.SoldToParty                               as Supplier,
+                    _SupplierName.SupplierName                   as SupplierName,
+
+                    SD.StatisticsCurrency,
+                    SD.TotalBlockStatus,
+
+                    " Sales Document Item
                     SDI.IncotermsClassification,
                     SDI.IsReturnsItem,
 
@@ -32,32 +51,16 @@ Fields      :   key SDI.SalesDocument,
                     @Semantics.quantity.unitOfMeasure: 'OrderQuantityUnit'
                     SDI.OrderQuantity,
                     SDI.OrderQuantityUnit,
-
-                    SD.OrganizationDivision,
-                    SD.OverallSDDocumentRejectionSts,
+                    
                     SDI.Plant,
-                    SD.PricingDate,
-                    SD.SalesDocumentCondition,
                     SDI.SalesDocumentCondition                   as SalesDocumentConditionI,
                     SDI.SalesDocumentItemText,
                     SDI.SalesDocumentRjcnReason,
-                    SD.SalesDocumentType,
-                    SD.SalesGroup,
                     SDI.SalesGroup                               as SalesGroupI,
-                    SD.SalesOrganization,
-                    SD.SalesOffice,
                     SDI.SalesOffice                              as SalesOfficeI,
-                    SD.SDDocumentCategory,
-                    SD.SDPricingProcedure,
                     SDI.SDProcessStatus,
-
-                    SD.SoldToParty                               as Supplier,
-                    _SupplierName.SupplierName                   as SupplierName,
-
-                    SD.StatisticsCurrency,
                     SDI.StorageLocation,
-                    SD.TotalBlockStatus,
-
+                    
                     SDI._Material.MaterialType,
 
                     _SalesQuoteFilter

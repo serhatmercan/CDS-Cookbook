@@ -22,8 +22,11 @@ Fields      : key _NLI.NominationDoc                                            
                   _ContractName.SupplierFullName                                                 as ContractPartnerName,
 
                   _NLI.DemandMaterial                                                            as DemandMaterialDq,
+                  _NLI.InTransitPlant                                                            as InTransitPlantOq,   
+                  _NLI.InTransitStorageLocation                                                  as InTransitStorageLocationOq,
                   _NLI.LocationId                                                                as LocationIdDq,
-                  _NLI.LocationName                                                              as LocationNameDq,                  
+                  _NLI.LocationName                                                              as LocationNameDq,
+                  _NLI.LocationPartner                                                           as LocationPartnerOq,                  
                   _NLI.MaterialDesc                                                              as MaterialDescDq,
                   _NLI.NominationItemIsComplete                                                  as NominationItemIsComplete,  
 

@@ -13,6 +13,14 @@ Using       :   association [0..1] to I_NominationHeaderFld     as _NHF         
 Fields      :   key _NIF.NominationDoc,
                 key _NIF.NominationDocItem,
 
+                    " Nomination Header Table Fields
+                    _NHF.NominationPipelineCycleID,
+                    _NHF.TransportSystem,
+
+                    _NHF.VehicleId,
+                    _NVHIVH.VehicleDescription                                      as VehicleDescription,
+
+                    " Nomination Item Table Fields
                     _NIF.ActualScheduledQuantity,
                     _NIF.ActualScheduledQuantityUnit,
                     _NIF.BatchDestinationLocation, 
@@ -26,7 +34,7 @@ Fields      :   key _NIF.NominationDoc,
                     _MaterialText.MaterialDesc                                      as MaterialDesc,
 
                     _NIF.NominationItemIsComplete,
-                    _NHF.NominationPipelineCycleID, 
+                     
                     _NIF.LocationId,
                     _NIF.LocationName,
 
@@ -52,12 +60,9 @@ Fields      :   key _NIF.NominationDoc,
                     sum( _NIF.ScheduledQuantity )                                   as ScheduledQuantity,
                     _NIF.ScheduledQuantityUnit,
 
-                    _NHF.TransportSystem,
+                    
                     _NIF.ValuationTypeDestination,
                     _NIF.ValuationTypeOrigin,
-
-                    _NHF.VehicleId,
-                    _NVHIVH.VehicleDescription                                      as VehicleDescription,
 
 Where       :   _NIF.NominationIsMarkedForDeletion =  ''                                            and
                 ( _NIF.NominationScheduleType like 'D%' or _NIF.NominationScheduleType like 'O%' )  and
