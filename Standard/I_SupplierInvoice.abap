@@ -1,0 +1,49 @@
+CDS         :   I_SupplierInvoice   & I_SupplierInvoiceItemPurOrdRef
+Definition  :   Supplier Invoice    & Supplier Invoice Item Purchase Order Reference  
+
+Using       :   as select from  I_SupplierInvoice               as SIHeader 
+                    inner join  I_SupplierInvoiceItemPurOrdRef  as SIItem       on  SIItem.SupplierInvoice  = SIHeader.SupplierInvoice
+                                                                               and  SIItem.FiscalYear       = SIHeader.FiscalYear
+                left outer join I_MaterialText                  as MaterialText on  MaterialText.Material   = SIItem.PurchaseOrderItemMaterial
+                                                                               and  MaterialText.Language   = 'T'
+
+Fields      :   key SIItem.SupplierInvoice,
+                key SIItem.FiscalYear,
+                key SIItem.SupplierInvoiceItem,
+                
+                " Supplier Invoice
+                SIHeader.DocumentCurrency,
+                SIHeader.InvoicingParty,
+                SIHeader.PostingDate,
+                SIHeader.SupplierInvoiceIDByInvcgParty,
+
+                " Supplier Invoice -> Supplier
+                SIHeader.Supplier.SupplierName,
+                SIHeader.Supplier.TaxNumber2,
+
+                " Supplier Items
+                SIItem.InventoryValuationType,
+
+                SIItem.PurchaseOrderItemMaterial,
+                MaterialText.MaterialName,
+
+                @Semantics.amount.currencyCode: 'DocumentCurrency'
+                SIItem.SupplierInvoiceItemAmount,
+
+                @Semantics.quantity.unitOfMeasure: 'PurchaseOrderQuantityUnit'
+                SIItem.QuantityInPurchaseOrderUnit,
+                SIItem.PurchaseOrderQuantityUnit,
+
+                @Semantics.amount.currencyCode: 'DocumentCurrency'               
+                case SIItem.QuantityInPurchaseOrderUnit
+                    when 0  then cast( 0 as abap.curr( 13, 2 ) )
+                            else cast( division( cast( SIItem.SupplierInvoiceItemAmount as abap.dec(15,2) ), cast(SIItem.QuantityInPurchaseOrderUnit as abap.dec(13,3) ), 2 ) as abap.curr( 13, 2 ) )
+                end as UnitPrice
+
+Where       :   SIHeader.CompanyCode           = '1000' and  
+                SIHeader.IsInvoice             = 'X'    and
+                SIHeader.ReverseDocument       = ' '    and 
+                SIHeader.SupplierInvoiceStatus = '5'    and
+                ( SIItem._Material.MaterialGroup = 'U007' or SIItem._Material.MaterialGroup = 'U008' )
+
+Group       :   

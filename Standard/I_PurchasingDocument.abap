@@ -1,9 +1,10 @@
 CDS         :   I_PurchasingDocument
 Definition  :   Purchasing Document
 
-Using       :   left outer join I_PurchasingDocument as PD on PD.PurchasingDocument = $projection.NominationReferenceDocumentOq
+Using       :   left outer join I_PurchasingDocument as PD on PD.PurchasingDocument = I_NominationLineItem.NominationReferenceDocument
 
-Fields      :   key PD.PurchasingDocument,            
+Fields      :   key PD.PurchasingDocument,
+            
                     PD.CashDiscount1Days,           
                     PD.CompanyCode,                   
                     PD.DocumentCurrency,             

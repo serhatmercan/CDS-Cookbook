@@ -13,6 +13,7 @@ Fields      :   key BDI.BillingDocument                                         
                     BD.BillingDocumentIsCancelled,
                     BD.BillingDocumentType,
                     BD.CancelledBillingDocument,
+                    BD.CompanyCode,
                     BD.DistributionChannel,
                     BD.Division,
                     BD.DocumentReferenceID,
@@ -106,14 +107,24 @@ Fields      :   key BDI.BillingDocument                                         
                     BDI._PricingElement.ConditionIsForStatistics,
                     BDI._PricingElement.ConditionType,
 
+                    " Billing Document Items -> Product
+                    BDI._Product.ExternalProductGroup,
+                    BDI._Product.ProductHierarchy,
+
+                    " Billing Document Items -> Reference Delivery Document Item
+                    BDI._ReferenceDeliveryDocumentItem.InventoryValuationType,
+
                     " Billing Document Items -> Sales Document
                     BDI._SalesDocument._ShippingType.ShippingType                                                                as Vsart,
                     BDI._SalesDocument._ShippingType._Text[Language = $session.system_language].ShippingTypeName                 as VsartText
 
-Where       :       BD.BillingDocumentIsCancelled = ' '     and
-                    BD.CancelledBillingDocument   = ' '     and 
+Where       :       BD.AccountingTransferStatus   = 'C'     and
+                    BD.BillingDocumentIsCancelled = ' '     and
+                    BD.CancelledBillingDocument   = ' '     and
+                    BD.CompanyCode                = '1000'  and 
                     BD.Division                   = '10'    and
                     BD.SalesOrganization          = '1200'  and
-                    ( BD.SDDocumentCategory = 'M' or BD.SDDocumentCategory = 'O' )
+                    ( BD.SDDocumentCategory = 'M' or BD.SDDocumentCategory = 'O' ) and
+                    BDI._ReferenceDeliveryDocumentItem.InventoryValuationType = 'PROC_TA_IM'
 
 Group       :                       

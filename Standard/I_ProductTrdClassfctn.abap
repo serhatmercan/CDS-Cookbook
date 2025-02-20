@@ -1,10 +1,10 @@
 CDS         :   I_ProductTrdClassfctn
 Definition  :   Product Classfication
 
-Using       :   left outer join I_ProductTrdClassfctn as PTC on PTC.Product               = VBRP.Matnr
+Using       :   left outer join I_ProductTrdClassfctn as PTC on PTC.Product               = VBRP.Matnr                              " or I_SupplierInvoiceItemPurOrdRef.PurchaseOrderItemMaterial
                                                             and PTC.TrdClassfctnNmbrSchm  = 'TR02'
-                                                            and PTC.ValidityStartDate    <= I_BillingDocument.BillingDocumentDate
-                                                            and PTC.ValidityEndDate      >= I_BillingDocument.BillingDocumentDate
+                                                            and PTC.ValidityStartDate    <= I_BillingDocument.BillingDocumentDate   " or I_SupplierInvoice.PostingDate
+                                                            and PTC.ValidityEndDate      >= I_BillingDocument.BillingDocumentDate   " or I_SupplierInvoice.PostingDate
 
 Fields      :   key PTC.Product,
                 key PTC.TrdClassfctnNmbrSchm,
