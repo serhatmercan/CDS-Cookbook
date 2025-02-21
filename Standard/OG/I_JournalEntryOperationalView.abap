@@ -12,7 +12,10 @@ Fields      :   key JEOV.CompanyCode,
 
                     JEOV.AmountInBalanceTransacCrcy,
                     JEOV.AmountInCompanyCodeCurrency,
+
+                    @Semantics.amount.currencyCode: 'TransactionCurrency'
                     JEOV.AmountInTransactionCurrency,
+                    
                     JEOV.BalanceTransactionCurrency,
                     JEOV.ClearingCreationDate,
                     JEOV.ClearingJournalEntry,
@@ -28,7 +31,7 @@ Fields      :   key JEOV.CompanyCode,
                     JEOV.Supplier,
                     JEOV.TransactionCurrency,
                     
-                    JEOV._OperationalAcctgDocItem.BPBankAccountInternalID   as BPBankAccountInternalID,
+                    JEOV._OperationalAcctgDocItem.BPBankAccountInternalID
 
 Where       :   JEOV.AccountingDocumentType <> 'GM'  and
                 JEOV.FinancialAccountType    = 'K'   and

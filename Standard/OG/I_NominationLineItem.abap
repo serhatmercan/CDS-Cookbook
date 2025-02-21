@@ -28,6 +28,7 @@ Fields      :   key NLI.NominationDoc                                           
                     NLI.LocationName                                                              as LocationNameDq,
                     NLI.LocationPartner                                                           as LocationPartnerOq,                  
                     NLI.MaterialDesc                                                              as MaterialDescDq,
+                    NLI.NominationCarrier                                                         as NominationCarrierOq,
                     NLI.NominationItemIsComplete                                                  as NominationItemIsComplete,  
 
                     NLI.NominationCarrier                                                         as NominationCarrier,
@@ -44,6 +45,10 @@ Fields      :   key NLI.NominationDoc                                           
                     NLI.NominationReferenceDocType                                                as NominationReferenceDocTypeDq,
                     NLI.NominationReferenceDocument                                               as NominationReferenceDocumentDq,
                     NLI.NominationReferenceDocItem                                                as NominationReferenceDocItemDq,
+                    NLI.NominationTicketKey                                                       as NominationTicketKeyDq,
+                    NLI.NominationTicketItem                                                      as NominationTicketItemDq,
+                    NLI.NominationTicketPurpose                                                   as NominationTicketPurposeDq,
+                    NLI.NominationTicketVersion                                                   as NominationTicketVersionDq,
                     NLI.TransportSystem                                                           as TransportSystem,
                     
                     @Semantics.quantity.unitOfMeasure: 'ScheduledQuantityUnitDq'

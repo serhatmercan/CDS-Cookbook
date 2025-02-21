@@ -1,9 +1,13 @@
-CDS         : I_PurchaseOrderAPI01  & I_PurchaseOrderItemAPI01  & I_PurchaseOrderHistoryAPI01  
-Definition  : Purchase Order        & Purchase Order Item       & Purchase Order History  
+CDS         : I_PurchaseOrderAPI01  & I_PurchaseOrderItemAPI01  & I_PurchaseOrderHistoryAPI01   &  I_SuplrInvcItemPurOrdRefAPI01            & I_SupplierInvoiceAPI01   
+Definition  : Purchase Order        & Purchase Order Item       & Purchase Order History        &  Purchase Order Ref of Supplier Invoice   & Supplier Invoice
 
 Using       : as select from I_PurchaseOrderAPI01           as POHeader
-                  inner join I_PurchaseOrderItemAPI01       as POItem           on POItem.PurchaseOrder     = POHeader.PurchaseOrder
-                  inner join I_PurchaseOrderHistoryAPI01    as POHistory        on POHistory.PurchaseOrder  = POHeader.PurchaseOrder    " Optional    
+                  inner join I_PurchaseOrderItemAPI01       as POItem           on POItem.PurchaseOrder             = POHeader.PurchaseOrder
+                  inner join I_PurchaseOrderHistoryAPI01    as POHistory        on POHistory.PurchaseOrder          = POHeader.PurchaseOrder        " Optional
+                  inner join I_SuplrInvcItemPurOrdRefAPI01  as POReference      on POReference.PurchaseOrder        = POItem.PurchaseOrder          " Optional
+                                                                               and POReference.PurchaseOrderItem    = POItem.PurchaseOrderItem
+                  inner join I_SupplierInvoiceAPI01         as SupplierInvoice  on SupplierInvoice.SupplierInvoice  = POReference.SupplierInvoice   " Optional
+                                                                               and SupplierInvoice.FiscalYear       = POReference.FiscalYear                                                                                     
               
               association [0..1] to I_MaterialText          as _MaterialText    on _MaterialText.Material   = $projection.Material
                                                                                and _MaterialText.Language   = $session.system_language
@@ -125,11 +129,26 @@ Fields      :   key POItem.PurchaseOrder,
 
                     POHistory.ReferenceDocument,
                     POHistory.ReferenceDocumentItem,
-                    POHistory.TaxCode
+                    POHistory.TaxCode,
+
+                    " Purchase Order Ref of Supplier Invoice
+                    POReference.PurchaseOrderQuantityUnit,
+                    POReference.SupplierInvoiceItem,
+                    POReference.SupplierInvoiceItemAmount,
+                    POReference.QuantityInPurchaseOrderUnit,
+
+                    " Supplier Invoice
+                    SupplierInvoice.DocumentCurrency,
+                    SupplierInvoice.DocumentDate,
+                    SupplierInvoice.FiscalYear,
+                    SupplierInvoice.PostingDate,
+                    SupplierInvoice.SupplierInvoice,                    
+                    SupplierInvoice.SupplierInvoiceIDByInvcgParty
 
 Where       :   ( POHeader.PurchasingOrganization = '1100' or POHeader.PurchasingOrganization = '1200' ) and  
-                POHeader.PurchaseOrderType             like 'YN%'  and  
-                POItem.PurchasingDocumentDeletionCode     = ''     or
+                POHeader.PurchaseOrderType like 'YN%'       and  
+                POItem.PurchasingDocumentDeletionCode = ''  or
+                ( POItem.MaterialGroup = 'H001' or POItem.MaterialGroup = 'U002' or POItem.MaterialGroup = 'U003' or POItem.MaterialGroup = 'U005' or POItem.MaterialGroup = 'U006' ) and
                 ( POHistory.PurchasingHistoryDocumentType = '2' or POHistory.PurchasingHistoryDocumentType = '3' )
 
 Group       : 

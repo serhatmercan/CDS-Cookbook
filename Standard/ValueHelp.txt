@@ -3,17 +3,21 @@ Key             Name                            Element                     Desc
 Bukrs           I_CompanyCodeStdVH              Company Code                Company Code Name           CompanyCode & CompanyCodeName      
 CUKY5           I_Currency                      Currency                    Currency Code               Currency
 Inco1           I_IncotermsClassification       Incoterms                   Incoterms                   IncotermsClassification & _Text.IncotermsClassificationName
-Kunnr           I_Customer_VH                   Customer                    Customer
+Kunnr           I_Customer_VH                   Customer                    Customer                    Customer & CustomerName
 Lgort           I_StorageLocation               Storage Location            Storage Location Name       StorageLocation & StorageLocationName                               
 Lgort           I_StorageLocationStdVH          Storage Location            Storage Location Name       Plant & StorageLocation & StorageLocationName                            
 Lifnr           I_Supplier                      Supplier                    Supplier                    Supplier & SupplierFullName
 Matkl           I_ProductGroupVH                Material Group              Product Group VH            ProductGroup
+Matnr           I_MaterialVH                    Material                    Material VH                 Material & MaterialType & MaterialGroup
 Matnr           I_ProductText                   Material                    Product                     Product & ProductName
+Msehi           I_UnitOfMeasureStdVH            Unit                        Unit of Measure             UnitOfMeasure
+Mtart           I_Producttypecodevh                                         Product Type Code           ProductTypeCode
+Mtart           I_ProductTypeText                                           Product Type - Text         ProductType & MaterialTypeName
 Oig_Vhlnmr      I_NominationVehicleIdVH         Vehicle Number              Vehicle Description         VehicleId & VehicleDescription
 Oih_Hantyp      I_ExciseDutyHandlingTypeText    Handling Type               Excise Duty Handling Type   ExciseDutyHandlingType & ExciseDutyHandlingTypeDesc
 Oij_Tsyst       C_NominationTransptSystVH       Transport System            Transport System Name       TransportSystem & TransportSystemName
 Oij_Locid       C_NominationLocationVH          Location ID                 Location Name               LocationId & LocationName
 Prodh           I_ProductHierarchyText          Prodh                       Product Hierarchy           ProductHierarchy & ProductHierarchyText
-Product_Type    I_Producttypecodevh             MaterialType                Product Type Code           ProductTypeCode
+Seqnr           I_SiloTankHelp                  SeqNo                       Silo Tank VH                Plant & SequenceNumber & Location & StorageObjSgmntNmbr                        
 Werks           I_Plant                         Plant                       Plant Name                  Plant & PlantName
 Werks           I_PlantStdVH                    Plant                       Plant Name                  Plant & PlantName
