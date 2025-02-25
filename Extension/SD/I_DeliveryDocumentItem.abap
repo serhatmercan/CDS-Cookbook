@@ -1,5 +1,5 @@
 @AbapCatalog.sqlViewAppendName:'ZSM_V_EXT_DDI'
-@EndUserText.label:'I_MaintenanceOrderDEX Extend View'
+@EndUserText.label:'I_DeliveryDocumentItem Extend View'
 
 extend view I_DeliveryDocumentItem with ZSM_I_EXT_DDI
 {   

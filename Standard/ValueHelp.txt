@@ -1,23 +1,34 @@
 CDS Entity VH
-Key             Name                            Element                     Description                 Fields
-Bukrs           I_CompanyCodeStdVH              Company Code                Company Code Name           CompanyCode & CompanyCodeName      
-CUKY5           I_Currency                      Currency                    Currency Code               Currency
-Inco1           I_IncotermsClassification       Incoterms                   Incoterms                   IncotermsClassification & _Text.IncotermsClassificationName
-Kunnr           I_Customer_VH                   Customer                    Customer                    Customer & CustomerName
-Lgort           I_StorageLocation               Storage Location            Storage Location Name       StorageLocation & StorageLocationName                               
-Lgort           I_StorageLocationStdVH          Storage Location            Storage Location Name       Plant & StorageLocation & StorageLocationName                            
-Lifnr           I_Supplier                      Supplier                    Supplier                    Supplier & SupplierFullName
-Matkl           I_ProductGroupVH                Material Group              Product Group VH            ProductGroup
-Matnr           I_MaterialVH                    Material                    Material VH                 Material & MaterialType & MaterialGroup
-Matnr           I_ProductText                   Material                    Product                     Product & ProductName
-Msehi           I_UnitOfMeasureStdVH            Unit                        Unit of Measure             UnitOfMeasure
-Mtart           I_Producttypecodevh                                         Product Type Code           ProductTypeCode
-Mtart           I_ProductTypeText                                           Product Type - Text         ProductType & MaterialTypeName
-Oig_Vhlnmr      I_NominationVehicleIdVH         Vehicle Number              Vehicle Description         VehicleId & VehicleDescription
-Oih_Hantyp      I_ExciseDutyHandlingTypeText    Handling Type               Excise Duty Handling Type   ExciseDutyHandlingType & ExciseDutyHandlingTypeDesc
-Oij_Tsyst       C_NominationTransptSystVH       Transport System            Transport System Name       TransportSystem & TransportSystemName
-Oij_Locid       C_NominationLocationVH          Location ID                 Location Name               LocationId & LocationName
-Prodh           I_ProductHierarchyText          Prodh                       Product Hierarchy           ProductHierarchy & ProductHierarchyText
-Seqnr           I_SiloTankHelp                  SeqNo                       Silo Tank VH                Plant & SequenceNumber & Location & StorageObjSgmntNmbr                        
-Werks           I_Plant                         Plant                       Plant Name                  Plant & PlantName
-Werks           I_PlantStdVH                    Plant                       Plant Name                  Plant & PlantName
+Key             Name                            Element                     Description                     Fields
+Bukrs           I_CompanyCode                   Company Code                Company Code                    CompanyCode & CompanyCodeName
+Bukrs           I_CompanyCodeVH                 Company Code                Company Code                    CompanyCode & CompanyCodeName
+Bukrs           I_CompanyCodeStdVH              Company Code                Company Code Name               CompanyCode & CompanyCodeName      
+Cuky5           I_Currency                      Currency                    Currency Code                   Currency
+Ebeln           SHSM_Ekpo                       Ebeln                       EKPO VH                         Ebeln & Ebelp
+Equnr           C_TechObjFlatVH                 Equipment                   Technical Object Details VH     TechnicalObject & TechObjIsEquipOrFuncnlLoc & 
+Gsber           C_CABusinessAreaValueHelp       Business Area               Business Area VH                BusinessArea
+Inco1           I_IncotermsClassification       Incoterms                   Incoterms                       IncotermsClassification & _Text.IncotermsClassificationName
+Kunnr           I_Customer_VH                   Customer                    Customer                        Customer & CustomerName
+Kurst           I_ExchangeRateType              Exchange Rate Type          Exchange Rate Type              ExchangeRateType
+Lgort           I_StorageLocation               Storage Location            Storage Location Name           StorageLocation & StorageLocationName                               
+Lgort           I_StorageLocationStdVH          Storage Location            Storage Location Name           Plant & StorageLocation & StorageLocationName                            
+Lifnr           I_Supplier                      Supplier                    Supplier                        Supplier & SupplierFullName
+Matkl           I_ProductGroupVH                Material Group              Product Group VH                ProductGroup
+Matkl           VC_Integration_T023T            Matkl                       Extraction for T023T            Matkl & Wgbez & Wgbez60
+Matnr           I_MaterialVH                    Material                    Material VH                     Material & MaterialType & MaterialGroup
+Matnr           I_ProductText                   Material                    Product                         Product & ProductName
+Matnr           SHSM_M_MAT1L                    Matnr                                                       Maktg & Matkl & Matnr
+Msehi           I_UnitOfMeasureStdVH            Unit                        Unit of Measure                 UnitOfMeasure
+Mtart           I_Producttypecodevh                                         Product Type Code               ProductTypeCode
+Mtart           I_ProductTypeText                                           Product Type - Text             ProductType & MaterialTypeName
+Oig_Vhlnmr      I_NominationVehicleIdVH         Vehicle Number              Vehicle Description             VehicleId & VehicleDescription
+Oih_Hantyp      I_ExciseDutyHandlingTypeText    Handling Type               Excise Duty Handling Type       ExciseDutyHandlingType & ExciseDutyHandlingTypeDesc
+Oij_Tsyst       C_NominationTransptSystVH       Transport System            Transport System Name           TransportSystem & TransportSystemName
+Oij_Locid       C_NominationLocationVH          Location ID                 Location Name                   LocationId & LocationName
+Prodh           I_ProductHierarchyText          Prodh                       Product Hierarchy               ProductHierarchy & ProductHierarchyText
+Seqnr           I_SiloTankHelp                  SeqNo                       Silo Tank VH                    Plant & SequenceNumber & Location & StorageObjSgmntNmbr
+Sgenr           I_REBuilding                    Real Estate Building        Real Estate Building            InternalRealEstateNumber & CompanyCode & REBusinessEntity & RealEstateBuilding (Sgenr)                        
+Sgrnr           I_REProperty                    RealEstateProperty          Real Estate Property            InternalRealEstateNumber & CompanyCode & REBusinessEntity & RealEstateProperty (Sgrnr)  
+Werks           I_Plant                         Plant                       Plant Name                      Plant & PlantName
+Werks           I_PlantStdVH                    Plant                       Plant Name                      Plant & PlantName
+Werks           SHSM_MT001W                     Werks                                                       Werks & Name1 & Name2

@@ -8,6 +8,7 @@ CLASS ZSM_CL_AMDP DEFINITION
       if_amdp_marker_hdb.
 
     CLASS-METHODS:
+      get_amount          FOR TABLE FUNCTION zsm_f_amount,
       get_nomi_match      FOR TABLE FUNCTION zsm_f_nomi_match,
       get_nomi_match_prm  FOR TABLE FUNCTION zsm_f_nomi_match_prm,
       get_nomi_rows_no    FOR TABLE FUNCTION zsm_f_nomi_rows,
@@ -20,6 +21,44 @@ CLASS ZSM_CL_AMDP DEFINITION
 ENDCLASS.
 
 CLASS ZSM_CL_AMDP IMPLEMENTATION.
+  METHOD get_amount BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING acdoca t006a.
+    lt_data = SELECT DISTINCT t1.rclnt,
+                              t1.rldnr,
+                              t1.rbukrs,
+                              t1.gjahr,
+                              t1.belnr,
+                              t1.docln,
+                              t1.msl,
+                              concat( t1.msl , t2.msehl ) as amount,
+                              t1.mwskz
+                         FROM acdoca AS t1
+                   INNER JOIN t006a  AS t2 
+                           ON t2.msehi = t1.runit
+                        WHERE t1.rldnr  = '0L'
+                          AND t1.rbukrs = : p_bukrs
+                          AND t1.gjahr  = : p _gjahr
+                          AND t1.ktosl  <> 'VST'
+                          AND t1.koart  <> 'K'
+                          AND t2.spras  =  'T';
+
+
+    RETURN
+      SELECT rclnt  as Client,
+             rldnr  as Rldnr,
+             rbukrs as Bukrs,
+             gjahr  as Gjahr,
+             belnr  as Belnr,
+             mwskz  as Mwskz,
+             STRING_AGG(amount,',' order by msl) as Amount
+        FROM :lt_data
+    GROUP BY rclnt,
+             rldnr,
+             rbukrs,
+             gjahr,
+             belnr,
+             mwskz;                          
+  ENDMETHOD.
+
   METHOD get_nomi_match BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING oijnomi oijpeg.
     declare v_count integer;
     declare v_i integer;
@@ -183,7 +222,7 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
     END FOR;
 
     RETURN 
-      SELECT clnt,
+      SELECT clnt as Client,
              nominationdocdq,
              nominationdocitemdq,
              nominationdocoq,
@@ -193,7 +232,7 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
         FROM :t_nomi
        WHERE sityp LIKE 'D%'
       UNION ALL
-      SELECT clnt,
+      SELECT clnt as Client,
              '' nominationdocdq,
              '' nominationdocitemdq,
              nominationdocoq,
@@ -222,7 +261,7 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
                 OVER ( PARTITION BY nominationdocoq,nominationdocitemoq ORDER BY nominationdocdq,nominationdocitemdq,nominationdocoq,nominationdocitemoq ) as RowNo
                 FROM zsm_i_nomi_match;
 
-    RETURN SELECT Mandt,
+    RETURN SELECT Mandt as Client,
                   NominationDocDQ,
                   NominationDocItemDQ,
                   NominationDocOQ,

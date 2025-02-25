@@ -4,6 +4,23 @@
 @ClientHandling.type: #CLIENT_DEPENDENT
 @EndUserText.label: 'Function AMDP'
 
+define table function ZSM_F_AMOUNT
+  with parameters p_bukrs : bukrs,
+                  p_gjahr : gjahr 
+
+returns {
+  Client : abap.clnt;
+  Rldnr  : rldnr;
+  Bukrs  : bukrs;
+  Gjahr  : gjahr;
+  Belnr  : belnr_d;
+  Mwskz  : mwskz;
+  Amount : char255;
+}
+implemented by method zsm_cl_amdp=>get_amount;
+
+---
+
 define table function ZSM_F_NOMI_MATCH_PRM
   with parameters @Environment.systemField: #CLIENT
                   p_client  : abap.clnt,
@@ -26,7 +43,7 @@ define table function ZSM_F_NOMI_ROWS
   with parameters @Environment.systemField: #CLIENT
                   p_client : abap.clnt
 returns {
-  Mandt                       : mandt;
+  Client                      : mandt;
   NominationDocDQ             : oij_nomtk;
   NominationDocItemDQ         : oij_item;
   NominationDocOQ             : oij_nomtk;

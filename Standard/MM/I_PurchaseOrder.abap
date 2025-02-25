@@ -1,9 +1,13 @@
 CDS         :   I_PurchaseOrder
 Definition  :   Purchase Order
 
-Using       :   association [1..1] to I_PurchaseOrder               as _PurchaseOrder               on  $projection.PurchaseOrder = _PurchaseOrder.PurchaseOrder
+Using       :   as select from I_PurchaseOrder                  as PO       on PO.PurchaseOrder   = R_PurchasingDocumentItem.PurchasingDocument
+                   association [0..1] to I_PurchaseOrderItem    as _POI     on _POI.PurchaseOrder = PO.PurchaseOrder
 
-Fields      :    
+Fields      :   key _POI.PurchaseOrder,
+                key _POI.PurchaseOrderItem,
+                
+                    PO.PurchasingGroup,
 
 Where       :   
 
