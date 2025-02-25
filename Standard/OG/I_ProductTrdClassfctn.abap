@@ -1,5 +1,5 @@
 CDS         :   I_ProductTrdClassfctn
-Definition  :   Product Classfication
+Description :   Product Classfication
 
 Using       :   left outer join I_ProductTrdClassfctn as PTC on PTC.Product               = VBRP.Matnr                              " or I_SupplierInvoiceItemPurOrdRef.PurchaseOrderItemMaterial
                                                             and PTC.TrdClassfctnNmbrSchm  = 'TR02'

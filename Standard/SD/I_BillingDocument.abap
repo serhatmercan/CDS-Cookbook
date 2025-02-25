@@ -1,5 +1,5 @@
 CDS         :   I_BillingDocument & I_BillingDocumentItem
-Definition  :   Billing Document & Items
+Description :   Billing Document & Items
 
 Using       :   as select from I_BillingDocument     as BD                                                   " or BD.BillingDocument  = I_BillingDocumentItemPrcgElmnt.BillingDocument          
                     inner join I_BillingDocumentItem as BDI on BDI.BillingDocument     = $projection.VbelnVf " or BDI.BillingDocument = BD.BillingDocument
@@ -17,6 +17,7 @@ Fields      :   key BDI.BillingDocument                                         
                     BD.DistributionChannel,
                     BD.Division,
                     BD.DocumentReferenceID,
+                    BD.FiscalYear,
                     BD.PriceListType, 
                     BD.SalesOrganization,
                     BD.SDDocumentCategory,

@@ -1,5 +1,5 @@
 CDS         :   P_APJrnlEntrItmOpenPay
-Definition  :   
+Description :   
 
 Using       :   as select from P_APJrnlEntrItmOpenPay2(P_KeyDate : P_KeyDate) as OpenPay  
 

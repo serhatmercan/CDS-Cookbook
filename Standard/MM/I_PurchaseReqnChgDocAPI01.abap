@@ -1,5 +1,5 @@
 CDS         :   I_PurchaseReqnChgDocAPI01                   & I_PurchaseReqnChgDocItmAPI01
-Definition  :   Change Document for Purchase Requisition    & Change Document Item for Purchase Requisition
+Description :   Change Document for Purchase Requisition    & Change Document Item for Purchase Requisition
 
 Using       :   as select from I_PurchaseReqnChgDocAPI01    as PRHeader
                     inner join I_PurchaseReqnChgDocItmAPI01 as PRItem   on PRItem.ChangeDocObject       = PRHeader.ChangeDocObject     

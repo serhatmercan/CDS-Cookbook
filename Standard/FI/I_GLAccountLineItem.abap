@@ -1,5 +1,5 @@
 CDS         :   I_GLAccountLineItem
-Definition  :   General Ledger Account Line Item
+Description :   General Ledger Account Line Item
 
 Using       :   as select from  I_GLAccountLineItem as GLALItem
                 left outer join I_GLAccountText     as GLAText      on GLAText.ChartOfAccounts = GLALItem.ChartOfAccounts

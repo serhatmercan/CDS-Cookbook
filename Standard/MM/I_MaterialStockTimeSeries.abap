@@ -1,5 +1,5 @@
 CDS         :   I_MaterialStockTimeSeries
-Definition  :   Material Stock For Periods
+Description :   Material Stock For Periods
 
 Using       :   as select distinct from I_MaterialStockTimeSeries(  P_StartDate:    $session.system_date, 
                                                                     P_EndDate:      $session.system_date, 

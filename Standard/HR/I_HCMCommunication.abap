@@ -1,5 +1,5 @@
 CDS         :   I_HCMCommunication
-Definition  :   HCM Communication
+Description :   HCM Communication
 
 Using       :   inner join I_HCMCommunication as HCM on HCM.HCMPersonnelNumber      = IHPA.parnr 
                                                     and HCM.HCMCommunicationType    = '0001'

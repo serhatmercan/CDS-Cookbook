@@ -1,5 +1,5 @@
 CDS         :   I_NominationLineItem
-Definition  :   Nomination Ticket Main
+Description :   Nomination Ticket Main
 
 Using       :   as select from I_NominationLineItem as NLI on NLI.NominationDoc     = $projection.NominationDocDQ
                                                           and NLI.NominationDocItem = $projection.NominationDocItemDQ

@@ -1,5 +1,5 @@
 CDS         :   I_PurOrdPricingElement
-Definition  :   Purchase Order Pricing Element
+Description :   Purchase Order Pricing Element
 
 Using       :   association [1..*] to I_PurOrdPricingElement  as _POPE on _POPE.PurchaseOrder       = I_PurchaseOrderItem.PurchaseOrder
                                                                       and _POPE.PurchaseOrderItem   = I_PurchaseOrderItem.PurchaseOrderItem

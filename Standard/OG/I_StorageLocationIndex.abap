@@ -1,5 +1,5 @@
 CDS         :   I_StorageLocationIndex
-Definition  :   Index for Storage Location / Sequence No
+Description :   Index for Storage Location / Sequence No
 
 Using       :   inner join I_StorageLocationIndex as SLI on SLI.Plant          = $projection.Plant
                                                         and SLI.Location       = $projection.Location

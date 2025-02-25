@@ -1,5 +1,5 @@
 CDS         :   I_PurchasingDocument
-Definition  :   Purchasing Document
+Description :   Purchasing Document
 
 Using       :   as select from I_PurchasingDocument     as PD   on PD.PurchasingDocument  = I_NominationLineItem.NominationReferenceDocument
                     inner join I_PurchasingDocumentItem as PDI  on PDI.PurchasingDocument = PD.PurchasingDocument

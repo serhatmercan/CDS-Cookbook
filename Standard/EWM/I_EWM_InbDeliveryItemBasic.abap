@@ -1,5 +1,5 @@
 CDS         :   I_EWM_InbDeliveryItemBasic
-Definition  :   Inbound Delivery Item Basic
+Description :   Inbound Delivery Item Basic
 
 Using       :   as select from I_EWM_InbDeliveryItemBasic as IDIBasic
 

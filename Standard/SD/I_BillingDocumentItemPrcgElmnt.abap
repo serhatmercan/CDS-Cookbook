@@ -1,5 +1,5 @@
 CDS         :   I_BillingDocumentItemPrcgElmnt
-Definition  :   Billing Document Item Pricing Element
+Description :   Billing Document Item Pricing Element
 
 Using       :   as select from  I_BillingDocumentItemPrcgElmnt as Pricing
 

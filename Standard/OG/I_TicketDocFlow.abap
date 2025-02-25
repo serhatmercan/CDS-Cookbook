@@ -1,5 +1,5 @@
 CDS         :   I_TicketDocFlow
-Definition  :   Ticket Item Document Flow
+Description :   Ticket Item Document Flow
 
 Using       :   inner join I_TicketDocFlow as TDF on TDF.NominationTicketKey     = $projection.NominationTicketKey
                                                  and TDF.NominationTicketItem    = $projection.NominationTicketItem

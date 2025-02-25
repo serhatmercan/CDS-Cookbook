@@ -1,5 +1,5 @@
 CDS         :   I_Product   & I_ProductDescription
-Definition  :   Product     & Product Descriptions   
+Description :   Product     & Product Descriptions   
 
 Using       :   inner join I_Product            as Product      on Product.Product      = I_EWM_InbDeliveryItemBasic.product
                 inner join I_ProductDescription as ProductDesc  on ProductDesc.Product  = Product.Product

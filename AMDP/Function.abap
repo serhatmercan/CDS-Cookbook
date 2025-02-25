@@ -21,6 +21,19 @@ implemented by method zsm_cl_amdp=>get_amount;
 
 ---
 
+define table function ZSM_F_DATE 
+returns
+{
+  Client   : abap.clnt;
+  ObjectID : cdobjectv;
+  Tabkey   : cdtabkey;
+  Odate    : abap.dats;
+  Otime    : abap.tims;
+}
+implemented by method zsm_cl_amdp=>get_date;
+
+---
+
 define table function ZSM_F_NOMI_MATCH_PRM
   with parameters @Environment.systemField: #CLIENT
                   p_client  : abap.clnt,
@@ -74,6 +87,20 @@ returns {
   WorkingDay     : int4;
 }
 implemented by method zsm_cl_amdp=>get_risk_docs;
+
+---
+
+define table function ZSM_F_TECHNICAL_OBJECT
+  with parameters @Environment.systemField: #CLIENT
+                  p_client : abap.clnt, 
+                  p_bname  : xubname
+returns {
+  Client : abap.clnt;
+  Werks  : werks_d;
+  Bname  : xubname;
+  Tplnr  : tplnr;
+}
+implemented by method zsm_cl_amdp=>get_technical_object;
 
 ---
 

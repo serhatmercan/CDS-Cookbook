@@ -1,5 +1,5 @@
 CDS         :   I_NominationTicketAddlQuantity
-Definition  :   Nomination Ticket Additional Quantity
+Description :   Nomination Ticket Additional Quantity
 
 Using       :   left outer join I_NominationTicketAddlQuantity as NTAQ on NTAQ.NominationTicketKey  = C_TicketItemTP.NominationTicketKey
                                                                       and NTAQ.NominationTicketItem = C_TicketItemTP.NominationTicketItem 

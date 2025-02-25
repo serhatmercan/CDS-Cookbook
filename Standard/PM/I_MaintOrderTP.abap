@@ -1,5 +1,5 @@
 CDS         :   I_MaintOrderTP
-Definition  :   Maintenance Order w/ Technical Object
+Description :   Maintenance Order w/ Technical Object
 
 Using       :   left outer join I_MaintOrderTP as MaintOrderTP on MaintOrderTP.MaintenanceOrder = I_MaintOrderOperation_DEX.MaintenanceOrder   
 

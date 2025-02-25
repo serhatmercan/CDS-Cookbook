@@ -1,5 +1,5 @@
 CDS         :   I_SupplierQuotation
-Definition  :   Supplier Quotation
+Description :   Supplier Quotation
 
 Using       :   inner join I_SupplierQuotation as SQ on SQ.SupplierQuotation = Ekpo.Anfnr
 

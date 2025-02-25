@@ -1,5 +1,5 @@
 CDS         :   I_DeliveryDocument & I_DeliveryDocumentItem
-Definition  :   Delivery Document & Items
+Description :   Delivery Document & Items
 
 Using       :   as select from I_DeliveryDocument     as DD
                     inner join I_DeliveryDocumentItem as DDI        on DDI.DeliveryDocument = DD.DeliveryDocument

@@ -1,5 +1,5 @@
 CDS         :   I_PurchaseOrderHistoryBasic
-Definition  :   Purchase Order History
+Description :   Purchase Order History
 
 Using       :   as select from I_PurchaseOrderHistoryBasic as POHB
 

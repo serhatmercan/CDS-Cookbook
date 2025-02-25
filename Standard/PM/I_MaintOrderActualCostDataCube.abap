@@ -1,5 +1,5 @@
 CDS         :   I_MaintOrderActualCostDataCube
-Definition  :   Maintenance Order Actual Cost Data - Cube
+Description :   Maintenance Order Actual Cost Data - Cube
 
 Using       :   left outer join I_MaintOrderActualCostDataCube as Cost on Cost.MaintenanceOrder = I_MaintOrderTP.MaintenanceOrder
 

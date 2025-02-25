@@ -37,7 +37,6 @@ define root view entity ZSD_I_ORDER
                                                 and _Tvm2t.spras      	   = 'T'
     association [0..1] to tvm3t      as _Tvm3t   on _Tvm3t.mvgr3		       = $projection.mvgr3
                                                 and _Tvm3t.spras      	   = 'T'
-    association [0..1] to zsd_t_0001 as _T0001   on _T0001.zboru_hatti_onay = $projection.zz1_boruhattionay_sdh
     association [0..1] to oijnomi    as _Oijnomi on _Oijnomi.docnr		   = $projection.vbeln_va
                                                 and _Oijnomi.docitm		   = $projection.posnr_va
                                                 and _Oijnomi.delind        is initial
@@ -77,20 +76,11 @@ define root view entity ZSD_I_ORDER
       vbak.gsber,
       vbak.bname,
       vbak.cmpsk,
-      vbak.zz1_drivertcno_sdh,
-      vbak.zz1_boruhattionay_sdh,
-      _T0001.zonay_tanimi                                                                                              as zz1_boruhattonaytanm_sdh,
-      vbak.zz1_sirano_sdh,
-      vbak.zz1_tasitnumarasi_sdh,
-      _Oigvt.veh_text                                                                                                  as tasit1_text,
-      vbak.zz1_tasitnumarasi2_sdh,
-      _Oigvt2.veh_text                                                                                                 as tasit2_text,
       vbak.auart,
       _Tvakt.bezei                                                                                                     as auartx,
       vbap.shkzg                                                                                                       as shkzg_va,
       vbap.werks,
       vbap.vstel                                                                                                       as vstel_va,
-      vbap.zz1_allocationperiod_sdi,
       vbap.prodh,
       vbap.matnr,
       vbap.arktx                                                                                                       as maktx,
@@ -157,26 +147,10 @@ define root view entity ZSD_I_ORDER
       _Kna1.ktokd,
       vbap.vsart_ana                                                                                                   as vsart,
       _t173t.bezei                                                                                                     as vsartx,
-      _Oigd.zdehlno,
       _Oigd.first_name,
       _Oigd.last_name,
       _Oigd.drivercode,
-      _Oigd.zdteln1,
-      _Oigd.zdteln2,
-      _Oigv.zdingilsayisi,
       _Oigv.ergei,
-      @Semantics.quantity.unitOfMeasure: 'ERGEI'
-      _Oigv.zdara,
-      _Oigv.ztoleransyba,
-      case when _Oigv.ztoleransyba is not null then 'KG' end                                                           as toleransli_yba_b,
-      _Oigv.zdolumtipi,
-      case _Oigv.zdolumtipi
-      when ''
-      then 'Boş'
-      when '0'
-      then '0:Üstten Dolum'
-      when '1'
-      then '1:Alttan Dolum' end                                                                                        as tankerdt,
       @Semantics.quantity.unitOfMeasure: 'MEINS_VA'
       case when vbap.meins is not initial then $projection.klmeng end                                                  as sipton,
       case $projection.audat when 'Z120' then $projection.audat when 'Z124' then '' end                                as vdatu_va,
@@ -188,8 +162,6 @@ define root view entity ZSD_I_ORDER
       _Tvm1t.bezei                                                                                                     as mvgr1x,
       _Tvm2t.bezei                                                                                                     as mvgr2x,
       _Tvm3t.bezei                                                                                                     as mvgr3x,
-      @Semantics.quantity.unitOfMeasure: 'ERGEI'
-      _Oigv.zgross_ton,
       vbak.cmgst,
       _Oigv.srfxnr                                                                                                     as tasaracno,
       _Oigv.veh_id                                                                                                     as vehid,

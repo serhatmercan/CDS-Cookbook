@@ -1,5 +1,5 @@
 CDS         :   I_MaterialDocumentRecord
-Definition  :   Basis View for MATDOC Table
+Description :   Basis View for MATDOC Table
 
 Using       :   as select from I_MaterialDocumentRecord as MDR
 

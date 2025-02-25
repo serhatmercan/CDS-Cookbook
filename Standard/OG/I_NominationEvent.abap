@@ -1,5 +1,5 @@
 CDS         :   I_NominationEvent
-Definition  :   Nomination Events
+Description :   Nomination Events
 
 Using       :   association [0..1] to I_NominationEvent as _NE on _NE.NominationDoc         = I_NominationLineItem.NominationDoc
                                                               and _NE.NominationDocItem     = I_NominationLineItem.NominationDocItem

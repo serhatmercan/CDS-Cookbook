@@ -1,5 +1,5 @@
 CDS         :   I_MaintTaskListOperation
-Definition  :   Maintenance Task List Operation
+Description :   Maintenance Task List Operation
 
 Using       :   as select from I_MaintTaskListOperation as MTLO
 

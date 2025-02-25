@@ -8,13 +8,15 @@ CLASS ZSM_CL_AMDP DEFINITION
       if_amdp_marker_hdb.
 
     CLASS-METHODS:
-      get_amount          FOR TABLE FUNCTION zsm_f_amount,
-      get_nomi_match      FOR TABLE FUNCTION zsm_f_nomi_match,
-      get_nomi_match_prm  FOR TABLE FUNCTION zsm_f_nomi_match_prm,
-      get_nomi_rows_no    FOR TABLE FUNCTION zsm_f_nomi_rows,
-      get_risk_docs       FOR TABLE FUNCTION zsm_f_risk_docs,
-      get_working_days    FOR TABLE FUNCTION zsm_f_working_days,
-      workdays_between    FOR TABLE FUNCTION zsm_f_workdays_between.
+      get_amount            FOR TABLE FUNCTION zsm_f_amount,
+      get_date              FOR TABLE FUNCTION zsm_f_date,
+      get_nomi_match        FOR TABLE FUNCTION zsm_f_nomi_match,
+      get_nomi_match_prm    FOR TABLE FUNCTION zsm_f_nomi_match_prm,
+      get_nomi_rows_no      FOR TABLE FUNCTION zsm_f_nomi_rows,
+      get_risk_docs         FOR TABLE FUNCTION zsm_f_risk_docs,
+      get_technical_object  FOR TABLE FUNCTION zsm_f_technical_object,
+      get_working_days      FOR TABLE FUNCTION zsm_f_working_days,
+      workdays_between      FOR TABLE FUNCTION zsm_f_workdays_between.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -57,6 +59,32 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
              gjahr,
              belnr,
              mwskz;                          
+  ENDMETHOD.
+
+  METHOD get_date BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING cdpos cdhdr.
+    WITH lt_ranked_data AS ( SELECT cdpos.mandant  AS Client,
+                                    cdhdr.objectid AS ObjectID,
+                                    cdpos.tabkey   AS Tabkey,
+                                    cdhdr.udate    AS Odate,
+                                    cdhdr.utime    AS Otime,
+                                    RANK() OVER ( PARTITION BY cdpos.mandant, cdpos.tabkey
+                                                  ORDER BY cdhdr.udate DESC, cdhdr.utime DESC ) AS Rank
+                              FROM cdhdr 
+                        INNER JOIN cdpos 
+                                ON cdhdr.objectclas = cdpos.objectclas
+                               AND cdhdr.objectid   = cdpos.objectid
+                               AND cdhdr.changenr   = cdpos.changenr
+                             WHERE cdhdr.objectclas = 'BANF'
+                               AND cdpos.tabname    = 'EBAN'
+                               AND cdpos.fname      = 'FRGZU' )
+    
+    SELECT Client,
+           ObjectID,
+           Tabkey,
+           Odate,
+           Otime
+      FROM lt_ranked_data
+     WHERE Rank = 1;
   ENDMETHOD.
 
   METHOD get_nomi_match BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING oijnomi oijpeg.
@@ -285,6 +313,131 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
                            priceenddate                                                  as PriceEndDate,
                            workdays_between( 'PI', pricebegindate, priceenddate ) + 1    as WorkingDay
                       FROM zsm_i_risk_docs;
+  ENDMETHOD.
+
+  METHOD get_technical_object BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING zsm_t_user_to iflot.
+    declare gt_temp_user_to TABLE ( client   "$ABAP.type( MANDT )",
+                                    user     "$ABAP.type( XUBNAME )",
+                                    tplnr    "$ABAP.type( TPLNR )",
+                                    werks    "$ABAP.type( WERKS_D )",
+                                    sub_hier "$ABAP.type( XFELD )" 
+                                  );
+
+     declare lv_index integer;
+     declare lv_line integer;
+     declare lv_index1 integer;
+     declare lv_line1 integer;
+     declare lv_add_index integer;
+
+     declare gt_temp_user_to2 TABLE LIKE :gt_temp_user_to;
+     declare gt_temp_user_to3 TABLE LIKE :gt_temp_user_to;
+
+     gt_user_to = SELECT t1.mandt,
+                         t1.bname,
+                         t1.tplnr,
+                         t1.werks,
+                         CASE t3.tplnr WHEN '' THEN ''
+                                               ELSE 'X'
+                         END AS sub_hier
+                    FROM zsm_t_user_to  AS t1
+              INNER JOIN iflot          AS t2 on t2.tplnr EQ t1.tplnr and t2.mandt EQ t1.mandt
+         LEFT OUTER JOIN iflot          AS t3 on t3.tplnr EQ t2.tplma and t3.mandt EQ t1.mandt
+                   WHERE t1.mandt EQ p_client
+                     AND t1.bname EQ p_bname;
+      
+      lv_index = 1;
+      lv_line  = record_count( :gt_user_to );
+      
+      IF lv_line <> 0 then
+          WHILE lv_index BETWEEN 1 AND lv_line DO
+
+            gt_temp_user_to3.client[ 1 ]    = :gt_user_to.mandt[ :lv_index ];
+            gt_temp_user_to3.user[ 1 ]      = :gt_user_to.bname[ :lv_index ];
+            gt_temp_user_to3.werks[ 1 ]     = :gt_user_to.werks[ :lv_index ];
+            gt_temp_user_to3.tplnr[ 1 ]     = :gt_user_to.tplnr[ :lv_index ];
+            gt_temp_user_to3.sub_hier[ 1 ]  = :gt_user_to.sub_hier[ :lv_index ];
+
+            gt_temp_user_to2 = SELECT t1.client, t1.user, t1.tplnr, t1.werks,  t1.sub_hier
+                                 FROM :gt_temp_user_to  AS t1
+                           INNER JOIN :gt_temp_user_to3 AS t2 
+                                   ON t2.client EQ t1.client
+                                  AND t2.user   EQ t1.user
+                                  AND t2.werks  EQ t1.werks
+                                  AND t2.tplnr  EQ t1.tplnr;
+
+            lv_line1 = record_count( :gt_temp_user_to2 );
+            
+            IF lv_line1 = 0 THEN
+
+              gt_temp_user_to.client[ :lv_index ]   = :gt_user_to.mandt[ :lv_index ];
+              gt_temp_user_to.user[ :lv_index ]     = :gt_user_to.bname[ :lv_index ];
+              gt_temp_user_to.werks[ :lv_index ]    = :gt_user_to.werks[ :lv_index ];
+              gt_temp_user_to.tplnr[ :lv_index ]    = :gt_user_to.tplnr[ :lv_index ];
+              gt_temp_user_to.sub_hier[ :lv_index ] = :gt_user_to.sub_hier[ :lv_index ];
+
+
+              gt_temp_user_to2 = SELECT *
+                                  FROM :gt_temp_user_to
+                                  WHERE sub_hier EQ 'X';
+            
+              lv_index1 = 1;
+              lv_line1  = record_count( :gt_temp_user_to2 );
+              
+              IF lv_line1 <> 0 THEN
+                gt_sub_tplnr = SELECT t1.mandt,
+                                      t1.tplnr,
+                                      CASE t3.tplnr WHEN '' THEN ''
+                                                            ELSE 'X'
+                                      END AS sub_hier
+                                FROM iflot AS t1
+                          INNER JOIN :gt_temp_user_to2 AS t2 
+                                  ON t2.tplnr EQ t1.tplma
+                      LEFT OUTER JOIN iflot AS t3 
+                                  ON t3.tplma = t1.tplnr 
+                                  AND t3.mandt = t1.mandt
+                                WHERE t1.mandt = p_client;
+
+                lv_line1 = record_count( :gt_temp_user_to );
+
+                  WHILE lv_index1 BETWEEN 1 AND lv_line1 DO
+                      IF :gt_temp_user_to.sub_hier[ :lv_index1 ] = 'X' THEN
+                          gt_temp_user_to.sub_hier[ :lv_index1 ] = '';
+                      END IF;
+                      lv_index1 = :lv_index1 + 1;
+                  END WHILE ;
+              END IF;
+
+              lv_index1 = 1;
+              lv_line1  = record_count( :gt_sub_tplnr );
+
+              IF lv_line1 <> 0 THEN
+                WHILE lv_index1 BETWEEN 1 AND lv_line1 DO
+                  lv_add_index = record_count( :gt_user_to ) + 1;
+                  
+                  gt_user_to.mandt[ :lv_add_index ]    = :gt_user_to.mandt[ :lv_index ];
+                  gt_user_to.bname[ :lv_add_index ]    = :gt_user_to.bname[ :lv_index ];
+                  gt_user_to.werks[ :lv_add_index ]    = :gt_user_to.werks[ :lv_index ];
+                  gt_user_to.tplnr[ :lv_add_index ]    = :gt_sub_tplnr.tplnr[ :lv_index1 ];
+                  gt_user_to.sub_hier[ :lv_add_index ] = :gt_sub_tplnr.sub_hier[ :lv_index1 ];
+
+                  lv_index1 = :lv_index1 + 1;
+                END WHILE;
+              END IF;
+            END IF;
+            
+            lv_line = record_count( :gt_user_to );
+            
+            gt_sub_tplnr = SELECT * FROM :gt_sub_tplnr WHERE mandt = '000';
+            
+            lv_index = :lv_index + 1;
+          END WHILE;
+      END IF;
+
+      RETURN SELECT clnt  as Client,
+                    werks as Werks,
+                    user  as Bname,
+                    tplnr as Tplnr
+               FROM :gt_temp_user_to;
   ENDMETHOD.
 
   METHOD get_working_days BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING i_calendardate.

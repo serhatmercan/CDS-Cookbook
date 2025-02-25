@@ -1,5 +1,5 @@
 CDS         : I_PurgDocScheduleLine
-Definition  : Purchasing Document Schedule Line
+Description : Purchasing Document Schedule Line
 
 Using       : left outer join I_PurgDocScheduleLine as PDSL on PDSL.PurchasingDocument     = $projection.NominationReferenceDocumentOq
                                                            and PDSL.PurchasingDocumentItem = $projection.NominationReferenceDocItemOqR5

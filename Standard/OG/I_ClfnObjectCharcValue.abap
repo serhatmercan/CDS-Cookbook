@@ -1,5 +1,5 @@
 CDS         :   I_ClfnObjectCharcValue
-Definition  :   Clfn Characteristic Value of Object
+Description :   Clfn Characteristic Value of Object
 
 Using       :   inner join I_ClfnObjectCharcValue as COCV on COCV.ClfnObjectID       = VBRP.matnr
                                                          and COCV.ValidityStartDate <= I_BillingDocument.BillingDocumentDate

@@ -1,5 +1,5 @@
 CDS         : I_PurchaseOrderAPI01  & I_PurchaseOrderItemAPI01  & I_PurchaseOrderHistoryAPI01   &  I_SuplrInvcItemPurOrdRefAPI01            & I_SupplierInvoiceAPI01   
-Definition  : Purchase Order        & Purchase Order Item       & Purchase Order History        &  Purchase Order Ref of Supplier Invoice   & Supplier Invoice
+Description : Purchase Order        & Purchase Order Item       & Purchase Order History        &  Purchase Order Ref of Supplier Invoice   & Supplier Invoice
 
 Using       : as select from I_PurchaseOrderAPI01           as POHeader
                   inner join I_PurchaseOrderItemAPI01       as POItem           on POItem.PurchaseOrder             = POHeader.PurchaseOrder

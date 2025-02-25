@@ -1,5 +1,5 @@
 CDS         :   C_NominationLineItem
-Definition  :   Nomination Line Item
+Description :   Nomination Line Item
 
 Using       :   left outer join C_NominationLineItem as NLI on NLI.NominationDoc = $projection.NominationDoc
 

@@ -1,5 +1,5 @@
 CDS         :   I_JournalEntryOperationalView
-Definition  :   Operational View on Journal Entry Item
+Description :   Operational View on Journal Entry Item
 
 Using       :   as select from I_JournalEntryOperationalView as JEOV on JEOV.AccountingDocument   = Bkpf.Belnr
                                                                     and JEOV.CompanyCode          = Bkpf.Bukrs

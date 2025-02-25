@@ -1,5 +1,5 @@
 CDS         :   I_SupplierInvoice   & I_SupplierInvoiceItemPurOrdRef
-Definition  :   Supplier Invoice    & Supplier Invoice Item Purchase Order Reference  
+Description :   Supplier Invoice    & Supplier Invoice Item Purchase Order Reference  
 
 Using       :   as select from  I_SupplierInvoice               as SIHeader 
                     inner join  I_SupplierInvoiceItemPurOrdRef  as SIItem       on  SIItem.SupplierInvoice  = SIHeader.SupplierInvoice

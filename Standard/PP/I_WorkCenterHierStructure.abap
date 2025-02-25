@@ -1,5 +1,5 @@
 CDS         :   I_WorkCenterHierStructure
-Definition  :   Hierarchy Structure
+Description :   Hierarchy Structure
 
 Using       :   as select from I_WorkCenterHierStructure as WCHC
 

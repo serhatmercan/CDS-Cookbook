@@ -1,5 +1,5 @@
 CDS         :   I_TicketItemFld
-Definition  :   Ticket Items Fields
+Description :   Ticket Items Fields
 
 Using       :   as select from I_TicketItemFld as _TIF on _TIF.NominationDoc     = $projection.NominationDoc
                                                       and _TIF.NominationDocItem = $projection.NominationDocItem

@@ -1,5 +1,5 @@
 CDS         :   I_MaintOrderOperation_DEX
-Definition  :   Maintenance Order Operation Data
+Description :   Maintenance Order Operation Data
 
 Using       :   as select from I_MaintOrderOperation_DEX as MOODEX " or MOODEX.MaintenanceOrder = I_MaintOrderTP.MaintenanceOrder
 

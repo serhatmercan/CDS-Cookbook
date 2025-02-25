@@ -1,5 +1,5 @@
 CDS         :   I_SalesDocument & I_SalesDocumentItem
-Definition  :   Sales Document & Sales Document Item
+Description :   Sales Document & Sales Document Item
 
 Using       :   as select from I_SalesDocument              as SD             
                     inner join I_SalesDocumentItem          as SDI on SDI.SalesDocument = SD.SalesDocument

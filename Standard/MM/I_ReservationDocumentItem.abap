@@ -1,5 +1,5 @@
 CDS         :   I_ReservationDocumentItem
-Definition  :   Reservation Document Item
+Description :   Reservation Document Item
 
 Using       :   as select from I_ReservationDocumentItem as RDI
 

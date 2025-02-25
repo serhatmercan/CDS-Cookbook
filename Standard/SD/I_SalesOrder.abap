@@ -1,5 +1,5 @@
 CDS         :   I_SalesOrder    &   I_SalesOrderItem
-Definition  :   Sales Order     &   Sales Order Items
+Description :   Sales Order     &   Sales Order Items
 
 Using       :   left outer join I_SalesOrder        as SO   on SO.SalesOrder        = I_NominationLineItem.NominationReferenceDocument
                 left outer join I_SalesOrderItem    as SOI  on SOI.SalesOrder       = I_NominationLineItem.NominationReferenceDocument 

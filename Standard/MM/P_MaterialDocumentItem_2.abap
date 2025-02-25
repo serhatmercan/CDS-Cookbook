@@ -1,5 +1,5 @@
 CDS         :   P_MaterialDocumentItem_2
-Definition  :   RAP Material Document Item
+Description :   RAP Material Document Item
 
 Using       :   association [0..1] to P_MaterialDocumentItem_2 as _MatDocItem on _MatDocItem.MaterialDocument       = I_TicketDocFlow.NominationReferenceDocument
                                                                              and _MatDocItem.MaterialDocumentYear   = I_TicketDocFlow.MaterialDocumentYear

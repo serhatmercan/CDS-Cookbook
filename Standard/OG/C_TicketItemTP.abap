@@ -1,5 +1,5 @@
 CDS         :   C_TicketItemTP
-Definition  :   Tickets Items
+Description :   Tickets Items
 
 Using       :   inner join C_TicketItemTP  as TITP on TITP.NominationDoc     = I_NominationLineItem.NominationDoc
                                                   and TITP.NominationDocItem = I_NominationLineItem.NominationDocItem

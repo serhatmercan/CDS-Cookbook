@@ -1,5 +1,5 @@
 CDS         :   A_BusinessPartner & I_BusinessPartner & A_BusinessPartnerTaxNumber 
-Definition  :   Business Partner  & Business Partner  & Tax Number
+Description :   Business Partner  & Business Partner  & Tax Number
 
 Using       :   as select distinct from A_BusinessPartner as BP
                 

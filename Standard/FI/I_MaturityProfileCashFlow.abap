@@ -1,5 +1,5 @@
 CDS         :   I_MaturityProfileCashFlow
-Definition  :   Maturity Profile Cash Flow Data - Cube
+Description :   Maturity Profile Cash Flow Data - Cube
 
 Using       :   as select from I_MaturityProfileCashFlow(   P_KeyDate                     : $parameters.P_KeyDate,
                                                             P_DisplayCurrency             : $parameters.P_DisplayCurrency,

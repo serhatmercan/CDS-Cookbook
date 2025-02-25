@@ -1,5 +1,5 @@
 CDS         :   I_InboundDelivery & I_InboundDeliveryItem
-Definition  :   Inbound Delivery  & Inbound Delivery Item
+Description :   Inbound Delivery  & Inbound Delivery Item
 
 Using       :   inner join I_InboundDelivery        as InboundDelivery      on InboundDelivery.InboundDelivery      = right( I_EWM_InbDeliveryItemBasic.EWMInboundDelivery, 10 )
                 inner join I_InboundDeliveryItem    as InboundDeliveryItem  on InboundDeliveryItem.InboundDelivery  = right( I_EWM_InbDeliveryItemBasic.EWMInboundDelivery, 10 )

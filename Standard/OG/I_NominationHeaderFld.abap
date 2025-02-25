@@ -1,5 +1,5 @@
 CDS         :   I_NominationHeaderFld & I_NominationItemFld
-Definition  :   Nomination Header Table Fields & Item Table Fields
+Description :   Nomination Header Table Fields & Item Table Fields
 
 Using       :   association [0..1] to I_NominationHeaderFld     as _NHF             on _NHF.NominationDoc               = $projection.NominationDocOQ
                 association [0..1] to I_NominationItemFld       as _NIF             on _NIF.NominationDoc               = $projection.NominationDocOQ
