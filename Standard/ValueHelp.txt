@@ -16,6 +16,7 @@ Land1           I_Country                       Country                     Coun
 Lgort           I_StorageLocation               Storage Location            Storage Location Name                   StorageLocation & StorageLocationName                               
 Lgort           I_StorageLocationStdVH          Storage Location            Storage Location Name                   Plant & StorageLocation & StorageLocationName                            
 Lifnr           I_Supplier                      Supplier                    Supplier                                Supplier & SupplierFullName
+Maktx           I_MaterialText                  Material Name               Material Text                           Material & Language & MaterialName
 Matkl           I_ProductGroupVH                Material Group              Product Group VH                        ProductGroup
 Matkl           VC_Integration_T023T            Matkl                       Extraction for T023T                    Matkl & Wgbez & Wgbez60
 Matnr           I_MaterialVH                    Material                    Material VH                             Material & MaterialType & MaterialGroup

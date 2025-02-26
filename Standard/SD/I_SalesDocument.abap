@@ -1,13 +1,16 @@
 CDS         :   I_SalesDocument & I_SalesDocumentItem
 Description :   Sales Document & Sales Document Item
 
-Using       :   as select from I_SalesDocument              as SD             
-                    inner join I_SalesDocumentItem          as SDI on SDI.SalesDocument = SD.SalesDocument
+Using       :   as select from I_SalesDocument                      as SD             
+                    inner join I_SalesDocumentItem                  as SDI on SDI.SalesDocument = SD.SalesDocument
 
-                association [0..1] to I_SalesDocumentItem   as _SalesQuoteFilter on _SalesQuoteFilter.ReferenceSDDocument     = $projection.SalesDocument
-                                                                                and _SalesQuoteFilter.ReferenceSDDocumentItem = $projection.SalesDocumentItem
-
-                association [0..1] to I_Supplier            as _Supplier         on _Supplier.Supplier                        = $projection.Supplier
+                association [0..1] to I_SalesDocumentItem           as _SalesQuoteFilter on _SalesQuoteFilter.ReferenceSDDocument       = $projection.SalesDocument
+                                                                                        and _SalesQuoteFilter.ReferenceSDDocumentItem   = $projection.SalesDocumentItem
+                                                                                
+                association [0..*] to I_SalesDocumentItemPartner    as _SDIPartner       on _SDIPartner.SalesDocument                   = $projection.SalesDocument 
+                                                                                        and _SDIPartner.SalesDocumentItem               = $projection.SalesDocumentItem  
+                                                                                
+                association [0..1] to I_Supplier                    as _Supplier         on _Supplier.Supplier                          = $projection.Supplier
 
 
 Fields      :   key SDI.SalesDocument,
@@ -63,7 +66,8 @@ Fields      :   key SDI.SalesDocument,
                     
                     SDI._Material.MaterialType,
 
-                    _SalesQuoteFilter
+                    _SalesQuoteFilter,
+                    _SDIPartner
 
 Where       :   SD.SDDocumentCategory       =  'B' and
                 SDI.SalesDocumentRjcnReason =  ''  and 

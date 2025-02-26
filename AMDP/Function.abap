@@ -22,8 +22,7 @@ implemented by method zsm_cl_amdp=>get_amount;
 ---
 
 define table function ZSM_F_DATE 
-returns
-{
+returns {
   Client   : abap.clnt;
   ObjectID : cdobjectv;
   Tabkey   : cdtabkey;
@@ -31,6 +30,18 @@ returns
   Otime    : abap.tims;
 }
 implemented by method zsm_cl_amdp=>get_date;
+
+---
+
+define table function ZSM_F_MATERIAL
+  with parameters p_sel_opt : abap.char( 1000 )
+
+returns {
+  Client  : abap.clnt;
+  Matnr   : matnr;
+  Maktx   : maktx;
+}
+implemented by method zsm_cl_amdp=>get_material;
 
 ---
 

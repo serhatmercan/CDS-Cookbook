@@ -10,6 +10,7 @@ CLASS ZSM_CL_AMDP DEFINITION
     CLASS-METHODS:
       get_amount            FOR TABLE FUNCTION zsm_f_amount,
       get_date              FOR TABLE FUNCTION zsm_f_date,
+      get_material          FOR TABLE FUNCTION zsm_f_material,
       get_nomi_match        FOR TABLE FUNCTION zsm_f_nomi_match,
       get_nomi_match_prm    FOR TABLE FUNCTION zsm_f_nomi_match_prm,
       get_nomi_rows_no      FOR TABLE FUNCTION zsm_f_nomi_rows,
@@ -85,6 +86,18 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
            Otime
       FROM lt_ranked_data
      WHERE Rank = 1;
+  ENDMETHOD.
+
+  METHOD get_material BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING mara makt.
+    RETURN  WITH lt_mara AS ( SELECT * 
+                                FROM APPLY_FILTER( mara, :p_sel_opt ) )
+            SELECT mara.mandt AS Client, 
+                   mara.matnr AS Matnr, 
+                   makt.maktx AS Maktx
+              FROM lt_mara AS mara
+        INNER JOIN makt
+                ON mara.mandt EQ makt.mandt
+               AND mara.matnr EQ makt.matnr;
   ENDMETHOD.
 
   METHOD get_nomi_match BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING oijnomi oijpeg.
