@@ -288,7 +288,6 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_nomi_rows_no BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING zsm_i_nomi_match.
-
     t_nomi =  SELECT p_client as Mandt,
                      NominationDocDQ,
                      NominationDocItemDQ,

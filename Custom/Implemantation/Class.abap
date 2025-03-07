@@ -80,9 +80,9 @@ CLASS ZSM_CL_IM_QUERY IMPLEMENTATION.
         WHERE (lv_conditions)
           AND NOT EXISTS ( SELECT *
                              FROM oij_el_ticket_i
-                             WHERE ticket_key     EQ t1~nominationticketkey
-                               AND ticket_item    EQ t1~nominationticketitem
-                               AND ticket_purpose EQ '5' )
+                            WHERE ticket_key     EQ t1~nominationticketkey
+                              AND ticket_item    EQ t1~nominationticketitem
+                              AND ticket_purpose EQ '5' )
         ORDER BY (lv_orderby)
         UP TO @lv_top ROWS OFFSET @lv_skip 
         INTO TABLE @DATA(lt_purch_nom).
