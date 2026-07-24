@@ -1,29 +1,24 @@
-CLASS ZSM_CL_AMDP DEFINITION
-  PUBLIC
-  FINAL
+CLASS zsm_cl_amdp DEFINITION
+  PUBLIC FINAL
   CREATE PUBLIC.
 
   PUBLIC SECTION.
-    INTERFACES:
-      if_amdp_marker_hdb.
+    INTERFACES if_amdp_marker_hdb.
 
-    CLASS-METHODS:
-      get_amount            FOR TABLE FUNCTION zsm_f_amount,
-      get_date              FOR TABLE FUNCTION zsm_f_date,
-      get_material          FOR TABLE FUNCTION zsm_f_material,
-      get_nomi_match        FOR TABLE FUNCTION zsm_f_nomi_match,
-      get_nomi_match_prm    FOR TABLE FUNCTION zsm_f_nomi_match_prm,
-      get_nomi_rows_no      FOR TABLE FUNCTION zsm_f_nomi_rows,
-      get_risk_docs         FOR TABLE FUNCTION zsm_f_risk_docs,
-      get_technical_object  FOR TABLE FUNCTION zsm_f_technical_object,
-      get_working_days      FOR TABLE FUNCTION zsm_f_working_days,
-      workdays_between      FOR TABLE FUNCTION zsm_f_workdays_between.
-
-  PROTECTED SECTION.
-  PRIVATE SECTION.
+    CLASS-METHODS get_amount            FOR TABLE FUNCTION zsm_f_amount.
+    CLASS-METHODS get_date              FOR TABLE FUNCTION zsm_f_date.
+    CLASS-METHODS get_material          FOR TABLE FUNCTION zsm_f_material.
+    CLASS-METHODS get_nomi_match        FOR TABLE FUNCTION zsm_f_nomi_match.
+    CLASS-METHODS get_nomi_match_prm    FOR TABLE FUNCTION zsm_f_nomi_match_prm.
+    CLASS-METHODS get_nomi_rows_no      FOR TABLE FUNCTION zsm_f_nomi_rows.
+    CLASS-METHODS get_risk_docs         FOR TABLE FUNCTION zsm_f_risk_docs.
+    CLASS-METHODS get_technical_object  FOR TABLE FUNCTION zsm_f_technical_object.
+    CLASS-METHODS get_working_days      FOR TABLE FUNCTION zsm_f_working_days.
+    CLASS-METHODS workdays_between      FOR TABLE FUNCTION zsm_f_workdays_between.
 ENDCLASS.
 
-CLASS ZSM_CL_AMDP IMPLEMENTATION.
+
+CLASS zsm_cl_amdp IMPLEMENTATION.
   METHOD get_amount BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING acdoca t006a.
     lt_data = SELECT DISTINCT t1.rclnt,
                               t1.rldnr,
@@ -78,7 +73,7 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
                              WHERE cdhdr.objectclas = 'BANF'
                                AND cdpos.tabname    = 'EBAN'
                                AND cdpos.fname      = 'FRGZU' )
-    
+
     SELECT Client,
            ObjectID,
            Tabkey,
@@ -190,7 +185,6 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
                               WHERE n2.nominationdocoq     = n1.nominationdocoq
                                 AND n2.nominationdocitemoq = n1.nominationdocitemoq
                                 AND sityp LIKE 'D%' );
-
   ENDMETHOD.
 
   METHOD get_nomi_match_prm BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING oijnomi oijpeg.
@@ -356,10 +350,10 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
          LEFT OUTER JOIN iflot          AS t3 on t3.tplnr EQ t2.tplma and t3.mandt EQ t1.mandt
                    WHERE t1.mandt EQ p_client
                      AND t1.bname EQ p_bname;
-      
+
       lv_index = 1;
       lv_line  = record_count( :gt_user_to );
-      
+
       IF lv_line <> 0 then
           WHILE lv_index BETWEEN 1 AND lv_line DO
 
@@ -378,7 +372,7 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
                                   AND t2.tplnr  EQ t1.tplnr;
 
             lv_line1 = record_count( :gt_temp_user_to2 );
-            
+
             IF lv_line1 = 0 THEN
 
               gt_temp_user_to.client[ :lv_index ]   = :gt_user_to.mandt[ :lv_index ];
@@ -391,10 +385,10 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
               gt_temp_user_to2 = SELECT *
                                   FROM :gt_temp_user_to
                                   WHERE sub_hier EQ 'X';
-            
+
               lv_index1 = 1;
               lv_line1  = record_count( :gt_temp_user_to2 );
-              
+
               IF lv_line1 <> 0 THEN
                 gt_sub_tplnr = SELECT t1.mandt,
                                       t1.tplnr,
@@ -425,7 +419,7 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
               IF lv_line1 <> 0 THEN
                 WHILE lv_index1 BETWEEN 1 AND lv_line1 DO
                   lv_add_index = record_count( :gt_user_to ) + 1;
-                  
+
                   gt_user_to.mandt[ :lv_add_index ]    = :gt_user_to.mandt[ :lv_index ];
                   gt_user_to.bname[ :lv_add_index ]    = :gt_user_to.bname[ :lv_index ];
                   gt_user_to.werks[ :lv_add_index ]    = :gt_user_to.werks[ :lv_index ];
@@ -436,11 +430,11 @@ CLASS ZSM_CL_AMDP IMPLEMENTATION.
                 END WHILE;
               END IF;
             END IF;
-            
+
             lv_line = record_count( :gt_user_to );
-            
+
             gt_sub_tplnr = SELECT * FROM :gt_sub_tplnr WHERE mandt = '000';
-            
+
             lv_index = :lv_index + 1;
           END WHILE;
       END IF;

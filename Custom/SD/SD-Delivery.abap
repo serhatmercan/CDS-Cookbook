@@ -1,58 +1,72 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
+
 @EndUserText.label: 'Delivery Information'
+
 define root view entity ZSD_I_DELIVERY
   as select from likp
-    inner join   lips                          on lips.vbeln     = likp.vbeln
-    association [0..1] to zsd_i_order as _Ord  on  _Ord.vbeln_va = $projection.vgbel_vl
-                                               and _Ord.posnr_va = $projection.vgpos_vl
-    association [0..1] to kna1        as _Kna1  on _Kna1.kunnr   = $projection.kunwe 
-    association [0..1] to t001l       as _T001l on _T001l.werks  = $projection.werks
-                                               and _T001l.lgort  = $projection.lgort
-    association [0..1] to oihl        as _Oihl  on _Oihl.licin   = $projection.oih_licin_vl
+
+    inner join   lips on lips.vbeln = likp.vbeln
+
+  association [0..1] to zsd_i_order as _Ord
+    on  _Ord.vbeln_va = $projection.vgbel_vl
+    and _Ord.posnr_va = $projection.vgpos_vl
+
+  association [0..1] to kna1        as _Kna1
+    on _Kna1.kunnr = $projection.kunwe
+
+  association [0..1] to t001l       as _T001l
+    on  _T001l.werks = $projection.werks
+    and _T001l.lgort = $projection.lgort
+
+  association [0..1] to oihl        as _Oihl
+    on _Oihl.licin = $projection.oih_licin_vl
 
 {
-  key likp.vbeln                                                                                                          as vbeln_vl,
-      lips.posnr                                                                                                          as posnr_vl,
-      lips.vgbel                                                                                                          as vgbel_vl,
-      lips.vgpos                                                                                                          as vgpos_vl,
-      lips.bwtar                                                                                                          as bwtar_vl,
+  key likp.vbeln                       as vbeln_vl,
+
+      lips.posnr                       as posnr_vl,
+      lips.vgbel                       as vgbel_vl,
+      lips.vgpos                       as vgpos_vl,
+      lips.bwtar                       as bwtar_vl,
       lips.werks,
       lips.lgort,
-      _T001l.lgobe                                                                                                        as lgobe,
-      likp.vstel                                                                                                          as vstel_vl,
+      _T001l.lgobe                     as lgobe,
+      likp.vstel                       as vstel_vl,
       likp.lfart,
-      likp.inco1                                                                                                          as inco1_vl,
-      likp.inco2                                                                                                          as inco2_vl,
+      likp.inco1                       as inco1_vl,
+      likp.inco2                       as inco2_vl,
       likp.podat,
       likp.potim,
-      likp.kunnr                                                                                                          as kunwe,
-      concat(_Kna1.name1, _Kna1.name2)                                                                                    as kunwex,
+      likp.kunnr                       as kunwe,
+      concat(_Kna1.name1, _Kna1.name2) as kunwex,
       lips.pdsta,
       likp.wadat_ist,
-      likp.erzet                                                                                                          as erzet_vl,
-      likp.erdat                                                                                                          as erdat_vl,
-      likp.ernam                                                                                                          as ernam_vl,
-      lips.lfimg                                                                                                          as lfimg_vl,
-      lips.vrkme                                                                                                          as vrkme_vl,
-      lips.ntgew                                                                                                          as ntgew_vl,
-      lips.gewei                                                                                                          as gewei_vl,
-      lips.volum                                                                                                          as volum_vl,
-      lips.voleh                                                                                                          as voleh_vl,
-      lips.meins                                                                                                          as meins_vl,
+      likp.erzet                       as erzet_vl,
+      likp.erdat                       as erdat_vl,
+      likp.ernam                       as ernam_vl,
+      lips.lfimg                       as lfimg_vl,
+      lips.vrkme                       as vrkme_vl,
+      lips.ntgew                       as ntgew_vl,
+      lips.gewei                       as gewei_vl,
+      lips.volum                       as volum_vl,
+      lips.voleh                       as voleh_vl,
+      lips.meins                       as meins_vl,
       lips.mtart,
-      lips.lgmng                                                                                                          as lgmng_vl,
+      lips.lgmng                       as lgmng_vl,
       _Oihl.lictp,
-      lips.oih_licin                                                                                                      as oih_licin_vl,
-      _Oihl.lctxt                                                                                                         as lctxt_vl,
-      _Oihl.datab                                                                                                         as datab_vl,
-      _Oihl.datbi                                                                                                         as datbi_vl,
+      lips.oih_licin                   as oih_licin_vl,
+      _Oihl.lctxt                      as lctxt_vl,
+      _Oihl.datab                      as datab_vl,
+      _Oihl.datbi                      as datbi_vl,
       lips.wbsta,
       likp.wbstk,
       likp.wauhr,
-      case 
-        when $projection.auart is null and _Ord.inco1_va = 'DAP' then concat(_Ord.inco1_va,lips.pdsta) 
-        else '    ' 
-      end                                                                                                                 as dapgos,
+
+      case
+        when $projection.auart is null and _Ord.inco1_va = 'DAP' then concat(_Ord.inco1_va, lips.pdsta)
+        else '    '
+      end                              as dapgos,
+
       _Ord.vbeln_va,
       _Ord.posnr_va,
       _Ord.trvog,

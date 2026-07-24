@@ -1,72 +1,96 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
+
 @EndUserText.label: 'Invoice Information'
+
 define root view entity ZSD_I_INVOICE
   as select from vbrk
-    inner join   vbrp                     on vbrk.vbeln    = vbrp.vbeln
-    inner join   zsd_i_delivery as _Dlv   on _Dlv.vbeln_vl = vbrp.vgbel 
-                                         and _Dlv.posnr_vl = vbrp.vgpos
-    association [0..1] to kna1  as _Kna1  on _Kna1.kunnr   = vbrk.kunrg 
-    association [0..1] to tvfkt as _Tvfkt on _Tvfkt.fkart  = $projection.fkart 
-                                         and _Tvfkt.spras  = 'T'
-    association [0..1] to oihl  as _Oihl  on _Oihl.licin   = $projection.oih_licin_vf
+
+    inner join   vbrp
+      on vbrk.vbeln = vbrp.vbeln
+
+    inner join   zsd_i_delivery as _Dlv
+      on  _Dlv.vbeln_vl = vbrp.vgbel
+      and _Dlv.posnr_vl = vbrp.vgpos
+
+  association [0..1] to kna1  as _Kna1
+    on _Kna1.kunnr = vbrk.kunrg
+
+  association [0..1] to tvfkt as _Tvfkt
+    on  _Tvfkt.fkart = $projection.fkart
+    and _Tvfkt.spras = 'T'
+
+  association [0..1] to oihl  as _Oihl
+    on _Oihl.licin = $projection.oih_licin_vf
+
 {
-  key vbrk.vbeln                         as vbeln_vf,
-  key vbrp.posnr                         as posnr_vf,
-      vbrp.vgbel                         as vgbel_vf,
-      vbrp.vgpos                         as vgpos_vf,
+  key vbrk.vbeln                       as vbeln_vf,
+  key vbrp.posnr                       as posnr_vf,
+
+      vbrp.vgbel                       as vgbel_vf,
+      vbrp.vgpos                       as vgpos_vf,
       vbrk.belnr,
       vbrk.gjahr,
       vbrk.xblnr,
       vbrk.zuonr,
       vbrk.kunrg,
-      concat(_Kna1.name1, _Kna1.name2)   as kunrgx,
-      vbrk.valdt                         as valdt_vf,
+      concat(_Kna1.name1, _Kna1.name2) as kunrgx,
+      vbrk.valdt                       as valdt_vf,
       vbrk.fkart,
-      _Tvfkt.vtext                       as fkartx,
-      vbrk.fkdat                         as fkdat_vf,
-      vbrk.waerk                         as waerk_vf,
-      vbrk.ernam                         as ernam_vf,
-      vbrk.erdat                         as erdat_vf,
-      vbrk.erzet                         as erzet_vf,
-      vbrk.knumv                         as knumv_vf,
-      vbrp.prsdt                         as prsdt_vf,
+      _Tvfkt.vtext                     as fkartx,
+      vbrk.fkdat                       as fkdat_vf,
+      vbrk.waerk                       as waerk_vf,
+      vbrk.ernam                       as ernam_vf,
+      vbrk.erdat                       as erdat_vf,
+      vbrk.erzet                       as erzet_vf,
+      vbrk.knumv                       as knumv_vf,
+      vbrp.prsdt                       as prsdt_vf,
       vbrp.fkimg,
-      vbrp.vbrkkme                       as vbrkkme_vf,
-      vbrp.ntgew                         as netgw_vf,
-      vbrp.gewei                         as gewei_vf,
-      vbrp.meins                         as meins_vf,
-      vbrp.volum                         as volum_vf,
-      vbrp.voleh                         as voleh_vf,
+      vbrp.vbrkkme                     as vbrkkme_vf,
+      vbrp.ntgew                       as netgw_vf,
+      vbrp.gewei                       as gewei_vf,
+      vbrp.meins                       as meins_vf,
+      vbrp.volum                       as volum_vf,
+      vbrp.voleh                       as voleh_vf,
+
       @Semantics.amount.currencyCode: 'WAERK_VF'
-      vbrp.netwr                         as netwr_vf,
+      vbrp.netwr                       as netwr_vf,
+
       @Semantics.amount.currencyCode: 'WAERK_VF'
-      vbrp.kzwi1                         as kzwi1_vf,
+      vbrp.kzwi1                       as kzwi1_vf,
+
       @Semantics.amount.currencyCode: 'WAERK_VF'
-      vbrp.kzwi2                         as kzwi2_vf,
+      vbrp.kzwi2                       as kzwi2_vf,
+
       @Semantics.amount.currencyCode: 'WAERK_VF'
-      vbrp.kzwi3                         as kzwi3_vf,
+      vbrp.kzwi3                       as kzwi3_vf,
+
       @Semantics.amount.currencyCode: 'WAERK_VF'
-      vbrp.kzwi4                         as kzwi4_vf,
+      vbrp.kzwi4                       as kzwi4_vf,
+
       @Semantics.amount.currencyCode: 'WAERK_VF'
-      vbrp.kzwi6                         as kzwi6_vf,
+      vbrp.kzwi6                       as kzwi6_vf,
+
       @Semantics.amount.currencyCode: 'WAERK_VF'
       vbrp.mwsbp,
+
       vbrp.aubel,
       vbrp.aupos,
       vbrk.sfakn,
       vbrk.fksto,
-      vbrp.bwtar                         as bwtar_vf,
-      vbrk.zterm                         as zterm_vf,
+      vbrp.bwtar                       as bwtar_vf,
+      vbrk.zterm                       as zterm_vf,
       vbrp.werks,
-      vbrp.shkzg                         as shkzg_vf,
-      vbrk.valtg                         as valtg_vf,
-      @Semantics.quantity.unitOfMeasure : 'MEINS_VF'
+      vbrp.shkzg                       as shkzg_vf,
+      vbrk.valtg                       as valtg_vf,
+
+      @Semantics.quantity.unitOfMeasure: 'MEINS_VF'
       vbrp.fklmg,
+
       _Oihl.lictp,
-      vbrp.oih_licin                     as oih_licin_vf,
-      _Oihl.lctxt                        as lctxt_vf,
-      _Oihl.datab                        as datab_vf,
-      _Oihl.datbi                        as datbi_vf,
+      vbrp.oih_licin                   as oih_licin_vf,
+      _Oihl.lctxt                      as lctxt_vf,
+      _Oihl.datab                      as datab_vf,
+      _Oihl.datbi                      as datbi_vf,
       _Kna1.ktokd,
       _Dlv.vbeln_vl,
       _Dlv.posnr_vl,
