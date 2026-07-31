@@ -9,6 +9,11 @@ Fields      :   key Ekpo.ebeln,
                 
                     SQ.RequestForQuotation
 
-Where       :   
+Where       :
 
-Group       :   
+Group       :
+
+Module           :   MM
+Business Object  :   Supplier Quotation (RFQ response)
+Common Use Cases :   - Linking a PO item (EKPO) back to the RFQ it originated from via Supplier Quotation
+Related CDS      :   I_PurchaseOrderItem, C_PurOrdItemEnh

@@ -27,4 +27,10 @@ Where       :   PRHeader.ChangeDocObjectClass      = 'BANF'  and
                 PRItem.DatabaseTable               = 'EBAN' 
 
 Group       :   PRHeader.ChangeDocObject,
-                PRHeader.CreatedByUser   
+                PRHeader.CreatedByUser
+
+Module           :   MM
+Business Object  :   Purchase Requisition Change Document
+Common Use Cases :   - Tracking changes to a specific PR field (here: release status field BANPR set to '03')
+Notes            :   - Change document views expose CDHDR/CDPOS; filtering by object class and field is important for performance
+Related CDS      :   I_PurchaseReqnChgDocItmAPI01, I_PurchaseRequisitionItemAPI01

@@ -13,7 +13,13 @@ Fields      :   _MatDocItem.GoodsMovementType,
                 @Semantics.quantity.unitOfMeasure: 'MaterialBaseUnit'
                 max(_MatDocItem.QuantityInBaseUnit)                     as QuantityInBaseUnit
 
-Where       :   _MatDocItem.GoodsMovementType           = $parameters.p_move_ype and 
+Where       :   _MatDocItem.GoodsMovementType           = $parameters.p_move_ype and
                 _MatDocItem.MaterialDocumentParentLine  = '000000'
 
-Group       :   
+Group       :
+
+Module           :   MM
+Business Object  :   Material Document Item (RAP-based)
+Associations Used:   _MatDocItem -> P_MaterialDocumentItem_2 on MaterialDocument, MaterialDocumentYear
+Common Use Cases :   - Goods movement quantity for a specific movement type (parameter-driven), aggregated to parent line
+Related CDS      :   I_MaterialDocumentHeader, I_MaterialDocumentItem

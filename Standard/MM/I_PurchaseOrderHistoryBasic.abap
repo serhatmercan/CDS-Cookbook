@@ -21,5 +21,10 @@ Fields      :   key POHB.PurchaseOrder,
                     @Semantics.amount.currencyCode: 'Currency'
                     cast( sum( case 
                                     when POHB.DebitCreditCode = 'H' then POHB.PurchaseOrderAmount * (-1)
-                                    when POHB.DebitCreditCode = 'S' then POHB.PurchaseOrderAmount 
+                                    when POHB.DebitCreditCode = 'S' then POHB.PurchaseOrderAmount
                                 end ) as abap.curr(13,2) )                                                  as PurchaseOrderAmount
+
+Module           :   MM
+Business Object  :   Purchase Order History (GR/IR)
+Common Use Cases :   - Aggregating goods receipt / invoice receipt amounts per PO item, netting debit/credit sign
+Related CDS      :   I_PurchaseOrderItem, I_PurchaseOrderHistoryAPI01

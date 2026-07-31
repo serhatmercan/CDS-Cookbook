@@ -7,6 +7,13 @@ Using       :   inner join P_ABOPStaticWhereConditionSTO as ABOPStatic on ABOPSt
 
 Fields      :    
 
-Where       :   
+Where       :
 
-Group       :   
+Group       :
+
+Module           :   MM / SD (Advanced ATP)
+Business Object  :   ABOP Static Where Condition for Stock Transport Orders
+Associations Used:   plain join on ATPRelevantDocument, ATPRelevantDocumentItem, ATPRelevantDocScheduleLine
+Common Use Cases :   - Restricting/scoping STO schedule lines that are relevant for aATP backorder processing (BOP)
+Notes            :   - Part of the standard Advanced ATP (ABOP) framework; normally consumed, not modified
+Related CDS      :   I_StockTransptOrdScheduleLine

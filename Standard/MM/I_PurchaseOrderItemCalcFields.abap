@@ -9,6 +9,12 @@ Fields      :   key _POICF.PurchaseOrder,
                     
                     _POICF.Plant    
 
-Where       :   
+Where       :
 
-Group       :   
+Group       :
+
+Module           :   MM
+Business Object  :   Purchase Order Item Calculated Fields
+Associations Used:   _POICF -> I_PurchaseOrderItemCalcFields on PurchaseOrder, PurchaseOrderItem
+Common Use Cases :   - Enriching a PO item with derived/calculated fields not stored directly on I_PurchaseOrderItem
+Related CDS      :   I_PurchaseOrderItem

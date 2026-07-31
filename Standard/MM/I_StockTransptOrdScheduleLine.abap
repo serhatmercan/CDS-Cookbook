@@ -9,6 +9,11 @@ Fields      :   key STOSchedule.PurchaseOrder,
                 
                     STOSchedule.PurchaseRequisition
 
-Where       :   
+Where       :
 
-Group       :   
+Group       :
+
+Module           :   MM
+Business Object  :   Stock Transport Order Schedule Line
+Common Use Cases :   - Retrieving the originating purchase requisition for an STO schedule line
+Related CDS      :   I_PurchaseOrderItem, I_PurchaseOrder

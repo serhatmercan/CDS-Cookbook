@@ -11,6 +11,12 @@ Fields      :   key _POPE.PurchaseOrder,
                 key _POPE.PricingProcedureStep,
                 key _POPE.PricingProcedureCounter 
 
-Where       :   
+Where       :
 
-Group       :   
+Group       :
+
+Module           :   MM
+Business Object  :   Purchase Order Pricing Element
+Associations Used:   _POPE -> I_PurOrdPricingElement on PurchaseOrder, PurchaseOrderItem
+Common Use Cases :   - Access purchasing document pricing/condition elements (e.g. surcharges, discounts) per PO item
+Related CDS      :   I_PurchaseOrderItem, I_PurchaseOrder

@@ -20,9 +20,14 @@ Fields      :   key RDI.Reservation,
 
                     RDI.StorageLocation    
 
-Where       :   RDI.DebitCreditCode                = 'H' and 
+Where       :   RDI.DebitCreditCode                = 'H' and
                 RDI.GoodsMovementIsAllowed         = 'X' and
                 RDI.ReservationItemIsFinallyIssued = ''  and
-                RDI.ReservationItmIsMarkedForDeltn = '' 
+                RDI.ReservationItmIsMarkedForDeltn = ''
 
-Group       :   
+Group       :
+
+Module           :   MM
+Business Object  :   Reservation Document Item
+Common Use Cases :   - Open (not yet issued, not deleted) debit reservation items enriched with plant/product text
+Related CDS      :   I_ReservationDocument, I_MaterialStock

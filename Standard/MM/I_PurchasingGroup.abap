@@ -5,6 +5,12 @@ Using       :   association [0..1] to I_PurchasingGroup as _PG on _PG.Purchasing
 
 Fields      :   _PG
 
-Where       : 
+Where       :
 
-Group       : 
+Group       :
+
+Module           :   MM
+Business Object  :   Purchasing Group (master data)
+Associations Used:   _PG -> I_PurchasingGroup on PurchasingGroup
+Common Use Cases :   - Purchasing group text/attribute lookup enrichment
+Related CDS      :   I_PurchasingOrganization

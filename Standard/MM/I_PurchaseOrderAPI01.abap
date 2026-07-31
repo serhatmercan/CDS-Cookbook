@@ -152,4 +152,12 @@ Where       :   ( POHeader.PurchasingOrganization = '1100' or POHeader.Purchasin
                 ( POItem.MaterialGroup = 'H001' or POItem.MaterialGroup = 'U002' or POItem.MaterialGroup = 'U003' or POItem.MaterialGroup = 'U005' or POItem.MaterialGroup = 'U006' ) and
                 ( POHistory.PurchasingHistoryDocumentType = '2' or POHistory.PurchasingHistoryDocumentType = '3' )
 
-Group       : 
+Group       :
+
+Module           :   MM
+Business Object  :   Purchase Order / Purchase Order History / Supplier Invoice
+Common Use Cases :   - Three-way match style reporting: PO item, GR/IR history and referencing supplier invoice
+                      - API-released (I_...API01) views, suitable for external/OData consumption
+Notes            :   - Several joins marked "Optional" in the comments are still coded as inner join, which
+                        will eliminate PO items without history/invoice reference - verify intent before reuse
+Related CDS      :   I_PurchaseOrderItemAPI01, I_PurchaseOrderHistoryAPI01, I_SuplrInvcItemPurOrdRefAPI01, I_SupplierInvoiceAPI01

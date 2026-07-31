@@ -30,3 +30,9 @@ Group       :   Stock.Plant,
                 Stock.InventorySpecialStockType,
                 Stock.Batch,
                 Stock.WBSElementInternalID
+
+Module           :   MM
+Business Object  :   Material Stock
+Common Use Cases :   - Point-in-time stock quantity reporting by plant/storage location/batch/special stock
+Notes            :   - Parameterized view (P_StartDate/P_EndDate/P_PeriodType); here queried for system date only
+Related CDS      :   I_MaterialStock, I_MaterialStockValue

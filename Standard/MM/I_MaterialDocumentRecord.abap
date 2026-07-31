@@ -22,7 +22,13 @@ Fields      :   key MDR.Material,
                     " General Material Data
                     mara.mtart                                              as MaterialType
 
-Where       :   ( MDR.GoodsMovementType = 'Y05' or MDR.GoodsMovementType = 'Y07' or MDR.GoodsMovementType = '921' ) and  
+Where       :   ( MDR.GoodsMovementType = 'Y05' or MDR.GoodsMovementType = 'Y07' or MDR.GoodsMovementType = '921' ) and
                 MDR.GoodsMovementIsCancelled = ' '
 
-Group       :   
+Group       :
+
+Module           :   MM
+Business Object  :   Material Document (MATDOC)
+Common Use Cases :   - Reporting on specific goods movement types (Y05/Y07/921), excluding cancelled documents
+Notes            :   - MATDOC-based; movement type / cancellation filters are important given table volume
+Related CDS      :   I_MaterialDocumentHeader, I_MaterialDocumentItem

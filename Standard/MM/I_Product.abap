@@ -10,6 +10,11 @@ Fields      :   key Product.Product,
                     Product.ProductOldID,
                     ProductDesc.ProductDescription
 
-Where       :   
+Where       :
 
-Group       :   
+Group       :
+
+Module           :   MM
+Business Object  :   Product / Material
+Common Use Cases :   - Product number and language-specific description lookup/enrichment
+Related CDS      :   I_ProductBasicText, I_ProductPlant
