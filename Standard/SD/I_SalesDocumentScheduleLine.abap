@@ -1,15 +1,18 @@
 CDS         :   I_SalesDocumentScheduleLine
-Description :   Sales Document Schedule Line   
+Description :   Sales Document Schedule Line
 
-Using       :   as select from I_SalesDocumentScheduleLine as SDSchedule   
+Module           :   SD
+Business Object  :   Sales Document Schedule Line
+
+Using       :   as select from I_SalesDocumentScheduleLine as SDSchedule
 
 Fields      :   key SDSchedule.SalesDocument,
                 key SDSchedule.SalesDocumentItem,
-                key SDSchedule.ScheduleLine,   
+                key SDSchedule.ScheduleLine,
 
                 DeliveryDate                                                                        as RequestedDeliveryDate,
-                ProductAvailabilityDate,                                                               
-                
+                ProductAvailabilityDate,
+
                 " Sales Document Schedule Line - Sales Document
                 SDSchedule._SalesDocument.CreatedByUser,
                 SDSchedule._SalesDocument.CreationDate,
@@ -49,12 +52,14 @@ Fields      :   key SDSchedule.SalesDocument,
                 SDSchedule._SalesDocumentItem._ShippingPoint.ShippingPoint,
                 SDSchedule._SalesDocumentItem._StorageLocation.StorageLocation
 
-Where       :   
-
-Group       :
-
-Module           :   SD
-Business Object  :   Sales Document Schedule Line
 Associations Used:   _SalesDocument, _SalesDocumentItem (and their onward navigations to type/org/material/plant texts)
+
+Where       :
+
+Group By    :
+
 Common Use Cases :   - Requested vs. confirmed (ATP) delivery date reporting per schedule line
+
 Related CDS      :   I_SalesDocument, P_ABOPStaticWhereConditionSls
+
+Notes            :

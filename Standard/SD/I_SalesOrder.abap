@@ -1,10 +1,13 @@
 CDS         :   I_SalesOrder    &   I_SalesOrderItem
 Description :   Sales Order     &   Sales Order Items
 
+Module           :   SD
+Business Object  :   Sales Order
+
 Using       :   left outer join I_SalesOrder        as SO   on SO.SalesOrder        = I_NominationLineItem.NominationReferenceDocument
-                left outer join I_SalesOrderItem    as SOI  on SOI.SalesOrder       = I_NominationLineItem.NominationReferenceDocument 
+                left outer join I_SalesOrderItem    as SOI  on SOI.SalesOrder       = I_NominationLineItem.NominationReferenceDocument
                                                            and SOI.SalesOrderItem   = I_NominationLineItem.NominationReferenceDocItem
-                left outer join but000              as SPT  on SPT.partner          = I_SalesOrder.SoldToParty                                                           
+                left outer join but000              as SPT  on SPT.partner          = I_SalesOrder.SoldToParty
 
                 association [0..1] to I_DistributionChannelText as _DCT     on _DCT.DistributionChannel = I_SalesOrder.DistributionChannel
                                                                            and _DCT.Language            = $session.system_language
@@ -13,11 +16,11 @@ Using       :   left outer join I_SalesOrder        as SO   on SO.SalesOrder    
                 association [0..1] to I_SalesOrganizationText   as _SOT     on _SOT.SalesOrganization   = I_SalesOrder.SalesOrganization
                                                                            and _SOT.Language            = $session.system_language
                 association [0..1] to I_ShippingTypeText        as _STT     on _STT.ShippingType        = I_SalesOrder.ShippingType
-                                                                           and _STT.Language            = $session.system_language                                                                           
+                                                                           and _STT.Language            = $session.system_language
 
 Fields      :   key SOI.SalesOrder,
                 key SOI.SalesOrderItem,
-                
+
                 " Sales Order
                 SO.DeliveryBlockReason,
 
@@ -29,10 +32,10 @@ Fields      :   key SOI.SalesOrder,
 
                 SO.SalesOrganization,
                 _SOT.SalesOrganizationName,
-      
+
                 SO.ShippingType,
                 _STT.ShippingTypeName,
-      
+
                 SO.SoldToParty,
                 SPT.name_org1                   as SoldToPartyDesc,
 
@@ -54,16 +57,17 @@ Fields      :   key SOI.SalesOrder,
                 SOI.OrderQuantity,
                 SOI.OrderQuantityUnit,
 
+Associations Used:   _DistributionChannelText, _DivisionText, _SalesOrganizationText, _ShippingTypeText; joins I_NominationLineItem (Commodity Mgmt nomination reference) and but000 (Business Partner)
+
 Where       :   SO.DeliveryBlockReason      = '' and
                 ( SO.SalesOrganization = '1200' or SO.SalesOrganization = '1300' or SO.SalesOrganization = '1400' )
                 ( SO.ShippingType      = '10'   or SO.ShippingType      = '40' ) and
                 SOI.SalesDocumentRjcnReason = ''
 
-Group       :
+Group By    :
 
-Module           :   SD
-Business Object  :   Sales Order
-Associations Used:   _DistributionChannelText, _DivisionText, _SalesOrganizationText, _ShippingTypeText; joins I_NominationLineItem (Commodity Mgmt nomination reference) and but000 (Business Partner)
 Common Use Cases :   - Sales order item reporting enriched with texts and sold-to party name, optionally linked back to a commodity nomination
-Notes            :   - Where-clause hardcodes SalesOrganization 1200/1300/1400 and ShippingType 10/40 - scoped to specific org units; note missing "and" before the ShippingType condition in Where (as written)
+
 Related CDS      :   I_SalesDocument, I_DeliveryDocument
+
+Notes            :   - Where-clause hardcodes SalesOrganization 1200/1300/1400 and ShippingType 10/40 - scoped to specific org units; note missing "and" before the ShippingType condition in Where (as written)
