@@ -1,3 +1,28 @@
+" ============================================================================
+" Table Functions : ZSM_F_*  (CDS table function definitions)
+" Module      : N/A
+" Business Object : N/A
+" ----------------------------------------------------------------------------
+" Description
+"   Declares the CDS "define table function" signatures (parameters + result
+"   structure) implemented by the AMDP methods in ZSM_CL_AMDP (see
+"   AMDP/Class.abap).
+"
+" Functions
+"   - ZSM_F_AMOUNT            : implemented by get_amount            - aggregated ACDOCA amounts per document
+"   - ZSM_F_DATE              : implemented by get_date              - latest PR release change date/time
+"   - ZSM_F_MATERIAL          : implemented by get_material          - material + description by selection option
+"   - ZSM_F_NOMI_MATCH_PRM    : implemented by get_nomi_match_prm    - nomination demand/offer matching (parametrized)
+"   - ZSM_F_NOMI_ROWS         : implemented by get_nomi_rows_no      - row-numbered nomination match result
+"   - ZSM_F_RISK_DOCS         : implemented by get_risk_docs         - working days between price validity dates
+"   - ZSM_F_TECHNICAL_OBJECT  : implemented by get_technical_object  - technical objects assigned to a user (with sub-hierarchy)
+"   - ZSM_F_WORKING_DAYS      : implemented by get_working_days      - working-day flags per calendar date
+"   - ZSM_F_WORKDAYS_BETWEEN  : implemented by workdays_between      - working days between two dates for a factory calendar
+"
+" Common Use Cases
+"   - Parameter/result contract for AMDP-backed table functions, consumed from other CDS views
+" ============================================================================
+
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @ClientDependent: true

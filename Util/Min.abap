@@ -1,3 +1,19 @@
+" ============================================================================
+" View        : ZSM_I_0006  (root view entity with MIN + CASE aggregation)
+" Module      : SD
+" Business Object : Billing Item
+" ----------------------------------------------------------------------------
+" Description
+"   Reusable pattern for a conditional MIN aggregation (MIN of a value only
+"   when a CASE condition matches) joined and grouped by document.
+"
+" Common Use Cases
+"   - Picking the minimum value of a field only for rows matching a specific sub-type (here lictp = 'Z010')
+"
+" Notes
+"   - SELECT list, WHERE and GROUP BY reference alias "v" (v.vbeln, v.draft) which is not declared in the FROM/JOIN (only unaliased vbrp/oihl) - likely leftover from a copied pattern; verify before reuse
+" ============================================================================
+
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @EndUserText.label: 'Minimum'

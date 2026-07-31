@@ -1,3 +1,32 @@
+" ============================================================================
+" Class       : ZSM_CL_AMDP  (AMDP class implementing table functions)
+" Module      : N/A
+" Business Object : N/A
+" ----------------------------------------------------------------------------
+" Description
+"   Central AMDP class (IF_AMDP_MARKER_HDB) providing the SQLScript
+"   implementations for the CDS table functions defined in ZSM_F_* (see
+"   AMDP/Function.abap for the corresponding signatures).
+"
+" Methods
+"   - get_amount            : aggregates ACDOCA amounts+unit per company code/fiscal year/document, comma-concatenated across lines
+"   - get_date               : latest change date/time from CDHDR/CDPOS for purchase requisition release (EBAN-FRGZU) changes
+"   - get_material           : material + description (MARA/MAKT) filtered by a dynamic selection option range
+"   - get_nomi_match         : matches nomination demand/offer schedule lines via OIJNOMI/OIJPEG pegging
+"   - get_nomi_match_prm     : parameter-driven variant of get_nomi_match
+"   - get_nomi_rows_no       : adds a row number per demand/offer pairing on top of the nomination match result
+"   - get_risk_docs          : working days between price validity begin/end dates for risk documents
+"   - get_technical_object   : recursively resolves subordinate technical objects (IFLOT hierarchy) assigned to a user
+"   - get_working_days       : working-day flag and month boundaries per calendar date and factory calendar
+"   - workdays_between       : thin wrapper exposing the SQLScript workdays_between() built-in as a table function
+"
+" Common Use Cases
+"   - Reusable AMDP logic backing CDS table functions for calculations SQL/CDS views can't express directly (recursion, string aggregation, procedural loops)
+"
+" Notes
+"   - get_amount has a stray space in "p _gjahr" in its WHERE clause - left as-is
+" ============================================================================
+
 CLASS zsm_cl_amdp DEFINITION
   PUBLIC FINAL
   CREATE PUBLIC.

@@ -1,3 +1,17 @@
+" ============================================================================
+" View        : ZUSERS  (SAP user master data view)
+" Module      : BC
+" Business Object : User
+" ----------------------------------------------------------------------------
+" Description
+"   Combines user master (USR02), logon/address link (USR21), person address
+"   (ADRP), email (ADR6), company address details (ADCP), and license type
+"   (USR06) for a given SAP user.
+"
+" Common Use Cases
+"   - Reporting/lookup view of SAP user attributes: name, email, department, license type, validity, lock status
+" ============================================================================
+
 @AccessControl.authorizationCheck: #CHECK
 
 @EndUserText.label: 'SAP Users'

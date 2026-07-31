@@ -1,3 +1,17 @@
+" ============================================================================
+" View        : ZSD_I_0001  (root view entity with input parameters)
+" Module      : SD
+" Business Object : Pricing Condition
+" ----------------------------------------------------------------------------
+" Description
+"   Reusable pattern for a parameterized CDS view ($parameters) that prorates
+"   a condition amount when the condition's validity period only partially
+"   overlaps the requested date range.
+"
+" Common Use Cases
+"   - Average/prorated price calculation for a given period using $parameters.p_datab / p_datbi against condition tables A904/KONP
+" ============================================================================
+
 @AccessControl.authorizationCheck: #CHECK
 
 @EndUserText.label: 'Average Price'

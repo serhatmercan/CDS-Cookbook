@@ -1,3 +1,19 @@
+" ============================================================================
+" View        : ZSD_I_ORDER_DETAILS  (root view entity with ABAP-class-calculated virtual elements)
+" Module      : SD
+" Business Object : Sales Order
+" ----------------------------------------------------------------------------
+" Description
+"   Joins sales order to delivery and exposes several virtual elements whose
+"   values are calculated at runtime by an ABAP class (ObjectModel.virtualElementCalculatedBy).
+"
+" Common Use Cases
+"   - Pattern for delegating field calculation to ABAP (ZSM_CL_TOTAL_ORDER) instead of SQL, via @ObjectModel.virtualElement
+"
+" Notes
+"   - Virtual elements are declared with dummy CAST literals (0, '00000000'); actual values are supplied by the referenced ABAP class at read time
+" ============================================================================
+
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @EndUserText.label: 'Order Detail'

@@ -1,3 +1,16 @@
+" ============================================================================
+" View        : ZSD_I_0001  (root view entity with multiple LEFT OUTER JOINs)
+" Module      : SD
+" Business Object : Vehicle
+" ----------------------------------------------------------------------------
+" Description
+"   Reusable pattern for a root view combining a header table with text,
+"   custom, and document tables via LEFT OUTER JOIN.
+"
+" Common Use Cases
+"   - Enriching a key entity (vehicle) with description text, custom master data, and a related billing document without excluding rows that lack a match
+" ============================================================================
+
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @EndUserText.label: 'Vehicle Information'

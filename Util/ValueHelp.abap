@@ -1,3 +1,16 @@
+" ============================================================================
+" View        : ZSD_I_VHC_NO  (root view entity used as value help / search)
+" Module      : SD
+" Business Object : Vehicle
+" ----------------------------------------------------------------------------
+" Description
+"   Reusable pattern for a searchable value-help view using @Search annotations
+"   (fuzziness, ranking, default search elements) with a text join.
+"
+" Common Use Cases
+"   - F4 value help for a vehicle field with fuzzy text search on the vehicle description
+" ============================================================================
+
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @EndUserText.label: 'Vehicle No - Value Help'

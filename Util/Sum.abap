@@ -1,3 +1,16 @@
+" ============================================================================
+" View        : ZSM_I_0003  (root view entity with conditional SUM aggregation)
+" Module      : SD
+" Business Object : Billing Document
+" ----------------------------------------------------------------------------
+" Description
+"   Reusable pattern for conditional SUM aggregation over pricing elements
+"   reached via association, filtering by condition type and inactive/statistics flags.
+"
+" Common Use Cases
+"   - Summing net value and tax amount from billing item pricing conditions (ZP01/ZP02, MWST), with sign flip for returns
+" ============================================================================
+
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @EndUserText.label: 'Invoice List'
