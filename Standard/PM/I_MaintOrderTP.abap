@@ -12,3 +12,8 @@ Fields      :   key MaintenanceOrder,
 Where       :   
 
 Group       :   
+
+Module           :   PM
+Business Object  :   Maintenance Order
+Common Use Cases :   - Maintenance order reporting enriched with technical object / work center attributes
+Related CDS      :   I_MaintenanceOrderDEX, I_MaintOrderOperation_DEX

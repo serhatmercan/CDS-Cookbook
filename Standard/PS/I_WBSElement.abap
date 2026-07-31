@@ -9,3 +9,8 @@ Fields      :   key WBSElement,
 Where       :   
 
 Group       :   
+
+Module           :   PS
+Business Object  :   WBS Element
+Common Use Cases :   - Link material document (matdoc) postings to their WBS element for project cost reporting
+Related CDS      :   I_ProjectElement, I_Project

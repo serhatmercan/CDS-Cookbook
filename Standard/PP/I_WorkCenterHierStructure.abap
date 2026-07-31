@@ -13,3 +13,8 @@ Fields      :   key WCHC.WrkCtrHierParentType,
 Where       :   
 
 Group       :   
+
+Module           :   PP
+Business Object  :   Work Center Hierarchy
+Common Use Cases :   - Work center hierarchy navigation / parent-child structure reporting
+Related CDS      :   I_WorkCenter

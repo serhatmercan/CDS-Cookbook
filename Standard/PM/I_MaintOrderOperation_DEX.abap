@@ -12,3 +12,8 @@ Fields      :   key MOODEX.MaintOrderRoutingNumber,
 Where       :   MOODEX.OperationControlKey <> 'PMXX'  
 
 Group       :   MOODEX.MaintenanceOrder
+
+Module           :   PM
+Business Object  :   Maintenance Order Operation
+Common Use Cases :   - Maintenance order operation / planned work reporting, work unit normalization to minutes
+Related CDS      :   I_MaintenanceOrderDEX, I_MaintTaskListOperation

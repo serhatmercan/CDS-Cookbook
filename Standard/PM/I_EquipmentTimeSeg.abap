@@ -12,3 +12,9 @@ Fields      :   key EquipmentTimeSeg.Equipment,
 Where       :   
 
 Group       :   
+
+Module           :   PM
+Business Object  :   Equipment
+Associations Used:   _Equipment
+Common Use Cases :   - Time-dependent equipment usage period / installation history reporting
+Related CDS      :   I_Equipment, I_EquipmentBOMLink

@@ -15,3 +15,10 @@ Fields      :   key BOMItem.BillOfMaterialCategory,
 Where       :   BOMItem.BillOfMaterialCategory = 'E';
 
 Group       :   
+
+Module           :   PP
+Business Object  :   Bill of Material Item
+Associations Used:   _Product
+Common Use Cases :   - BOM component / material list reporting
+Notes            :   - Filtered to BillOfMaterialCategory 'E' (Engineering/Material BOM) only
+Related CDS      :   I_BillOfMaterial, I_EquipmentBOMLink

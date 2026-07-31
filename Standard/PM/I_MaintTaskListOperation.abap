@@ -20,3 +20,8 @@ Where       :   MTLO.OperationControlProfile <> 'PMXX'
 Group       :   MTLO.TaskListType, 
                 MTLO.TaskListGroup, 
                 MTLO.TaskListGroupCounter
+
+Module           :   PM
+Business Object  :   Maintenance Task List Operation
+Common Use Cases :   - Task list / routing operation planned work analysis, work unit normalization to minutes
+Related CDS      :   I_MaintenanceTaskList, I_MaintOrderOperation_DEX

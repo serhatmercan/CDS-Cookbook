@@ -16,3 +16,9 @@ Fields      :   key Cost.SourceLedger,
 Where       :   
 
 Group       :   
+
+Module           :   PM
+Business Object  :   Maintenance Order Actual Costs
+Common Use Cases :   - Maintenance order actual cost analysis, embedded analytics cost cube
+Notes            :   - Analytical cube view; aggregates actual cost line items by ledger/company code
+Related CDS      :   I_MaintenanceOrderDEX, I_MaintOrderPlannedCostDataCube

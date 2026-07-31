@@ -24,3 +24,9 @@ Fields      :   key FL.FunctionalLocation                                       
 Where       :   
 
 Group       :   
+
+Module           :   PM
+Business Object  :   Functional Location
+Associations Used:   _FunctionalLocationText, _LocationAccountAssignment, _FunctionalLocationLabel
+Common Use Cases :   - Functional location master data reporting, EAM hierarchy navigation
+Related CDS      :   I_Equipment, I_TechnicalObject, I_FunctionalLocationLabel

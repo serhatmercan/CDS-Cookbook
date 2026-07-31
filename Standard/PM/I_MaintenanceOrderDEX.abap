@@ -12,3 +12,9 @@ Fields      :   key MO.MaintenanceOrder,
 Where       :   
 
 Group       :   
+
+Module           :   PM
+Business Object  :   Maintenance Order
+Common Use Cases :   - Maintenance order process sub-phase status reporting
+Notes            :   - DEX (data extraction) view; denormalized fields intended for embedded analytics
+Related CDS      :   I_MaintOrderTP, I_MaintOrderOperation_DEX, C_MaintOrdProcSubPhaseVH

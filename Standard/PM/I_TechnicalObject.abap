@@ -18,3 +18,9 @@ Where       :   TO.IsDeleted                    = ''            and
                 
 
 Group       :   
+
+Module           :   PM
+Business Object  :   Technical Object (Equipment / Functional Location)
+Common Use Cases :   - Unified technical object master data reporting across equipment and functional locations
+Notes            :   - Where clause here filters to active, non-deleted functional locations only
+Related CDS      :   I_Equipment, I_FunctionalLocation

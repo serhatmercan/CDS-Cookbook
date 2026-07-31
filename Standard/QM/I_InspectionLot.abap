@@ -12,3 +12,8 @@ Fields      :   key IL.InspectionLot,
 Where       :   
 
 Group       :   
+
+Module           :   QM
+Business Object  :   Inspection Lot
+Common Use Cases :   - Quality inspection lot reporting linked to inbound delivery / batch / material
+Related CDS      :   I_InspectionLotItem, I_DeliveryDocumentItem

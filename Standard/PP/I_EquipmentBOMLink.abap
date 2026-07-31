@@ -14,3 +14,8 @@ Fields      :   key EquipmentBOM.BillOfMaterial,
 Where       :   
 
 Group       :   
+
+Module           :   PP
+Business Object  :   Equipment-to-BOM Assignment
+Common Use Cases :   - Link equipment to its assigned BOM variant, e.g. for spare-parts / maintenance BOM reporting
+Related CDS      :   I_BillOfMaterialItemBasic, I_Equipment
