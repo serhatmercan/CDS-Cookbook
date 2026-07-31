@@ -40,3 +40,7 @@ Fields      :   key OpenPay.CompanyCode,
 Where       :   
 
 Group       :   
+Module          :   FI-AP (Accounts Payable)
+Business Object :   Open Accounts Payable Item (Journal Entry)
+Common Use Cases:   Accounts payable open/overdue item analysis as of a given key date
+Related CDS     :   P_APJrnlEntrItmOpenPay2

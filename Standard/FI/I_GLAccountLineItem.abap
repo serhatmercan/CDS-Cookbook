@@ -29,3 +29,8 @@ Fields      :   key GLALItem.SourceLedger,
 Where       :   GLALItemSourceLedger = GLALItemLedger
 
 Group       :   
+Module          :   FI (Universal Journal / General Ledger)
+Business Object :   G/L Account Line Item
+Common Use Cases:   G/L line item reporting enriched with account description text (I_GLAccountText) in logon language
+Notes           :   Where clause restricts to SourceLedger = Ledger, i.e. leading ledger lines only
+Related CDS     :   I_GLAccountText, I_JournalEntryItem, I_OperationalAcctgDocItem

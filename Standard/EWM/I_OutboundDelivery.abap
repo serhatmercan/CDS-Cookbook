@@ -15,3 +15,8 @@ Where       :   ODI.GoodsMovementStatus <> 'C' and
                 ODI.OrderID <> '' ;
 
 Group       :   
+Module          :   LE / SD
+Business Object :   Outbound Delivery
+Common Use Cases:   Link a reservation (goods issue) to its outbound delivery and source order for status tracking
+Notes           :   Where clause excludes cancelled goods movements (GoodsMovementStatus <> 'C') and items without an order reference
+Related CDS     :   I_ReservationDocumentItem, I_InboundDelivery

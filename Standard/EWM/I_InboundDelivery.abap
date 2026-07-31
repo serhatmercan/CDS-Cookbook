@@ -16,3 +16,8 @@ Fields      :   key InboundDeliveryItem.InboundDelivery,
 Where       :   
 
 Group       :   
+Module          :   LE / EWM (Inbound Delivery Processing)
+Business Object :   Inbound Delivery
+Common Use Cases:   Enrich EWM inbound delivery item data with ERP inbound delivery header/item status (returns indicator, goods movement status)
+Notes           :   Join uses right( EWMInboundDelivery, 10 ) to strip the EWM number-range prefix and match the 10-digit ERP delivery number
+Related CDS     :   I_EWM_InbDeliveryItemBasic, I_OutboundDelivery

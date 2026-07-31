@@ -56,3 +56,11 @@ Where       :   BP.BusinessPartnerGrouping between 'B001' and 'B005' and
                 BP.Customer is not initial
 
 Group       :   
+Module           :   MD / Cross-Application (Business Partner)
+Business Object  :   Business Partner (Customer/Supplier)
+Associations Used:   _BusinessPartnerAddress, _EmailAddress, _PhoneNumber, _Customer, _CustomerCompany, _CustomerSalesArea (standard BP associations)
+                     _BPI -> I_BusinessPartner   on BusinessPartner = BusinessPartner
+                     _BPTax -> A_BusinessPartnerTaxNumber   on BusinessPartner = BusinessPartner and BPTaxType = 'TR2'
+Common Use Cases :   Flatten Business Partner + Customer + address/contact + tax number into a single row for customer master reporting
+Notes            :   select distinct with 1:n address/email/phone/tax associations can still yield duplicate rows if a BP has more than one address, email, phone, or TR2 tax number
+Related CDS      :   I_Customer, I_CustomerCompany, I_CustomerSalesArea
