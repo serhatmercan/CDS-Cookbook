@@ -1,8 +1,16 @@
-" Get Fullname by User Name
-" Username SH
-" View: V_USR_NAME
-" Field: NAME_TEXT
-" Condition: BNAME
+" ============================================================================
+" Type        : Freeform ABAP SQL snippet
+" Module      : BC (cross-application, user master)
+" Business Object : User
+" ----------------------------------------------------------------------------
+" Description
+"   Get Fullname by User Name. Resolves BNAME to the display name (NAME_TEXT)
+"   via V_USR_NAME, joined against a RAP entity set alias (@et_entityset) on
+"   its CRE_USER field.
+"
+" Common Use Cases
+"   - Enriching a RAP entity result set with the created-by user's full name
+" ============================================================================
 
 SELECT DISTINCT t1~bname,
                 t1~name_text
