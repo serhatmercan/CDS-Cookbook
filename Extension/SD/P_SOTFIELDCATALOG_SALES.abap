@@ -1,3 +1,31 @@
+" ============================================================================
+" Extension   : P_SOTFIELDCATALOG_SALES  (extend view ... with ZSM_I_EXT_SFC_SALES)
+" Module      : SD
+" Business Object : Sales Order Field Catalog (Sales Order Fiori app)
+" ----------------------------------------------------------------------------
+" Description
+"   Adds a large set of Sales Document header and item fields (plus their
+"   foreign-key/text associations) to the "Manage Sales Orders" field
+"   catalog, so they become available as extra columns/filters in the app.
+"
+" Fields Added
+"   CreatedByUser, OrderCreationDate, OrderCreationTime,
+"   PurchaseOrderByCustomer, SDDocumentReason, SoldToParty,
+"   DeliveryBlockReason, DistributionChannel, Division, SDDocumentType,
+"   SalesGroup, SalesOffice, SalesOrganization, SDDocumentCategory,
+"   ShippingType                                    - from _SalesDocument (+ FK associations)
+"   CompletionRule, DeliveryDateQuantityIsFixed, DeliveryGroup,
+"   FashionCancelDate, SalesDocumentRJCNReason,
+"   Batch, CustomerGroup, DeliveryPriority, ItemCategory, Material,
+"   MaterialGroup, MaterialSubstitutionReason, OriginallyRequestedMaterial,
+"   Plant, ShippingPoint, StorageLocation           - from _SalesDocumentItem (+ FK associations)
+"   ProductAvailabilityDate                          - PRODUCTAVAILABILITYDATE (product)
+"
+" Common Use Cases
+"   - Manage Sales Orders (Fiori) field catalog: extra columns/filters for
+"     list report and ALP variants
+" ============================================================================
+
 @AbapCatalog.sqlViewAppendName: 'ZSM_V_EXT_SFC_SALES'
 
 @EndUserText.label: 'P_SOTFIELDCATALOG_SALES Extend View'

@@ -1,3 +1,27 @@
+" ============================================================================
+" Extension   : C_RSHMaintSchedSmltdOp  (extend view ... with ZSM_I_EXT_RSH_MSSO)
+" Module      : PM
+" Business Object : Maintenance Scheduling - Simulated Operation
+" ----------------------------------------------------------------------------
+" Description
+"   Adds a virtual, read-only TextI field carrying a custom operation text
+"   (AFVC-ZZ_TEXT_1), computed and filterable through the SADL exit class
+"   ZSM_CL_RSH_MSSO.
+"
+" Fields Added
+"   TextI - virtual element, calculated by ABAP class ZSM_CL_RSH_MSSO
+"           (joins AFVC on maintorderroutingnumber/operation to read ZZ_TEXT_1)
+"
+" Common Use Cases
+"   - Resource Scheduling (RSH) Gantt/board: show custom operation text
+"
+" Notes
+"   - Implements if_sadl_exit_calc_element_read (CALCULATE) and
+"     if_sadl_exit_filter_transform (MAP_ATOM); filter only applies when
+"     entity is C_RSHMAINTOPERATIONASSIGNMENT
+"   - Field is @ObjectModel.readOnly: true
+" ============================================================================
+
 @AbapCatalog.sqlViewAppendName: 'ZSM_V_EXT_RSH_MSSO'
 @EndUserText.label: 'C_RSHMaintSchedSmltdOp Extend View'
 

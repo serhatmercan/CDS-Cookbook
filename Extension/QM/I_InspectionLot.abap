@@ -1,3 +1,24 @@
+" ============================================================================
+" Extension   : I_InspectionLot  (extend view ... with ZSM_I_EXT_IL)
+" Module      : QM
+" Business Object : Inspection Lot
+" ----------------------------------------------------------------------------
+" Description
+"   Adds a status short text (Txt04) to the Inspection Lot view by resolving
+"   the lot's active status (JEST) against the status text table for the
+"   usage-decision-relevant statuses E0001/E0002.
+"
+" Fields Added
+"   Txt04 - _Text.txt04, status short text for status E0001 (UD skipped) / E0002 (UD required)
+"
+" Associations Used
+"   _Jest -> JEST/status association  on Objnr = StatusObject, Inact = '' (active status only)
+"   _Text -> status text               on Stsma = StatusProfile, Spras = 'T', Estat in (E0001, E0002)
+"
+" Common Use Cases
+"   - Inspection lot list/reporting: show whether usage decision is required/skipped as text
+" ============================================================================
+
 @AbapCatalog.sqlViewAppendName: 'ZSM_V_EXT_'
 
 @EndUserText.label: 'I_InspectionLot Extend View'

@@ -1,3 +1,28 @@
+" ============================================================================
+" Extension   : C_TechObjFlatVH  (extend view ... with ZSM_I_EXT_TOF_VH)
+" Module      : PM
+" Business Object : Technical Object (Value Help)
+" ----------------------------------------------------------------------------
+" Description
+"   Restricts/enriches the flat Technical Object value help by resolving the
+"   current user's authorized plant (via ZPM_I_0001) and exposing a superior
+"   technical object as a searchable char40 field with its own value help.
+"
+" Fields Added
+"   werks (hidden)             - I0001.werks, plant of current user, used for filtering
+"   SuperiorTechnicalObject2   - cast(I0002.TechnicalObject as char40), searchable, own F4 help
+"   I0002                      - included association (all fields of ZPM_I_0002)
+"
+" Associations Used
+"   I0001 -> ZPM_I_0001   on bname = $session.user and (TopTplnr = SuperiorTechnicalObject
+"                            or (TopTplnr = TechnicalObject and SuperiorTechnicalObject = ''))
+"   I0002 -> ZPM_I_0002   on TechnicalObject = SuperiorTechnicalObject
+"
+" Common Use Cases
+"   - F4 value help for Technical Object fields, scoped to the user's plant
+"     via custom ZPM_I_0001 authorization/assignment view
+" ============================================================================
+
 @AbapCatalog.sqlViewAppendName: 'ZSM_V_EXT_TOF_VH'
 
 @EndUserText.label: 'C_TechObjFlatVH Extend View'

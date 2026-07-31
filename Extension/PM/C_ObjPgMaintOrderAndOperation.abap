@@ -1,3 +1,29 @@
+" ============================================================================
+" Extension   : C_ObjPgMaintOrderAndOperation  (extend view ... with ZSM_I_EXT_OPMOO)
+" Module      : PM
+" Business Object : Maintenance Order Operation (Object Page)
+" ----------------------------------------------------------------------------
+" Description
+"   Adds a virtual, read-calculated ProcessStatus field showing the system
+"   status text (via STATUS_TEXT_EDIT) of each order operation, computed and
+"   filterable through the SADL exit class ZSM_CL_MOO.
+"
+" Fields Added
+"   ProcessStatus - virtual element, calculated by ABAP class ZSM_CL_MOO
+"                   (reads POPORDOP for the operation's internal object number,
+"                    then calls STATUS_TEXT_EDIT to render the status line)
+"
+" Common Use Cases
+"   - Maintenance Order Object Page: show live system status text per operation
+"   - Filtering the object page list by status text (filter.transformedBy)
+"
+" Notes
+"   - Implements if_sadl_exit_calc_element_read (CALCULATE) and
+"     if_sadl_exit_filter_transform (MAP_ATOM) for read + filter support
+"   - Per-row RFC-like call to STATUS_TEXT_EDIT inside a loop; watch for
+"     performance on large result sets
+" ============================================================================
+
 @AbapCatalog.sqlViewAppendName: 'ZSM_V_EXT_OPMOO'
 @EndUserText.label: 'C_ObjPgMaintOrderAndOperation Extend View'
 
