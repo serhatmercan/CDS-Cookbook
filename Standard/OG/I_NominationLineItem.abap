@@ -68,3 +68,9 @@ Where       :   NLI.NominationReferenceDocument <> '' or
               
 Group       :   NLI.NominationReferenceDocument,
                 NLI.NominationReferenceDocItem
+
+Module           :   OG (Oil & Gas - TSW / Nomination Management)
+Business Object  :   Nomination Line Item
+Common Use Cases :   - Main nomination ticket data source; enriches line item with carrier/shipper/
+                   contract partner names and vehicle description
+Related CDS      :   I_NominationHeaderFld, I_NominationEvent, I_NominationTicketAddlQuantity

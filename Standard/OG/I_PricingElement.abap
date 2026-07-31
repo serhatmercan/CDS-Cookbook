@@ -19,3 +19,10 @@ Fields      :   key PE.PricingDocument,
 Where       :   
 
 Group       :   
+
+Module           :   SD / MM (Pricing)
+Business Object  :   Pricing Document Condition
+Common Use Cases :   - Retrieve a specific condition amount (freight/service surcharge) linked to a
+                   purchase order's pricing document
+Notes            :   - Filtered to ConditionType 'CFO1' with ConditionAmount > 0 - client-specific
+                   condition type

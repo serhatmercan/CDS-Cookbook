@@ -14,3 +14,8 @@ Fields      :   key TDMA.StorageObjSgmntNmbr,
 Where       :   
 
 Group       :   
+
+Module           :   OG (Oil & Gas - TSW / Tank Management)
+Business Object  :   Time-Dependent Material Assignment to Storage Object Segment (Tank)
+Common Use Cases :   - Resolve which material was assigned to a tank/storage object segment at a
+                   specific point in time (e.g. a tank-dip timestamp)

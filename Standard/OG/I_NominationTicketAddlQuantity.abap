@@ -15,3 +15,8 @@ Fields      :   key NTAQ.NominationTicketKey,
 Where       :   
 
 Group       :   
+
+Module           :   OG (Oil & Gas - TSW / Nomination Management)
+Business Object  :   Nomination Ticket Additional Quantity
+Common Use Cases :   - Additional ticket quantities recorded in alternate units of measure (e.g. std/
+                   net/gross volumes) alongside the main ticket quantity

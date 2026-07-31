@@ -27,3 +27,10 @@ Fields      :   key TDF.NominationTicketKey             as TicketKey,
 Where       :   TDF.MaterialDocumentYear <> '0000'
 
 Group       : 
+
+Module           :   OG (Oil & Gas - TSW / Nomination Management)
+Business Object  :   Nomination Ticket Document Flow
+Common Use Cases :   - Trace subsequent documents (e.g. material documents) generated from a
+                   nomination ticket
+Notes            :   - Filtered out rows with MaterialDocumentYear = '0000' (no material document
+                   created yet)

@@ -25,3 +25,8 @@ Fields      :   @Consumption.valueHelpDefinition: [{
 Where       : 
 
 Group       : 
+
+Module           :   MM (Inventory Management) / OG
+Business Object  :   Storage Location Index (Plant / Location / Sequence Number)
+Common Use Cases :   - Value-help / key lookup for a Plant + Storage Location + Sequence Number
+                   combination

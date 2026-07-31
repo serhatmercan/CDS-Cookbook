@@ -39,3 +39,11 @@ Where       :   JEOV.AccountingDocumentType <> 'GM'  and
                 JEOV.SourceLedger            = 'L2'  
 
 Group       :   
+
+Module           :   FI
+Business Object  :   Journal Entry / Accounting Document
+Associations Used:   _OperationalAcctgDocItem -> operational accounting document item (bank details)
+Common Use Cases :   - FI journal entry reporting joined to accounting document header (BKPF); vendor
+                   payment / house bank enrichment
+Notes            :   - Restricted to FinancialAccountType 'K' (vendor) on ledger L2
+Related CDS      :   I_OperationalAcctgDocItem, I_JournalEntryItem

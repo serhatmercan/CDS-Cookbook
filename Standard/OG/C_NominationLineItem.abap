@@ -10,3 +10,8 @@ Where       :
 
 Group       :   NLI.NominationDoc,
                 NLI.NominationDocItem
+
+Module           :   OG (Oil & Gas - TSW / Nomination Management)
+Business Object  :   Nomination Line Item (consumption view)
+Common Use Cases :   - Key-only consumption projection of nomination line items, typically used as
+                   a value-help / association target

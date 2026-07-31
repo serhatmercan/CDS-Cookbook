@@ -26,3 +26,8 @@ Where       :
 
 Group       :   TITP.NominationTicketKey,
                 TITP.NominationTicketItem   
+
+Module           :   OG (Oil & Gas - TSW / Nomination Management)
+Business Object  :   Nomination Ticket Item (transactional processing consumption view)
+Common Use Cases :   - Ticket-item projection used to join ticket document flow and additional
+                   quantity data to the owning nomination line item

@@ -24,3 +24,8 @@ Group       :   _NE.NominationDoc,
                 _NE.NominationDocItem,
                 _NE.NominationEventType,
                 _NE.ActualStartDateFrom
+
+Module           :   OG (Oil & Gas - TSW / Nomination Management)
+Business Object  :   Nomination Event
+Common Use Cases :   - Retrieve nomination event dates (e.g. COD/ETA/NOR) per nomination line item
+Notes            :   - Filtered to event types COD (Change of Destination), ETA, NOR only

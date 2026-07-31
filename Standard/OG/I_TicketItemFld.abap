@@ -51,3 +51,9 @@ Fields      :   key _TIF.NominationTicketKey,
 
 Where       :   _TIF.NominationTicketStatus  =  '00' and 
                 _TIF.NominationTicketPurpose <> '5'
+
+Module           :   OG (Oil & Gas - TSW / Nomination Management)
+Business Object  :   Nomination Ticket Item
+Common Use Cases :   - Broad ticket-item field set (meter/tank-dip readings, quantities, statuses,
+                   origin/destination plant & storage location) for ticket-level reporting
+Notes            :   - Filtered to NominationTicketStatus '00' and NominationTicketPurpose <> '5'

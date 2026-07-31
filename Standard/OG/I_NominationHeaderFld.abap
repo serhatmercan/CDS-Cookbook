@@ -70,3 +70,9 @@ Where       :   _NIF.NominationIsMarkedForDeletion =  ''                        
                 ( _NIF.NominationReferenceDocType = 'P' )
 
 Group       :   _NIF.ScheduledQuantityUnit
+
+Module           :   OG (Oil & Gas - TSW / Nomination Management)
+Business Object  :   Nomination Header / Item Fields
+Common Use Cases :   - Enrich nomination line items with header, vehicle, material and business partner
+                   (carrier/shipper/contract partner) descriptions
+Notes            :   - Filtered to NominationScheduleType OQ/OS and NominationReferenceDocType 'P'
