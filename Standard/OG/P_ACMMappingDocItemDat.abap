@@ -8,8 +8,11 @@ Fields      :   _ACMMDID.ACMPricingDocItemUUID as DocItemGuid
 
 Where       :   
 
-Group       :   
+Group       :
 
+Module           :   MM / OG (Oil & Gas - CPE Condition Processing Engine)
+Business Object  :   Pricing Document Item GUID Mapping
+Associations Used:   _ACMMDID -> P_ACMMappingDocItemDat on PricingDocument, ConditionItem
 Common Use Cases :   - Resolve the internal GUID for a pricing document/condition item, for use as a
                    join key to an external process (e.g. compliance/condition engine, per view name)
 Notes            :   - Business context of 'ACM' not confidently identified from this snippet alone;
