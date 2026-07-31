@@ -1,3 +1,28 @@
+" ============================================================================
+" Type        : ZSD_I_INVOICE  (root view entity)
+" Module      : SD (with IS-OIL license fields)
+" Business Object : Billing Document
+" ----------------------------------------------------------------------------
+" Description
+"   Billing document header + item (VBRK/VBRP) view, inner-joined to the
+"   originating delivery (ZSD_I_DELIVERY) - which in turn carries the order
+"   fields - so a single row exposes invoice, delivery and order data
+"   together, plus payer name, billing type text, and IS-OIL license info.
+"
+" Associations Used
+"   _Dlv (join) -> zsd_i_delivery   on vbeln_vl = vgbel and posnr_vl = vgpos
+"   _Kna1       -> kna1             on kunnr = kunrg (payer)
+"   _Tvfkt      -> tvfkt            billing type text
+"   _Oihl       -> oihl             on licin = oih_licin_vf
+"
+" Common Use Cases
+"   - End of the Order -> Delivery -> Invoice reporting chain; single view
+"     for combined order/delivery/invoice reporting
+"
+" Related CDS
+"   ZSD_I_ORDER, ZSD_I_DELIVERY
+" ============================================================================
+
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @EndUserText.label: 'Invoice Information'

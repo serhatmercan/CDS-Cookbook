@@ -1,3 +1,28 @@
+" ============================================================================
+" Type        : ZSM_CL_IM_QUERY  (RAP query provider implementation class)
+" Module      : MM
+" Business Object : Purchase Order / Company Names
+" ----------------------------------------------------------------------------
+" Description
+"   Implements IF_RAP_QUERY_PROVIDER~SELECT for custom entities backed by
+"   this class. Contains several worked examples side by side: freeform SQL
+"   header read with formula/period FM enrichment (_get_data), a goods
+"   movement lookup joined to movement type texts (_get_goods_movement), and
+"   a remote-OData read via HTTP destination proxy (_get_proxy /
+"   _read_data_by_request) for a COMPANYNAMES entity set.
+"
+" Common Use Cases
+"   - Reference patterns for RAP custom entity query providers: local
+"     freeform SQL, FM-based enrichment, paging/sorting/filter handling,
+"     and remote proxy consumption.
+"
+" Notes
+"   - Paired with Custom/Implemantation/CDS.abap (custom entity ZSM_C_PO,
+"     which declares ObjectModel.query.implementedBy: 'ABAP:ZSM_CL_IM_QUERY').
+"   - Multiple IF_RAP_QUERY_PROVIDER~SELECT method bodies appear here as
+"     illustrative snippets collected together, not a single compilable class.
+" ============================================================================
+
 CLASS ZSM_CL_IM_QUERY DEFINITION
   PUBLIC
   FINAL

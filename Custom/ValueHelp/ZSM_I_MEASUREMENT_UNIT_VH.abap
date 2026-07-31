@@ -1,3 +1,20 @@
+" ============================================================================
+" Type        : ZSM_I_MEASUREMENT_UNIT_VH  (root value help view)
+" Module      : MM (IS-OIL)
+" Business Object : Unit of Measure
+" ----------------------------------------------------------------------------
+" Description
+"   Value help for measurement units restricted to those flagged for
+"   IS-OIL 3-decimal exchange (T1.kzex3 = 'X'), sourced from
+"   MATDOCOIL_INDEX joined to the unit-of-measure tables (T006/T006A) and
+"   dimension text (T006D/T006T).
+"
+" Associations Used   (none - plain joins in the FROM clause)
+"
+" Common Use Cases
+"   - F4 value help for oil-quantity unit-of-measure fields
+" ============================================================================
+
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @EndUserText.label: 'Measurement Unit Value Help'

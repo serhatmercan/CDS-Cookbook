@@ -1,3 +1,18 @@
+" ============================================================================
+" Type        : ZSM_I_BANK_REFERENCE  (value help view)
+" Module      : FI
+" Business Object : Currency
+" ----------------------------------------------------------------------------
+" Description
+"   Value help listing currency codes (cast to the custom BKREF domain) with
+"   their long/short texts, sourced from TCURC/TCURT.
+"
+" Associations Used   (none)
+"
+" Common Use Cases
+"   - F4 value help for a custom "Bank Reference" field typed on the BKREF domain
+" ============================================================================
+
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @EndUserText.label: 'Bank Reference Value Help'

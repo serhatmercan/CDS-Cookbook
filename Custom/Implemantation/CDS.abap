@@ -1,3 +1,26 @@
+" ============================================================================
+" Type        : ZSM_C_PO  (root custom entity, query implemented by ABAP class)
+" Module      : MM
+" Business Object : Purchase Order
+" ----------------------------------------------------------------------------
+" Description
+"   Custom RAP entity (no DB source) exposing purchase order header data
+"   (company code, doc type, PO number/item, first timestamp). Data retrieval
+"   is delegated entirely to ZSM_CL_IM_QUERY via ObjectModel.query.implementedBy.
+"
+" Associations Used
+"   _Header -> ZSM_C_PO (parent)        on EBELN = EBELN and EBELP = EBELP
+"   _Item   -> ZSM_C_PO_ITEM            composition [0..*]
+"
+" Common Use Cases
+"   - Custom RAP query entity for freeform SELECT logic not expressible in
+"     plain CDS (FM calls, non-buffered joins, computed deadlines)
+"
+" Notes
+"   - Paired with Custom/Implemantation/Class.abap, which implements the query
+"     logic for this entity (ZSM_CL_IM_QUERY, entity id 'ZSM_C_PO').
+" ============================================================================
+
 @EndUserText.label: 'Custom CDS Entity'
 
 @ObjectModel.query.implementedBy: 'ABAP:ZSM_CL_IM_QUERY'

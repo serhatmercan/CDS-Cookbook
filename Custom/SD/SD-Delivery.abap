@@ -1,3 +1,26 @@
+" ============================================================================
+" Type        : ZSD_I_DELIVERY  (root view entity)
+" Module      : SD (with IS-OIL license fields)
+" Business Object : Outbound Delivery
+" ----------------------------------------------------------------------------
+" Description
+"   Delivery header + item (LIKP/LIPS) view, associated back to the
+"   originating sales order (ZSD_I_ORDER) via VGBEL/VGPOS, with ship-to
+"   customer name, storage location description, and IS-OIL license info.
+"
+" Associations Used
+"   _Ord   -> zsd_i_order   on vbeln_va = vgbel_vl and posnr_va = vgpos_vl
+"   _Kna1  -> kna1          on kunnr = kunwe (ship-to)
+"   _T001l -> t001l         on werks/lgort (storage location text)
+"   _Oihl  -> oihl          on licin = oih_licin_vl
+"
+" Common Use Cases
+"   - Middle link in the Order -> Delivery -> Invoice reporting chain
+"
+" Related CDS
+"   ZSD_I_ORDER, ZSD_I_INVOICE
+" ============================================================================
+
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @EndUserText.label: 'Delivery Information'

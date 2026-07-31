@@ -1,3 +1,36 @@
+" ============================================================================
+" Type        : ZSD_I_ORDER  (root view entity)
+" Module      : SD (with IS-OIL fields: driver/vehicle/nomination)
+" Business Object : Sales Order
+" ----------------------------------------------------------------------------
+" Description
+"   Sales order header + item (VBAK/VBAP) flattened view with billing plan
+"   data (VBKD, item 0 fallback), ship-to partner, driver/vehicle master
+"   data (OIGD/OIGV/OIGVT), IS-OIL license info (OIHL), open nomination
+"   quantity (OIJNOMI), and numerous domain text lookups (Tvxxx tables).
+"   Restricted to standard orders via where vbak.trvog = '0'.
+"
+" Associations Used
+"   _Vbkd/_Vbkd2 -> vbkd   on item billing data, with header (posnr='000000') fallback
+"   _Vbpa        -> vbpa   ship-to partner (parvw = 'WE', posnr = '000000')
+"   _Kna1        -> kna1   sold-to customer master
+"   _Oigd        -> oigd   driver master, keyed by ZZ1_DriverTcNo_SDH
+"   _Oigv/_Oigvt(2) -> oigv/oigvt   vehicle master + text, for both vehicle fields
+"   _Oijnomi     -> oijnomi   open nomination ticket quantity
+"   _Oihl        -> oihl   IS-OIL license header
+"   _Tvakt/_Tvkot/_Tvtwt/_Tvkbt/_Tvgrt/_Tvagt/_Tvm1t/_Tvm2t/_Tvm3t/_t173t
+"                -> domain text tables (order type, sales org, channel,
+"                   office, group, rejection reason, material groups, ship type)
+"
+" Common Use Cases
+"   - Root of the Order -> Delivery -> Invoice reporting chain (see
+"     ZSD_I_DELIVERY, ZSD_I_INVOICE, which associate back to this view)
+"   - Sales order analytics / list reporting with driver & vehicle detail
+"
+" Related CDS
+"   ZSD_I_DELIVERY, ZSD_I_INVOICE
+" ============================================================================
+
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @EndUserText.label: 'Order Information'
