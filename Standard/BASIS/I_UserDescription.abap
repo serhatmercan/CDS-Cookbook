@@ -10,4 +10,9 @@ Fields      :   key UD.UserID,
 
 Where       :   
 
-Group       :   
+Group       :
+
+Module           :   BC (Basis)
+Business Object  :   User
+Common Use Cases :   - Resolve a user ID (e.g. created-by/changed-by) to its description/name and technical-user flag
+Related CDS      :   I_CalendarDate

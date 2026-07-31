@@ -59,4 +59,11 @@ Where       :   SO.DeliveryBlockReason      = '' and
                 ( SO.ShippingType      = '10'   or SO.ShippingType      = '40' ) and
                 SOI.SalesDocumentRjcnReason = ''
 
-Group       :   
+Group       :
+
+Module           :   SD
+Business Object  :   Sales Order
+Associations Used:   _DistributionChannelText, _DivisionText, _SalesOrganizationText, _ShippingTypeText; joins I_NominationLineItem (Commodity Mgmt nomination reference) and but000 (Business Partner)
+Common Use Cases :   - Sales order item reporting enriched with texts and sold-to party name, optionally linked back to a commodity nomination
+Notes            :   - Where-clause hardcodes SalesOrganization 1200/1300/1400 and ShippingType 10/40 - scoped to specific org units; note missing "and" before the ShippingType condition in Where (as written)
+Related CDS      :   I_SalesDocument, I_DeliveryDocument

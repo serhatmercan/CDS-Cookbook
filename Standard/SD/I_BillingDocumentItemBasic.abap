@@ -15,4 +15,9 @@ Fields      :   key BillingDocumentItem.BillingDocument,
 
 Where       :   
 
-Group       :   
+Group       :
+
+Module           :   SD
+Business Object  :   Billing Document Item
+Common Use Cases :   - Lightweight lookup of billing item net amount / currency without pulling the full item view
+Related CDS      :   I_BillingDocument, I_BillingDocumentItemPrcgElmnt

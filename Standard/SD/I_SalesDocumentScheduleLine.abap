@@ -51,4 +51,10 @@ Fields      :   key SDSchedule.SalesDocument,
 
 Where       :   
 
-Group       :   
+Group       :
+
+Module           :   SD
+Business Object  :   Sales Document Schedule Line
+Associations Used:   _SalesDocument, _SalesDocumentItem (and their onward navigations to type/org/material/plant texts)
+Common Use Cases :   - Requested vs. confirmed (ATP) delivery date reporting per schedule line
+Related CDS      :   I_SalesDocument, P_ABOPStaticWhereConditionSls

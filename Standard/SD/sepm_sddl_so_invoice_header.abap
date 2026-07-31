@@ -27,4 +27,10 @@ Where       :   SOInvoiceHeader.payment_status <> 'P'
 
 Group       :   SOInvoiceHeader.buyer.business_partner_id,
                 SOInvoiceHeader.buyer.company_name,
-                SOInvoiceHeader.buyer.address_key  
+                SOInvoiceHeader.buyer.address_key
+
+Module           :   SD (SEPM - SAP EPM demo/training data model, not a productive standard view)
+Business Object  :   Sales Order Invoice (demo)
+Common Use Cases :   - Fiori/ABAP programming model tutorials and demo apps built on the SEPM flight/EPM sample data
+Notes            :   - sepm_sddl_* views ship with the SAP EPM demo model, intended for learning purposes only
+Related CDS      :   sepm_sddl_address

@@ -14,4 +14,10 @@ Fields      :   key _Address.address_key    as AddressKey,
 
 Where       :   
 
-Group       :   
+Group       :
+
+Module           :   BC (SEPM - SAP EPM demo/training data model, not a productive standard view)
+Business Object  :   Address (demo)
+Common Use Cases :   - Resolve an address_key to street/postal code/city/country in SEPM-based demo apps
+Notes            :   - sepm_sddl_* views ship with the SAP EPM demo model, intended for learning purposes only
+Related CDS      :   sepm_sddl_so_invoice_header

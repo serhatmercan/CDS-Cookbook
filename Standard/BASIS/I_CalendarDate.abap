@@ -10,4 +10,9 @@ Fields      :   key _CalendarDate.CalendarDate,
 
 Where       :         
 
-Group       :   
+Group       :
+
+Module           :   CA / BC (Cross-Application, Basis)
+Business Object  :   Calendar Date
+Common Use Cases :   - Derive calendar month/year for a given date field (here Sbook.Fldate from the ABAP flight demo model)
+Related CDS      :   I_UserDescription

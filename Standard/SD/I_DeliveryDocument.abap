@@ -52,3 +52,9 @@ Where       :   DD.DeliveryDocumentType             = 'ZT01'    and
 Group       :   DDI.ReferenceSDDocument,
                 DDI.ReferenceSDDocumentItem,
                 DDI.DeliveryQuantityUnit
+
+Module           :   SD / LE (Logistics Execution)
+Business Object  :   Outbound Delivery
+Common Use Cases :   - Aggregate actual delivered quantity per originating sales document/item for goods-issue reporting
+Notes            :   - Where-clause hardcodes DeliveryDocumentType 'ZT01' (custom) and GoodsMovementType 601/907 - scoped to a specific goods-issue/return scenario
+Related CDS      :   I_SalesDocument, I_SalesOrder

@@ -73,4 +73,11 @@ Where       :   SD.SDDocumentCategory       =  'B' and
                 SDI.SalesDocumentRjcnReason =  ''  and 
                 _SalesQuoteFilter.SalesDocument is null
 
-Group       : 
+Group       :
+
+Module           :   SD
+Business Object  :   Sales Document (Quotation - SDDocumentCategory 'B')
+Associations Used:   _SalesQuoteFilter (self, to exclude quotations already copied to a follow-on doc), _SDIPartner, _Supplier, _MaterialText
+Common Use Cases :   - Open sales quotation reporting, excluding quotations already referenced by a subsequent document
+Notes            :   - _SalesQuoteFilter anti-join (is null) is what excludes already-referenced quotation items
+Related CDS      :   I_SalesOrder, I_SalesDocumentScheduleLine, I_BillingDocument

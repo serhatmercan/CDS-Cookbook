@@ -128,4 +128,11 @@ Where       :       BD.AccountingTransferStatus   = 'C'     and
                     ( BD.SDDocumentCategory = 'M' or BD.SDDocumentCategory = 'O' ) and
                     BDI._ReferenceDeliveryDocumentItem.InventoryValuationType = 'PROC_TA_IM'
 
-Group       :                       
+Group       :
+
+Module           :   SD
+Business Object  :   Billing Document
+Associations Used:   _BillingDocumentType, _CustomerGroup, _DistributionChannel, _PayerParty, _PriceListType, _SalesOrganization, _PricingElement, _Product, _ReferenceDeliveryDocumentItem, _SalesDocument
+Common Use Cases :   - Billing document / revenue reporting with header and item detail combined
+Notes            :   - Where-clause hardcodes CompanyCode 1000, Division 10, SalesOrganization 1200 and AccountingTransferStatus 'C' (posted only) - limits reuse to that org unit
+Related CDS      :   I_BillingDocumentItemBasic, I_BillingDocumentItemPrcgElmnt, I_SalesDocument, I_DeliveryDocument

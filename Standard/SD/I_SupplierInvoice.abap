@@ -46,4 +46,10 @@ Where       :   SIHeader.CompanyCode           = '1000' and
                 SIHeader.SupplierInvoiceStatus = '5'    and
                 ( SIItem._Material.MaterialGroup = 'U007' or SIItem._Material.MaterialGroup = 'U008' )
 
-Group       :   
+Group       :
+
+Module           :   MM (Invoice Verification / Logistics Invoice Verification)
+Business Object  :   Supplier Invoice
+Common Use Cases :   - Supplier invoice item reporting with PO-reference material and computed unit price
+Notes            :   - Where-clause hardcodes CompanyCode 1000 and MaterialGroup U007/U008 - scoped to specific material groups; UnitPrice division guards against division by zero
+Related CDS      :   I_SupplierInvoiceItemPurOrdRef, C_PurOrdItemEnh

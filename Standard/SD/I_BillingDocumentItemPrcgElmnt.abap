@@ -62,4 +62,11 @@ Where       :   Pricing.ConditionType                               =  'EXD1'   
                 Pricing._BillingDocument.SDDocumentCategory         =  'M'      and 
                 ( Pricing._Item._ReferenceDeliveryDocumentItem.InventoryValuationType = 'PROC_TA_IM' or Pricing._Item._ReferenceDeliveryDocumentItem.InventoryValuationType = 'PROD_TA' )
 
-Group       :   
+Group       :
+
+Module           :   SD
+Business Object  :   Billing Document Pricing Element
+Associations Used:   _BillingDocument, _Item, _BillToParty, _Product, _ReferenceDeliveryDocumentItem
+Common Use Cases :   - Extract a specific pricing condition (e.g. excise/tax) amount per billing item
+Notes            :   - Where-clause hardcodes ConditionType 'EXD1' and CompanyCode 1000 - view is scoped to one condition type only
+Related CDS      :   I_BillingDocument, I_BillingDocumentItemBasic
