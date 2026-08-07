@@ -13,7 +13,7 @@ Fields      :   key TDMA.StorageObjSgmntNmbr,
 
 Where       :   
 
-Group       :   
+Group By    :   
 
 Module           :   OG (Oil & Gas - TSW / Tank Management)
 Business Object  :   Time-Dependent Material Assignment to Storage Object Segment (Tank)

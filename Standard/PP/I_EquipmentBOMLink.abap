@@ -13,7 +13,7 @@ Fields      :   key EquipmentBOM.BillOfMaterial,
 
 Where       :   
 
-Group       :   
+Group By    :   
 
 Module           :   PP
 Business Object  :   Equipment-to-BOM Assignment

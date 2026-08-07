@@ -14,7 +14,7 @@ Fields      :   key NTAQ.NominationTicketKey,
 
 Where       :   
 
-Group       :   
+Group By    :   
 
 Module           :   OG (Oil & Gas - TSW / Nomination Management)
 Business Object  :   Nomination Ticket Additional Quantity

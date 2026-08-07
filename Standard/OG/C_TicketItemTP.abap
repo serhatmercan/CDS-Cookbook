@@ -24,7 +24,7 @@ Fields      :   key TITP.NominationTicketItem,
  
 Where       :   
 
-Group       :   TITP.NominationTicketKey,
+Group By    :   TITP.NominationTicketKey,
                 TITP.NominationTicketItem   
 
 Module           :   OG (Oil & Gas - TSW / Nomination Management)

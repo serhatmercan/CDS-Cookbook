@@ -11,7 +11,7 @@ Fields      :   key IL.InspectionLot,
 
 Where       :   
 
-Group       :   
+Group By    :   
 
 Module           :   QM
 Business Object  :   Inspection Lot

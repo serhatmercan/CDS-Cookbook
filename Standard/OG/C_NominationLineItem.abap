@@ -8,7 +8,7 @@ Fields      :   key NLI.NominationDoc,
 
 Where       :   
 
-Group       :   NLI.NominationDoc,
+Group By    :   NLI.NominationDoc,
                 NLI.NominationDocItem
 
 Module           :   OG (Oil & Gas - TSW / Nomination Management)

@@ -26,7 +26,7 @@ Where       :   PRHeader.ChangeDocObjectClass      = 'BANF'  and
                 PRItem.ChangeDocNewFieldValue      = '03'    and
                 PRItem.DatabaseTable               = 'EBAN' 
 
-Group       :   PRHeader.ChangeDocObject,
+Group By    :   PRHeader.ChangeDocObject,
                 PRHeader.CreatedByUser
 
 Module           :   MM

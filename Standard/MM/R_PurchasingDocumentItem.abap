@@ -12,7 +12,7 @@ Fields      :   key RDI.PurchasingDocument,
 
 Where       :
 
-Group       :
+Group By    :
 
 Module           :   MM
 Business Object  :   Purchasing Document Item (generic, RAP-released)

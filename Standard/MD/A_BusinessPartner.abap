@@ -20,7 +20,7 @@ Fields      :   key BP.BusinessPartner                  as InternalID,
 
                     " Business Partner - Business Partner Address
                     BP._BusinessPartnerAddress.AdditionalStreetPrefixName,
-                    BP._BusinessPartnerAddress.CityName
+                    BP._BusinessPartnerAddress.CityName,
                     BP._BusinessPartnerAddress.Country                          as Country,
                     BP._BusinessPartnerAddress.District,
                     BP._BusinessPartnerAddress.PostalCode,  
@@ -55,7 +55,7 @@ Fields      :   key BP.BusinessPartner                  as InternalID,
 Where       :   BP.BusinessPartnerGrouping between 'B001' and 'B005' and
                 BP.Customer is not initial
 
-Group       :   
+Group By    :   
 Module           :   MD / Cross-Application (Business Partner)
 Business Object  :   Business Partner (Customer/Supplier)
 Associations Used:   _BusinessPartnerAddress, _EmailAddress, _PhoneNumber, _Customer, _CustomerCompany, _CustomerSalesArea (standard BP associations)

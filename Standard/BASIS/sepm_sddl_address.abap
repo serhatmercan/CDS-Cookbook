@@ -14,7 +14,7 @@ Fields      :   key _Address.address_key    as AddressKey,
 
 Where       :   
 
-Group       :
+Group By    :
 
 Module           :   BC (SEPM - SAP EPM demo/training data model, not a productive standard view)
 Business Object  :   Address (demo)

@@ -14,7 +14,7 @@ Fields      :   key BOMItem.BillOfMaterialCategory,
 
 Where       :   BOMItem.BillOfMaterialCategory = 'E';
 
-Group       :   
+Group By    :   
 
 Module           :   PP
 Business Object  :   Bill of Material Item

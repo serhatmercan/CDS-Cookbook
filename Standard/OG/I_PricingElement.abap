@@ -18,7 +18,7 @@ Fields      :   key PE.PricingDocument,
 
 Where       :   
 
-Group       :   
+Group By    :   
 
 Module           :   SD / MM (Pricing)
 Business Object  :   Pricing Document Condition

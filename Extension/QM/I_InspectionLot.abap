@@ -19,7 +19,7 @@
 "   - Inspection lot list/reporting: show whether usage decision is required/skipped as text
 " ============================================================================
 
-@AbapCatalog.sqlViewAppendName: 'ZSM_V_EXT_'
+@AbapCatalog.sqlViewAppendName: 'ZSM_V_EXT_IL'
 
 @EndUserText.label: 'I_InspectionLot Extend View'
 

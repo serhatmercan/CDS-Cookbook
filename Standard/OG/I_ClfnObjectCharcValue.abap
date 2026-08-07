@@ -20,7 +20,7 @@ Where       :   ( COCV.CharcValue != '' or COCV.CharcValue = 'A' or COCV.CharcVa
                 COCV.ClfnObjectTable    =  'MARA'   and
                 COCV.ClfnObjectType     =  'O'      
 
-Group       :   
+Group By    :   
 
 Module           :   CA (Classification System)
 Business Object  :   Classification / Characteristic Value
@@ -28,3 +28,6 @@ Common Use Cases :   - Lookup classification characteristic values (e.g. commodi
                    to a material for use in billing/pricing derivations
 Notes            :   - ClfnObjectTable 'MARA' + ClassType '001' = material classification; validity dates
                    model time-dependent characteristic values
+                   - Standard Classification System (CA) view; grouped here under OG because it was used
+                   to derive a material characteristic in an Oil & Gas billing scenario in the source
+                   project, not because the view itself is OG-specific

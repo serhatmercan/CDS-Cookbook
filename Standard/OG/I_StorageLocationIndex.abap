@@ -24,7 +24,7 @@ Fields      :   @Consumption.valueHelpDefinition: [{
 
 Where       : 
 
-Group       : 
+Group By    : 
 
 Module           :   MM (Inventory Management) / OG
 Business Object  :   Storage Location Index (Plant / Location / Sequence Number)

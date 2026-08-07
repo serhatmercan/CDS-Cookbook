@@ -11,7 +11,7 @@ Fields      :   key EquipmentTimeSeg.Equipment,
                     
 Where       :   
 
-Group       :   
+Group By    :   
 
 Module           :   PM
 Business Object  :   Equipment

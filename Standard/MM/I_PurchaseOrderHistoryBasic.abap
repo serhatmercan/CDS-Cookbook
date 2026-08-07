@@ -24,6 +24,10 @@ Fields      :   key POHB.PurchaseOrder,
                                     when POHB.DebitCreditCode = 'S' then POHB.PurchaseOrderAmount
                                 end ) as abap.curr(13,2) )                                                  as PurchaseOrderAmount
 
+Where            :
+
+Group By         :
+
 Module           :   MM
 Business Object  :   Purchase Order History (GR/IR)
 Common Use Cases :   - Aggregating goods receipt / invoice receipt amounts per PO item, netting debit/credit sign

@@ -14,7 +14,7 @@ Fields      :   key PTC.Product,
 
 Where       :   
 
-Group       :   
+Group By    :   
 
 Module           :   SD / GTS (Foreign Trade / Global Trade Services)
 Business Object  :   Product Trade Classification (commodity/HS code)
@@ -22,3 +22,6 @@ Common Use Cases :   - Retrieve a foreign-trade classification number for a mate
                    given (billing) document date, for tax/customs reporting
 Notes            :   - TrdClassfctnNmbrSchm 'TR02' is a client-specific classification scheme (e.g.
                    Turkish GTIP code); validity dates compared against billing document date
+                   - Standard SD/GTS view; grouped here under OG because it was used for commodity/GTIP
+                   classification in an Oil & Gas trading scenario in the source project, not because
+                   the view itself is OG-specific

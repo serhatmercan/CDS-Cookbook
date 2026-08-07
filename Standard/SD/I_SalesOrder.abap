@@ -60,7 +60,7 @@ Fields      :   key SOI.SalesOrder,
 Associations Used:   _DistributionChannelText, _DivisionText, _SalesOrganizationText, _ShippingTypeText; joins I_NominationLineItem (Commodity Mgmt nomination reference) and but000 (Business Partner)
 
 Where       :   SO.DeliveryBlockReason      = '' and
-                ( SO.SalesOrganization = '1200' or SO.SalesOrganization = '1300' or SO.SalesOrganization = '1400' )
+                ( SO.SalesOrganization = '1200' or SO.SalesOrganization = '1300' or SO.SalesOrganization = '1400' ) and
                 ( SO.ShippingType      = '10'   or SO.ShippingType      = '40' ) and
                 SOI.SalesDocumentRjcnReason = ''
 

@@ -7,7 +7,7 @@ Fields      :   _PG
 
 Where       :
 
-Group       :
+Group By    :
 
 Module           :   MM
 Business Object  :   Purchasing Group (master data)

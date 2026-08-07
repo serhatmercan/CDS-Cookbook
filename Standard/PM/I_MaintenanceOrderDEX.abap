@@ -6,12 +6,12 @@ Using       :   inner join      I_MaintenanceOrderDEX       as MO               
 
 Fields      :   key MO.MaintenanceOrder,   
 
-                    MO.MaintOrdProcessSubPhaseCode              as SubPhase
+                    MO.MaintOrdProcessSubPhaseCode              as SubPhase,
                     MOProcSubPhase.EAMProcessSubPhaseCodeDesc   as SubPhaseDesc
 
 Where       :   
 
-Group       :   
+Group By    :   
 
 Module           :   PM
 Business Object  :   Maintenance Order

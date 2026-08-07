@@ -3,15 +3,15 @@ Description :   Maintenance Order w/ Technical Object
 
 Using       :   left outer join I_MaintOrderTP as MaintOrderTP on MaintOrderTP.MaintenanceOrder = I_MaintOrderOperation_DEX.MaintenanceOrder   
 
-Fields      :   key MaintenanceOrder,
+Fields      :   key MaintOrderTP.MaintenanceOrder,
 
-                    MaintOrder.MaintenancePlanningPlant,
-                    MaintOrder.Equipment,
-                    MaintOrder.MaintOrdMainWorkCenter,
+                    MaintOrderTP.MaintenancePlanningPlant,
+                    MaintOrderTP.Equipment,
+                    MaintOrderTP.MaintOrdMainWorkCenter
 
 Where       :   
 
-Group       :   
+Group By    :   
 
 Module           :   PM
 Business Object  :   Maintenance Order

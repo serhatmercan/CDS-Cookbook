@@ -15,7 +15,7 @@ Fields      :   key InboundDeliveryItem.InboundDelivery,
 
 Where       :   
 
-Group       :   
+Group By    :   
 Module          :   LE / EWM (Inbound Delivery Processing)
 Business Object :   Inbound Delivery
 Common Use Cases:   Enrich EWM inbound delivery item data with ERP inbound delivery header/item status (returns indicator, goods movement status)

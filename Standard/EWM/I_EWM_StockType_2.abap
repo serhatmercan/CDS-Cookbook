@@ -11,7 +11,7 @@ Fields      :   key StockType.EWMWarehouse,
 
 Where       :   
 
-Group       :   
+Group By    :   
 Module          :   EWM
 Business Object :   EWM Stock Type
 Common Use Cases:   Map EWM warehouse/stock type to an availability group (used as pseudo storage location in reporting)

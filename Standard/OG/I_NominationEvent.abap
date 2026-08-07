@@ -20,7 +20,7 @@ Fields      :   key _NE.NominationDoc,
 
 Where       : 
 
-Group       :   _NE.NominationDoc,
+Group By    :   _NE.NominationDoc,
                 _NE.NominationDocItem,
                 _NE.NominationEventType,
                 _NE.ActualStartDateFrom

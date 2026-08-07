@@ -8,7 +8,7 @@ Fields      :   key WBSElement,
                     WBSElementInternalID
 Where       :   
 
-Group       :   
+Group By    :   
 
 Module           :   PS
 Business Object  :   WBS Element

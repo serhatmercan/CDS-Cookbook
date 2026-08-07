@@ -9,7 +9,7 @@ Fields      :
 
 Where       :
 
-Group       :
+Group By    :
 
 Module           :   MM / SD (Advanced ATP)
 Business Object  :   ABOP Static Where Condition for Stock Transport Orders

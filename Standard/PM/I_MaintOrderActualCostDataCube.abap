@@ -15,7 +15,7 @@ Fields      :   key Cost.SourceLedger,
                     Cost.CompanyCodeCurrency
 Where       :   
 
-Group       :   
+Group By    :   
 
 Module           :   PM
 Business Object  :   Maintenance Order Actual Costs

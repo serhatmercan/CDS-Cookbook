@@ -3,7 +3,7 @@ Description :   Outbound Delivery Document & Items
 
 Using       :   as select from I_OutboundDelivery       as OD  on OD.Reservation        = I_ReservationDocumentItem.Reservation
                     inner join I_OutboundDeliveryItem   as ODI on ODI.Reservation       = I_ReservationDocumentItem.Reservation
-                                                                  ODI.ReservationItem   = I_ReservationDocumentItem.ReservationItem
+                                                                 and ODI.ReservationItem   = I_ReservationDocumentItem.ReservationItem
 
 Fields      :   key ODI.OutboundDelivery,
                 key ODI.OutboundDeliveryItem,
@@ -14,7 +14,7 @@ Fields      :   key ODI.OutboundDelivery,
 Where       :   ODI.GoodsMovementStatus <> 'C' and 
                 ODI.OrderID <> '' ;
 
-Group       :   
+Group By    :   
 Module          :   LE / SD
 Business Object :   Outbound Delivery
 Common Use Cases:   Link a reservation (goods issue) to its outbound delivery and source order for status tracking

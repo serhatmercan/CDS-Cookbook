@@ -12,7 +12,7 @@ Fields      :   key BatchDistinct.Plant,
 
 Where       :   
 
-Group       :   
+Group By    :   
 Module          :   LO (Batch Management)
 Business Object :   Batch
 Common Use Cases:   Batch shelf-life / expiration date lookup for material+batch in delivery item enrichment

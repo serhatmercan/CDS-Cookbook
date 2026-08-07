@@ -25,7 +25,7 @@ Fields      :   key MDR.Material,
 Where       :   ( MDR.GoodsMovementType = 'Y05' or MDR.GoodsMovementType = 'Y07' or MDR.GoodsMovementType = '921' ) and
                 MDR.GoodsMovementIsCancelled = ' '
 
-Group       :
+Group By    :
 
 Module           :   MM
 Business Object  :   Material Document (MATDOC)

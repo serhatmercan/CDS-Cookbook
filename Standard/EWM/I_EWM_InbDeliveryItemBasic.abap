@@ -13,7 +13,7 @@ Fields      :   key IDIBasic.InboundDeliveryUUID        as Vbeln,
 
 Where       :   
 
-Group       :   
+Group By    :   
 Module          :   EWM
 Business Object :   Inbound Delivery Item (EWM)
 Common Use Cases:   EWM inbound delivery item basic data for GR / putaway reporting

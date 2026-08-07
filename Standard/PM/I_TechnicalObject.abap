@@ -17,7 +17,7 @@ Where       :   TO.IsDeleted                    = ''            and
                 TO.TechObjStatusIsInactive      = '' 
                 
 
-Group       :   
+Group By    :   
 
 Module           :   PM
 Business Object  :   Technical Object (Equipment / Functional Location)

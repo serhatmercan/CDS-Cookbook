@@ -20,4 +20,5 @@ Common Use Cases :   - Join helper to restrict a sales schedule-line based query
 
 Related CDS      :   I_SalesDocumentScheduleLine
 
-Notes            :
+Notes            :   - No additional fields are exposed by this view in this reference; it is used purely
+                   as an inner join filter to restrict a schedule-line query to ATP/BOP-relevant rows

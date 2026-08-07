@@ -11,7 +11,7 @@ Fields      :   key Ekpo.ebeln,
 
 Where       :
 
-Group       :
+Group By    :
 
 Module           :   MM
 Business Object  :   Supplier Quotation (RFQ response)

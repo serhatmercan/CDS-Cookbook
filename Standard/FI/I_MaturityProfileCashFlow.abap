@@ -22,7 +22,7 @@ Fields      :   key TransactionCashFlow.CompanyCode,
 
 Where       :   
 
-Group       :   
+Group By    :   
 Module          :   FI-TRM (Treasury and Risk Management)
 Business Object :   Treasury Cash Flow / Maturity Profile
 Common Use Cases:   Treasury liquidity/maturity analysis - cash flow amounts by financial transaction and payment date bucket

@@ -98,7 +98,7 @@ METHOD if_sadl_exit_calc_element_read~calculate.
 * | [!CX!] CX_SADL_EXIT
 * +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD if_sadl_exit_filter_transform~map_atom.
-    IF iv_element <> 'TEXT1' AND iv_entity = 'C_RSHMAINTOPERATIONASSIGNMENT'.
+    IF iv_element = 'TEXT1' AND iv_entity = 'C_RSHMAINTOPERATIONASSIGNMENT'.
         ro_condition = cl_sadl_cond_prov_factory_pub=>create_simple_cond_factory( )->element( 'TEXT1' )->equals( iv_value ).
     ENDIF.
   ENDMETHOD.

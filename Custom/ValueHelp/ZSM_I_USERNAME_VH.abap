@@ -12,7 +12,7 @@
 "   - F4 value help for a "created/responsible user" field
 "
 " Notes
-"   - Trailing "where" clause in the source is empty/incomplete
+"   - No filter is applied; the value help returns all SAP users
 " ============================================================================
 
 @AccessControl.authorizationCheck: #NOT_REQUIRED
@@ -30,5 +30,3 @@ define view entity ZSM_I_USERNAME_VH
       name_first as FirstName,
       name_last  as LastName
 }
-
-where 

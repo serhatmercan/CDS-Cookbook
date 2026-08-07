@@ -8,7 +8,7 @@ Fields      :   _ACMMDID.ACMPricingDocItemUUID as DocItemGuid
 
 Where       :   
 
-Group       :
+Group By    :
 
 Module           :   MM / OG (Oil & Gas - CPE Condition Processing Engine)
 Business Object  :   Pricing Document Item GUID Mapping

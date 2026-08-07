@@ -10,6 +10,10 @@ Fields      :   key PurchasingDocument,
 
                     PDSL.SchedLineStscDeliveryDate as PlannedPaymentDate
 
+Where            :
+
+Group By         :
+
 Module           :   MM
 Business Object  :   Purchasing Document Schedule Line
 Common Use Cases :   - Enriching a nomination reference document/item with its scheduled delivery date

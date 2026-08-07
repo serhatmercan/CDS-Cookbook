@@ -26,7 +26,7 @@ Fields      :   key TDF.NominationTicketKey             as TicketKey,
 
 Where       :   TDF.MaterialDocumentYear <> '0000'
 
-Group       : 
+Group By    : 
 
 Module           :   OG (Oil & Gas - TSW / Nomination Management)
 Business Object  :   Nomination Ticket Document Flow

@@ -23,7 +23,7 @@ Fields      :   key FL.FunctionalLocation                                       
 
 Where       :   
 
-Group       :   
+Group By    :   
 
 Module           :   PM
 Business Object  :   Functional Location

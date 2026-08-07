@@ -37,7 +37,7 @@ Where       :   PD.PurchasingDocumentType = 'YN01' and
                 PD.PurchasingOrganization = '1200' and
                 ( PDI.MaterialGroup = 'U002' or PDI.MaterialGroup = 'U003' or PDI.MaterialGroup = 'U006' )
 
-Group       :   
+Group By    :   
 
 Module           :   MM
 Business Object  :   Purchasing Document (header + item)

@@ -13,7 +13,7 @@ Fields      :   key _POPE.PurchaseOrder,
 
 Where       :
 
-Group       :
+Group By    :
 
 Module           :   MM
 Business Object  :   Purchase Order Pricing Element

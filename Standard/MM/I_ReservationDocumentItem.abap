@@ -25,7 +25,7 @@ Where       :   RDI.DebitCreditCode                = 'H' and
                 RDI.ReservationItemIsFinallyIssued = ''  and
                 RDI.ReservationItmIsMarkedForDeltn = ''
 
-Group       :
+Group By    :
 
 Module           :   MM
 Business Object  :   Reservation Document Item

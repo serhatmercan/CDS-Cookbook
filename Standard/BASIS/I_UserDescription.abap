@@ -10,7 +10,7 @@ Fields      :   key UD.UserID,
 
 Where       :   
 
-Group       :
+Group By    :
 
 Module           :   BC (Basis)
 Business Object  :   User

@@ -11,7 +11,7 @@ Fields      :   key _POICF.PurchaseOrder,
 
 Where       :
 
-Group       :
+Group By    :
 
 Module           :   MM
 Business Object  :   Purchase Order Item Calculated Fields

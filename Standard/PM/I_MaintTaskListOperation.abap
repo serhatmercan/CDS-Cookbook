@@ -9,7 +9,7 @@ Fields      :   key MTLO.TaskListType,
                 key MTLO.TaskListSequence,
                 key MTLO.TaskListOperationInternalId,   
 
-                    'MIN' as MTLO.OpWorkQuantityUnitMIN, 
+                    'MIN' as OpWorkQuantityUnitMIN,
                     
                     @DefaultAggregation: #SUM
                     sum( case when MTLO.OpWorkQuantityUnit = 'MIN' then MTLO.OpPlannedWorkQuantity
@@ -17,7 +17,7 @@ Fields      :   key MTLO.TaskListType,
 
 Where       :   MTLO.OperationControlProfile <> 'PMXX'
 
-Group       :   MTLO.TaskListType, 
+Group By    :   MTLO.TaskListType, 
                 MTLO.TaskListGroup, 
                 MTLO.TaskListGroupCounter
 

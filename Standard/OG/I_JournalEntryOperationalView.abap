@@ -38,7 +38,7 @@ Where       :   JEOV.AccountingDocumentType <> 'GM'  and
                 JEOV.Ledger                  = 'L2'  and
                 JEOV.SourceLedger            = 'L2'  
 
-Group       :   
+Group By    :   
 
 Module           :   FI
 Business Object  :   Journal Entry / Accounting Document
@@ -46,4 +46,7 @@ Associations Used:   _OperationalAcctgDocItem -> operational accounting document
 Common Use Cases :   - FI journal entry reporting joined to accounting document header (BKPF); vendor
                    payment / house bank enrichment
 Notes            :   - Restricted to FinancialAccountType 'K' (vendor) on ledger L2
+                   - Standard FI view; grouped here under OG because it was used to enrich an
+                   Oil & Gas nomination/billing scenario in the source project, not because the
+                   view itself is OG-specific
 Related CDS      :   I_OperationalAcctgDocItem, I_JournalEntryItem

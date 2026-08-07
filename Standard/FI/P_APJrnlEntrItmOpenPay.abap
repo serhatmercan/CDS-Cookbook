@@ -1,5 +1,5 @@
 CDS         :   P_APJrnlEntrItmOpenPay
-Description :   
+Description :   Accounts Payable Open Item (Open Payables as of Key Date)
 
 Using       :   as select from P_APJrnlEntrItmOpenPay2(P_KeyDate : P_KeyDate) as OpenPay  
 
@@ -39,7 +39,7 @@ Fields      :   key OpenPay.CompanyCode,
 
 Where       :   
 
-Group       :   
+Group By    :   
 Module          :   FI-AP (Accounts Payable)
 Business Object :   Open Accounts Payable Item (Journal Entry)
 Common Use Cases:   Accounts payable open/overdue item analysis as of a given key date

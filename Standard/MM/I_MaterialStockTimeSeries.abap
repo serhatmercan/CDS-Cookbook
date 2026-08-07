@@ -14,16 +14,15 @@ Fields      :   key Stock.Plant                                                 
                     Stock.InventorySpecialStockType,
 
                     @Semantics.quantity.unitOfMeasure: 'MEINS'
-                    cast( Stock.MatlWrhsStkQtyInMatlBaseUnit as abap.dec(13,3) )    as StockAmount,
-                    sum( Stock.MatlWrhsStkQtyInMatlBaseUnit )                       as StockAmount,
-                    Stock.MaterialBaseUnit                                          as Meins,
+                    cast( sum( Stock.MatlWrhsStkQtyInMatlBaseUnit ) as abap.dec(13,3) )    as StockAmount,
+                    Stock.MaterialBaseUnit                                                 as Meins,
 
                     Stock.WBSElementInternalID
 
 Where       :   Stock.InventoryStockType = '01' and
                 ( Stock.InventorySpecialStockType = ' ' or Stock.InventorySpecialStockType = 'Q' or Stock.InventorySpecialStockType = 'W' or Stock.InventorySpecialStockType = 'O' )
 
-Group       :   Stock.Plant,
+Group By    :   Stock.Plant,
                 Stock.Material,
                 Stock.StorageLocation,
                 Stock.MaterialBaseUnit,

@@ -11,7 +11,7 @@ Fields      :   key MOODEX.MaintOrderRoutingNumber,
 
 Where       :   MOODEX.OperationControlKey <> 'PMXX'  
 
-Group       :   MOODEX.MaintenanceOrder
+Group By    :   MOODEX.MaintenanceOrder
 
 Module           :   PM
 Business Object  :   Maintenance Order Operation

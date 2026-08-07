@@ -66,7 +66,7 @@ Where       :   NLI.NominationReferenceDocument <> '' or
                 NLI.NominationReferenceDocType = 'T' or
                 NLI.NominationScheduleType like 'D%' || 'O%'
               
-Group       :   NLI.NominationReferenceDocument,
+Group By    :   NLI.NominationReferenceDocument,
                 NLI.NominationReferenceDocItem
 
 Module           :   OG (Oil & Gas - TSW / Nomination Management)

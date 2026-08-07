@@ -14,7 +14,7 @@ Fields      :   key GLALItem.SourceLedger,
                 key GLALItem.Ledger,
 
                     @Semantics.amount.currencyCode: 'CompanyCodeCurrency'
-                    GLALItemAmountInCompanyCodeCurrency
+                    GLALItemAmountInCompanyCodeCurrency,
 
                     GLALItem.BusinessArea,
                     GLALItem.ChartOfAccounts,
@@ -26,9 +26,9 @@ Fields      :   key GLALItem.SourceLedger,
                     GLALItem.GLAccount,
                     GLAccountText.GLAccountName
 
-Where       :   GLALItemSourceLedger = GLALItemLedger
+Where       :   GLALItem.SourceLedger = GLALItem.Ledger
 
-Group       :   
+Group By    :   
 Module          :   FI (Universal Journal / General Ledger)
 Business Object :   G/L Account Line Item
 Common Use Cases:   G/L line item reporting enriched with account description text (I_GLAccountText) in logon language

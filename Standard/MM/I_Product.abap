@@ -12,7 +12,7 @@ Fields      :   key Product.Product,
 
 Where       :
 
-Group       :
+Group By    :
 
 Module           :   MM
 Business Object  :   Product / Material

@@ -12,7 +12,7 @@ Fields      :   key WCHC.WrkCtrHierParentType,
 
 Where       :   
 
-Group       :   
+Group By    :   
 
 Module           :   PP
 Business Object  :   Work Center Hierarchy

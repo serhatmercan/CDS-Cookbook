@@ -11,7 +11,7 @@ Fields      :   key STOSchedule.PurchaseOrder,
 
 Where       :
 
-Group       :
+Group By    :
 
 Module           :   MM
 Business Object  :   Stock Transport Order Schedule Line

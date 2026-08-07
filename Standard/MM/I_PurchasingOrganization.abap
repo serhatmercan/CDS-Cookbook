@@ -7,7 +7,7 @@ Fields      :   _PO
 
 Where       :
 
-Group       :
+Group By    :
 
 Module           :   MM
 Business Object  :   Purchasing Organization (master data)

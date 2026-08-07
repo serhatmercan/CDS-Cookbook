@@ -10,7 +10,7 @@ Fields      :   key _CalendarDate.CalendarDate,
 
 Where       :         
 
-Group       :
+Group By    :
 
 Module           :   CA / BC (Cross-Application, Basis)
 Business Object  :   Calendar Date
