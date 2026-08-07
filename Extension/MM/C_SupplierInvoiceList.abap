@@ -1,17 +1,17 @@
 " ============================================================================
-" Extension   : C_SupplierInvoiceList  (extend view ... with ZSM_I_EXT_SIL)
+" Extension   : C_SupplierInvoiceList(extend view ... with ZSM_I_EXT_SIL)
 " Module      : MM
 " Business Object : Supplier Invoice
 " ----------------------------------------------------------------------------
 " Description
 "   Exposes Business Area on the Supplier Invoice List with value help,
-"   search, and selection-field enablement.
+"   search, and selection - field enablement.
 "
 " Fields Added
-"   BusinessArea (invoice.BusinessArea) - value help, searchable, selection field
+"   BusinessArea(invoice.BusinessArea) - value help, searchable, selection field
 "
 " Associations Used
-"   _CABAVH -> C_CABusinessAreaValueHelp   on BusinessArea = businessarea
+"   _CABAVH - > C_CABusinessAreaValueHelp   on BusinessArea = businessarea
 "
 " Common Use Cases
 "   - Supplier Invoice List: filter/search by Business Area, F4 help

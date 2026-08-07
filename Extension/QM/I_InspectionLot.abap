@@ -1,10 +1,10 @@
 " ============================================================================
-" Extension   : I_InspectionLot  (extend view ... with ZSM_I_EXT_IL)
+" Extension   : I_InspectionLot(extend view ... with ZSM_I_EXT_IL)
 " Module      : QM
 " Business Object : Inspection Lot
 " ----------------------------------------------------------------------------
 " Description
-"   Adds a status short text (Txt04) to the Inspection Lot view by resolving
+"   Adds a status short text(Txt04) to the Inspection Lot view by resolving
 "   the lot's active status (JEST) against the status text table for the
 "   usage-decision-relevant statuses E0001/E0002.
 "
