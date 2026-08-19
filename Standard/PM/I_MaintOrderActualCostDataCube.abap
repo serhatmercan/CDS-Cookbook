@@ -13,9 +13,15 @@ Fields      :   key Cost.SourceLedger,
                     @Semantics.amount.currencyCode: 'CompanyCodeCurrency'
                     sum(Cost.AmountInCompanyCodeCurrency)                   as Expense,
                     Cost.CompanyCodeCurrency
-Where       :   
+Where       :
 
-Group By    :   
+Group By    :   Cost.SourceLedger,
+                Cost.CompanyCode,
+                Cost.FiscalYear,
+                Cost.AccountingDocument,
+                Cost.LedgerGLLineItem,
+                Cost.Ledger,
+                Cost.CompanyCodeCurrency
 
 Module           :   PM
 Business Object  :   Maintenance Order Actual Costs

@@ -1,28 +1,47 @@
-" ============================================================================
-" Extension   : C_ObjPgMaintOrderAndOperation  (extend view ... with ZSM_I_EXT_OPMOO)
-" Module      : PM
-" Business Object : Maintenance Order Operation (Object Page)
-" ----------------------------------------------------------------------------
-" Description
-"   Adds a virtual, read-calculated ProcessStatus field showing the system
-"   status text (via STATUS_TEXT_EDIT) of each order operation, computed and
-"   filterable through the SADL exit class ZSM_CL_MOO.
-"
-" Fields Added
-"   ProcessStatus - virtual element, calculated by ABAP class ZSM_CL_MOO
-"                   (reads POPORDOP for the operation's internal object number,
-"                    then calls STATUS_TEXT_EDIT to render the status line)
-"
-" Common Use Cases
-"   - Maintenance Order Object Page: show live system status text per operation
-"   - Filtering the object page list by status text (filter.transformedBy)
-"
-" Notes
-"   - Implements if_sadl_exit_calc_element_read (CALCULATE) and
-"     if_sadl_exit_filter_transform (MAP_ATOM) for read + filter support
-"   - Per-row RFC-like call to STATUS_TEXT_EDIT inside a loop; watch for
-"     performance on large result sets
-" ============================================================================
+// ============================================================================
+// Type       : extension + ABAP snippet (paired recipe, see the "---" separator)
+// Context    : reusable pattern
+// Extension   : C_ObjPgMaintOrderAndOperation  (extend view ... with ZSM_I_EXT_OPMOO)
+// Module      : PM
+// Business Object : Maintenance Order Operation (Object Page)
+// ----------------------------------------------------------------------------
+// Description
+//   Adds a virtual, read-calculated ProcessStatus field showing the system
+//   status text (via STATUS_TEXT_EDIT) of each order operation, computed and
+//   filterable through the SADL exit class ZSM_CL_MOO.
+//
+// Fields Added
+//   ProcessStatus - virtual element, calculated by ABAP class ZSM_CL_MOO
+//                   (reads POPORDOP for the operation's internal object number,
+//                    then calls STATUS_TEXT_EDIT to render the status line)
+//
+// Common Use Cases
+//   - Maintenance Order Object Page: show live system status text per operation
+//   - Filtering the object page list by status text (filter.transformedBy)
+//
+// Notes
+//   - Implements if_sadl_exit_calc_element_read (CALCULATE) and
+//     if_sadl_exit_filter_transform (MAP_ATOM) for read + filter support
+//   - The CDS element name and the structure component the class fills must be
+//     the same name (ProcessStatus / processstatus) - otherwise the virtual
+//     element stays empty and the filter never matches.
+//   - This file is an anthology: the extension above the "---" separator and
+//     the exit class below it are two separate objects.
+//
+// PERFORMANCE BOUNDARY
+//   STATUS_TEXT_EDIT is called once per result row inside the loop. A virtual
+//   element runs for every page the consumer requests, so on a large list this
+//   is the dominant cost. Acceptable for an object page; measure before using
+//   the same shape on a list report, and consider reading JEST/TJ02T-TJ30T set
+//   based instead.
+//
+// VERIFY BEFORE REUSE
+//   The status object number passed to STATUS_TEXT_EDIT is taken from
+//   MaintOrderOperationInternalID. Operation status objects are usually
+//   addressed by a composed OBJNR (prefix + routing number + counter), so
+//   confirm in your release that this element already carries the full OBJNR;
+//   if it does not, compose it before the call.
+// ============================================================================
 
 @AbapCatalog.sqlViewAppendName: 'ZSM_V_EXT_OPMOO'
 @EndUserText.label: 'C_ObjPgMaintOrderAndOperation Extend View'

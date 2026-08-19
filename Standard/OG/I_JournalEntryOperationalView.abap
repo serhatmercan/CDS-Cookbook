@@ -4,7 +4,6 @@ Description :   Operational View on Journal Entry Item
 Using       :   as select from I_JournalEntryOperationalView as JEOV on JEOV.AccountingDocument   = Bkpf.Belnr
                                                                     and JEOV.CompanyCode          = Bkpf.Bukrs
                                                                     and JEOV.FiscalYear           = Bkpf.Gjahr
-                                                                    and JEOV.FinancialAccountType = 'D'
 Fields      :   key JEOV.CompanyCode,
                 key JEOV.FiscalYear,
                 key JEOV.AccountingDocument,
@@ -34,9 +33,10 @@ Fields      :   key JEOV.CompanyCode,
                     JEOV._OperationalAcctgDocItem.BPBankAccountInternalID
 
 Where       :   JEOV.AccountingDocumentType <> 'GM'  and
-                JEOV.FinancialAccountType    = 'K'   and
-                JEOV.Ledger                  = 'L2'  and
-                JEOV.SourceLedger            = 'L2'  
+                JEOV.FinancialAccountType    = 'K'
+                // Ledger scope intentionally not hard-coded here. Add your own, e.g.
+                //   and JEOV.Ledger = JEOV.SourceLedger
+                // to restrict to the leading-ledger lines of your installation.
 
 Group By    :   
 
@@ -45,8 +45,12 @@ Business Object  :   Journal Entry / Accounting Document
 Associations Used:   _OperationalAcctgDocItem -> operational accounting document item (bank details)
 Common Use Cases :   - FI journal entry reporting joined to accounting document header (BKPF); vendor
                    payment / house bank enrichment
-Notes            :   - Restricted to FinancialAccountType 'K' (vendor) on ledger L2
+Notes            :   - Restricted to FinancialAccountType 'K' (vendor). An earlier revision also
+                     carried FinancialAccountType = 'D' in the ON condition, which contradicted
+                     the 'K' predicate in WHERE and could only ever return an empty result.
                    - Standard FI view; grouped here under OG because it was used to enrich an
                    Oil & Gas nomination/billing scenario in the source project, not because the
                    view itself is OG-specific
 Related CDS      :   I_OperationalAcctgDocItem, I_JournalEntryItem
+Type             :   reference snippet
+Context          :   SAP standard reference

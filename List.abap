@@ -1,4 +1,6 @@
 " ============================================================================
+" Type        : ABAP snippet
+" Context     : reusable pattern
 " Type        : Freeform ABAP SQL snippet
 " Module      : BC (cross-application, user master)
 " Business Object : User

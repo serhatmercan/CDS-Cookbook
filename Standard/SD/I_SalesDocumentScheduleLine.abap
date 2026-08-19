@@ -13,7 +13,7 @@ Fields      :   key SDSchedule.SalesDocument,
                 DeliveryDate                                                                        as RequestedDeliveryDate,
                 ProductAvailabilityDate,
 
-                " Sales Document Schedule Line - Sales Document
+                // Sales Document Schedule Line - Sales Document
                 SDSchedule._SalesDocument.CreatedByUser,
                 SDSchedule._SalesDocument.CreationDate,
                 SDSchedule._SalesDocument.CreationTime,
@@ -21,7 +21,7 @@ Fields      :   key SDSchedule.SalesDocument,
                 SDSchedule._SalesDocument.SDDocumentReason,
                 SDSchedule._SalesDocument.SoldToParty,
 
-                " Sales Document Schedule Line - Sales Document - Fields
+                // Sales Document Schedule Line - Sales Document - Fields
                 SDSchedule._SalesDocument._DeliveryBlockReason.DeliveryBlockReason,
                 SDSchedule._SalesDocument._DistributionChannel.DistributionChannel,
                 SDSchedule._SalesDocument._OrganizationDivision.Division,
@@ -32,14 +32,14 @@ Fields      :   key SDSchedule.SalesDocument,
                 SDSchedule._SalesDocument._SDDocumentCategory.SDDocumentCategory,
                 SDSchedule._SalesDocument._ShippingType.ShippingType,
 
-                " Sales Document Schedule Line - Sales Document Item
+                // Sales Document Schedule Line - Sales Document Item
                 SDSchedule._SalesDocumentItem.CompletionRule,
                 SDSchedule._SalesDocumentItem.DeliveryDateQuantityIsFixed,
                 SDSchedule._SalesDocumentItem.DeliveryGroup,
                 SDSchedule._SalesDocumentItem.FashionCancelDate,
                 SDSchedule._SalesDocumentItem.SalesDocumentRjcnReason,
 
-                " Sales Document Schedule Line - Sales Document Item - Fields
+                // Sales Document Schedule Line - Sales Document Item - Fields
                 SDSchedule._SalesDocumentItem._Batch.Batch,
                 SDSchedule._SalesDocumentItem._CustomerGroup.CustomerGroup,
                 SDSchedule._SalesDocumentItem._DeliveryPriority.DeliveryPriority,

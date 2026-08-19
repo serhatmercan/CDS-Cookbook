@@ -1,219 +1,307 @@
-" ============================================================================
-" Table Functions : ZSM_F_*  (CDS table function definitions)
-" Module      : N/A
-" Business Object : N/A
-" ----------------------------------------------------------------------------
-" Description
-"   Declares the CDS "define table function" signatures (parameters + result
-"   structure) implemented by the AMDP methods in ZSM_CL_AMDP (see
-"   AMDP/Class.abap).
-"
-" Functions
-"   - ZSM_F_AMOUNT            : implemented by get_amount            - aggregated ACDOCA amounts per document
-"   - ZSM_F_DATE              : implemented by get_date              - latest PR release change date/time
-"   - ZSM_F_MATERIAL          : implemented by get_material          - material + description by selection option
-"   - ZSM_F_NOMI_MATCH_PRM    : implemented by get_nomi_match_prm    - nomination demand/offer matching (parametrized)
-"   - ZSM_F_NOMI_ROWS         : implemented by get_nomi_rows_no      - row-numbered nomination match result
-"   - ZSM_F_RISK_DOCS         : implemented by get_risk_docs         - working days between price validity dates
-"   - ZSM_F_TECHNICAL_OBJECT  : implemented by get_technical_object  - technical objects assigned to a user (with sub-hierarchy)
-"   - ZSM_F_WORKING_DAYS      : implemented by get_working_days      - working-day flags per calendar date
-"   - ZSM_F_WORKDAYS_BETWEEN  : implemented by workdays_between      - working days between two dates for a factory calendar
-"
-" Common Use Cases
-"   - Parameter/result contract for AMDP-backed table functions, consumed from other CDS views
-" ============================================================================
+// ============================================================================
+// Type       : table function (anthology - several artifacts in one file)
+// Context    : reusable pattern
+// CDS        : ZSM_F_*  (CDS table function definitions)
+// Module     : cross-application
+// ----------------------------------------------------------------------------
+// Description
+//   The CDS "define table function" contracts (parameters + result structure)
+//   implemented by the AMDP methods in ZSM_CL_AMDP.
+//   See AMDP/Class.abap for the SQLScript implementations.
+//
+// Anthology note
+//   This file collects SEVERAL independent table functions, separated by
+//   "---". It is a reference file, NOT one activatable object: create one DDL
+//   source per function in your system. Each block below repeats its own
+//   complete annotation header, because CDS annotations bind to a single
+//   artifact and would otherwise apply only to the first function.
+//
+// Client-handling pattern used throughout this file
+//   Every client-dependent function here uses ONE coherent pattern:
+//     - @ClientHandling.type: #CLIENT_DEPENDENT
+//     - the client element is the FIRST element of the returned structure and
+//       is typed with the built-in dictionary type abap.clnt
+//     - an input parameter typed abap.clnt annotated @Environment.systemField:
+//       #CLIENT, which the runtime fills implicitly on SELECT
+//     - the implementation restricts every client-dependent table with that
+//       parameter and includes the client column in every join
+//
+//   Release note: some releases also offer
+//   @ClientHandling.algorithm: #SESSION_VARIABLE, where the implementation
+//   must read the client from SESSION_CONTEXT instead of from a parameter. Do
+//   not mix the two mechanisms in one function, and check which combination
+//   your target release supports before copying. The annotation
+//   @ClientDependent is NOT the client annotation for table functions and is
+//   deliberately not used here.
+//
+// Related
+//   AMDP/Class.abap
+// ============================================================================
+
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+// Access control note: table functions are usually consumed by a view that
+// carries the access control. #NOT_REQUIRED means no check is applied here;
+// it is not a protection statement.
+
+@ClientHandling.type: #CLIENT_DEPENDENT
+
+@EndUserText.label: 'Quantity list per accounting document'
+
+define table function ZSM_F_QUANTITY_LIST
+  with parameters
+    @Environment.systemField: #CLIENT
+    p_client : abap.clnt,
+
+    p_bukrs  : bukrs,
+    p_gjahr  : gjahr,
+    p_langu  : spras
+
+  returns
+  {
+    Client       : abap.clnt;
+    Ledger       : rldnr;
+    CompanyCode  : bukrs;
+    FiscalYear   : gjahr;
+    Document     : belnr_d;
+    TaxCode      : mwskz;
+
+    // Comma-separated list of "quantity + unit text" per document, produced
+    // by STRING_AGG. This is a text aggregation, not an amount.
+    QuantityList : abap.char(255);
+  }
+
+  implemented by method zsm_cl_amdp=>get_quantity_list;
+
+// ----------------------------------------------------------------------------
+---
 
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
-@ClientDependent: true
-
-@ClientHandling.algorithm: #SESSION_VARIABLE
 @ClientHandling.type: #CLIENT_DEPENDENT
 
-@EndUserText.label: 'Function AMDP'
+@EndUserText.label: 'Latest change document date per table key'
 
-define table function ZSM_F_AMOUNT
+define table function ZSM_F_CHANGE_DATE
   with parameters
-    p_bukrs     : bukrs,
-    p_gjahr     : gjahr
+    @Environment.systemField: #CLIENT
+    p_client       : abap.clnt,
 
-returns
+    p_object_class : cdobjectcl,
+    p_table_name   : tabname,
+    p_field_name   : fieldname
 
-{
-  Client : abap.clnt;
-  Rldnr  : rldnr;
-  Bukrs  : bukrs;
-  Gjahr  : gjahr;
-  Belnr  : belnr_d;
-  Mwskz  : mwskz;
-  Amount : char255;
-}
+  returns
+  {
+    Client     : abap.clnt;
+    ObjectID   : cdobjectv;
+    TableKey   : cdtabkey;
+    ChangeDate : abap.dats;
+    ChangeTime : abap.tims;
+  }
 
-implemented by method zsm_cl_amdp=>get_amount;
+  implemented by method zsm_cl_amdp=>get_change_date;
 
+// ----------------------------------------------------------------------------
 ---
 
-define table function ZSM_F_DATE
-returns
+@AccessControl.authorizationCheck: #NOT_REQUIRED
 
-{
-  Client   : abap.clnt;
-  ObjectID : cdobjectv;
-  Tabkey   : cdtabkey;
-  Odate    : abap.dats;
-  Otime    : abap.tims;
-}
+@ClientHandling.type: #CLIENT_DEPENDENT
 
-implemented by method zsm_cl_amdp=>get_date;
-
----
+@EndUserText.label: 'Material + description by generated filter condition'
 
 define table function ZSM_F_MATERIAL
   with parameters
-    p_sel_opt   : abap.char(1000)
+    @Environment.systemField: #CLIENT
+    p_client           : abap.clnt,
 
-returns
+    p_langu            : spras,
 
-{
-  Client  : abap.clnt;
-  Matnr   : matnr;
-  Maktx   : maktx;
-}
+    // SECURITY BOUNDARY - read AMDP/Class.abap before reusing this.
+    // This must be a WHERE fragment GENERATED on the ABAP side from
+    // structured selection/range input. A raw condition string taken from a
+    // consumer must never reach APPLY_FILTER.
+    p_filter_condition : abap.char(1000)
 
-implemented by method zsm_cl_amdp=>get_material;
+  returns
+  {
+    Client       : abap.clnt;
+    Material     : matnr;
+    MaterialName : maktx;
+  }
 
+  implemented by method zsm_cl_amdp=>get_material;
+
+// ----------------------------------------------------------------------------
 ---
 
-define table function ZSM_F_NOMI_MATCH_PRM
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+
+@ClientHandling.type: #CLIENT_DEPENDENT
+
+@EndUserText.label: 'Nomination demand / offer schedule lines with pegging'
+
+define table function ZSM_F_NOMI_MATCH
   with parameters
     @Environment.systemField: #CLIENT
-    p_client    : abap.clnt,
+    p_client : abap.clnt,
 
-    p_nomtk     : oij_nomtk,
-    p_nomit     : oij_item
+    p_nomtk  : oij_nomtk,
+    p_nomit  : oij_item
 
-returns
+  returns
+  {
+    Client                     : abap.clnt;
+    NominationDoc              : oij_nomtk;
+    NominationDocItem          : oij_item;
+    PeggingID                  : oij_pegid;
+    NominationScheduleType     : oij_sityp;
+    NominationReferenceDocType : oij_docind;
+  }
 
-{
-  Client                     : abap.clnt;
-  NominationDocDQ            : oij_nomtk;
-  NominationDocItemDQ        : oij_item;
-  NominationDocOQ            : oij_nomtk;
-  NominationDocItemOQ        : oij_item;
-  NominationScheduleType     : oij_sityp;
-  NominationReferenceDocType : oij_docind;
-}
+  implemented by method zsm_cl_amdp=>get_nomi_match;
 
-implemented by method zsm_cl_amdp=>get_nomi_match_prm;
-
+// ----------------------------------------------------------------------------
 ---
+
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+
+@ClientHandling.type: #CLIENT_DEPENDENT
+
+@EndUserText.label: 'Row-numbered nomination match result'
 
 define table function ZSM_F_NOMI_ROWS
   with parameters
     @Environment.systemField: #CLIENT
-    p_client    : abap.clnt
+    p_client : abap.clnt
 
-returns
+  returns
+  {
+    Client                     : abap.clnt;
+    NominationDoc              : oij_nomtk;
+    NominationDocItem          : oij_item;
+    PeggingID                  : oij_pegid;
+    NominationScheduleType     : oij_sityp;
+    NominationReferenceDocType : oij_docind;
+    RowNo                      : abap.int4;
+  }
 
-{
-  Client                      : mandt;
-  NominationDocDQ             : oij_nomtk;
-  NominationDocItemDQ         : oij_item;
-  NominationDocOQ             : oij_nomtk;
-  NominationDocItemOQ         : oij_item;
-  NominationScheduleType      : oij_sityp;
-  NominationReferenceDocType  : oij_docind;
-  NominationScheduleTypeO     : oij_sityp;
-  NominationReferenceDocTypeO : oij_docind;
-  RowNo                       : abap.int4;
-}
+  implemented by method zsm_cl_amdp=>get_nomi_rows_no;
 
-implemented by method zsm_cl_amdp=>get_nomi_rows_no;
-
+// ----------------------------------------------------------------------------
 ---
+
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+
+@ClientHandling.type: #CLIENT_DEPENDENT
+
+@EndUserText.label: 'Working days between price validity dates'
 
 define table function ZSM_F_RISK_DOCS
   with parameters
     @Environment.systemField: #CLIENT
-    p_client    : abap.clnt
+    p_client   : abap.clnt,
 
-returns
+    // Factory calendar is configuration - pass it in, do not hard-code it.
+    p_calendar : fabkl
 
-{
-  Client         : abap.clnt;
-  DocNo          : knumv;
-  DocItemNo      : kposn;
-  DocItemGuid    : guid;
-  PriceBeginTime : cpet_firsttimestamp;
-  PriceBeginDate : datum;
-  PriceEndTime   : cpet_firsttimestamp;
-  PriceEndDate   : datum;
-  WorkingDay     : int4;
-}
+  returns
+  {
+    Client         : abap.clnt;
+    DocNo          : knumv;
+    DocItemNo      : kposn;
+    DocItemGuid    : guid;
+    PriceBeginDate : datum;
+    PriceEndDate   : datum;
+    WorkingDays    : abap.int4;
+  }
 
-implemented by method zsm_cl_amdp=>get_risk_docs;
+  implemented by method zsm_cl_amdp=>get_risk_docs;
 
+// ----------------------------------------------------------------------------
 ---
+
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+
+@ClientHandling.type: #CLIENT_DEPENDENT
+
+@EndUserText.label: 'Technical objects assigned to a user, incl. sub-hierarchy'
 
 define table function ZSM_F_TECHNICAL_OBJECT
   with parameters
     @Environment.systemField: #CLIENT
-    p_client    : abap.clnt,
+    p_client : abap.clnt,
 
-    p_bname     : xubname
+    p_bname  : xubname
 
-returns
+  returns
+  {
+    Client            : abap.clnt;
+    UserName          : xubname;
+    Plant             : werks_d;
+    FunctionalLocation: tplnr;
+    HierarchyLevel    : abap.int4;
+  }
 
-{
-  Client : abap.clnt;
-  Werks  : werks_d;
-  Bname  : xubname;
-  Tplnr  : tplnr;
-}
+  implemented by method zsm_cl_amdp=>get_technical_object;
 
-implemented by method zsm_cl_amdp=>get_technical_object;
-
+// ----------------------------------------------------------------------------
 ---
+
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+
+@ClientHandling.type: #CLIENT_DEPENDENT
+
+@EndUserText.label: 'Working-day flags per calendar date'
 
 define table function ZSM_F_WORKING_DAYS
   with parameters
     @Environment.systemField: #CLIENT
-    p_client    : abap.clnt,
+    p_client     : abap.clnt,
 
-    p_fabkl     : fabkl
+    p_calendar   : fabkl,
 
-returns
+    // Bounded on purpose: an unbounded calendar scan is not a reusable default.
+    p_date_from  : abap.dats,
+    p_date_to    : abap.dats
 
-{
-  Client           : abap.clnt;
-  CalendarDate     : datum;
-  FactoryCalendar  : fabkl;
-  MonthFirstDate   : datum;
-  MonthLastDate    : datum;
-  WorkingDaySmonth : abap.int4;
-  IsWorkingDay     : abap.int4;
-}
+  returns
+  {
+    Client             : abap.clnt;
+    CalendarDate       : datum;
+    FactoryCalendar    : fabkl;
+    MonthFirstDate     : datum;
+    MonthLastDate      : datum;
+    WorkingDaysInMonth : abap.int4;
+    IsWorkingDay       : abap.int4;
+  }
 
-implemented by method zsm_cl_amdp=>get_working_days;
+  implemented by method zsm_cl_amdp=>get_working_days;
 
+// ----------------------------------------------------------------------------
 ---
+
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+
+@ClientHandling.type: #CLIENT_DEPENDENT
+
+@EndUserText.label: 'Working days between two dates'
 
 define table function ZSM_F_WORKDAYS_BETWEEN
   with parameters
     @Environment.systemField: #CLIENT
-    p_client    : abap.clnt,
+    p_client   : abap.clnt,
 
-    p_first_day : abap.dats,
-    p_last_day  : abap.dats,
+    p_date_from : abap.dats,
+    p_date_to   : abap.dats,
     p_calendar  : fabkl
 
-returns
+  returns
+  {
+    Client      : abap.clnt;
+    DateFrom    : datum;
+    DateTo      : datum;
+    WorkingDays : abap.int4;
+  }
 
-{
-  Client   : abap.clnt;
-  FirstDay : datum;
-  LastDay  : datum;
-  WorkDay  : int4;
-}
-
-implemented by method zsm_cl_amdp=>workdays_between;
+  implemented by method zsm_cl_amdp=>workdays_between;

@@ -1,23 +1,25 @@
-" ============================================================================
-" Extension   : C_MaintOrdConfirmationDEX  (extend view ... with ZSM_I_EXT_MOCDEX)
-" Module      : PM
-" Business Object : Maintenance Order Confirmation (Data Extraction)
-" ----------------------------------------------------------------------------
-" Description
-"   Adds order/operation master data fields to the Maintenance Order
-"   Confirmation extraction view, sourced from I_MaintenanceOrderConfirmation.
-"
-" Fields Added
-"   MaintenanceActivityType    - I_MaintenanceOrderConfirmation.MaintenanceActivityType
-"   MaintenanceOrderType       - I_MaintenanceOrderConfirmation.MaintenanceOrderType
-"   MaintPriority               - I_MaintenanceOrderConfirmation.MaintPriority
-"   OperationConfirmedStartDate - I_MaintenanceOrderConfirmation.OperationConfirmedStartDate
-"   Plant                       - I_MaintenanceOrderConfirmation.Plant
-"   WorkCenter                  - I_MaintenanceOrderConfirmation.WorkCenter
-"
-" Common Use Cases
-"   - Data extraction / reporting on maintenance order confirmations
-" ============================================================================
+// ============================================================================
+// Type       : extension (classic extend view + append)
+// Context    : reusable pattern
+// Extension   : C_MaintOrdConfirmationDEX  (extend view ... with ZSM_I_EXT_MOCDEX)
+// Module      : PM
+// Business Object : Maintenance Order Confirmation (Data Extraction)
+// ----------------------------------------------------------------------------
+// Description
+//   Adds order/operation master data fields to the Maintenance Order
+//   Confirmation extraction view, sourced from I_MaintenanceOrderConfirmation.
+//
+// Fields Added
+//   MaintenanceActivityType    - I_MaintenanceOrderConfirmation.MaintenanceActivityType
+//   MaintenanceOrderType       - I_MaintenanceOrderConfirmation.MaintenanceOrderType
+//   MaintPriority               - I_MaintenanceOrderConfirmation.MaintPriority
+//   OperationConfirmedStartDate - I_MaintenanceOrderConfirmation.OperationConfirmedStartDate
+//   Plant                       - I_MaintenanceOrderConfirmation.Plant
+//   WorkCenter                  - I_MaintenanceOrderConfirmation.WorkCenter
+//
+// Common Use Cases
+//   - Data extraction / reporting on maintenance order confirmations
+// ============================================================================
 
 @AbapCatalog.sqlViewAppendName: 'ZSM_V_EXT_MOCDEX'
 

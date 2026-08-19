@@ -12,7 +12,7 @@ Fields      :   key BillingDocumentItem.BillingDocument,
                     @Semantics.amount.currencyCode: 'TransactionCurrency'
                     BillingDocumentItem.NetAmount,
 
-                    @ObjectModel.foreignKey.association: 'TransactionCurrency'
+                    @ObjectModel.foreignKey.association: '_Currency'
                     @Semantics.currencyCode: true
                     BillingDocumentItem.TransactionCurrency
 

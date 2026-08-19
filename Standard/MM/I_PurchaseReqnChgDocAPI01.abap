@@ -14,7 +14,7 @@ Fields      :   key PRItem.ChangeDocObject,
                 key PRItem.ChangeDocDatabaseTableField,
                 key PRItem.ChangeDocItemChangeType,   
 
-                " PR Header
+                // PR Header
                 PRHeader.CreatedByUser,
 
                 max ( PRHeader.CreationDate ) as CreationDate,
@@ -26,7 +26,13 @@ Where       :   PRHeader.ChangeDocObjectClass      = 'BANF'  and
                 PRItem.ChangeDocNewFieldValue      = '03'    and
                 PRItem.DatabaseTable               = 'EBAN' 
 
-Group By    :   PRHeader.ChangeDocObject,
+Group By    :   PRItem.ChangeDocObject,
+                PRItem.ChangeDocObjectClass,
+                PRItem.ChangeDocument,
+                PRItem.DatabaseTable,
+                PRItem.ChangeDocTableKey,
+                PRItem.ChangeDocDatabaseTableField,
+                PRItem.ChangeDocItemChangeType,
                 PRHeader.CreatedByUser
 
 Module           :   MM

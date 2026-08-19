@@ -13,12 +13,12 @@ Using       :   as select from I_SalesDocument                      as SD
                 association [0..*] to I_SalesDocumentItemPartner    as _SDIPartner       on _SDIPartner.SalesDocument                   = $projection.SalesDocument
                                                                                         and _SDIPartner.SalesDocumentItem               = $projection.SalesDocumentItem
 
-                association [0..1] to I_Supplier                    as _Supplier         on _Supplier.Supplier                          = $projection.Supplier
+                association [0..1] to I_Customer                    as _SoldToParty      on _SoldToParty.Customer                       = $projection.SoldToParty
 
 Fields      :   key SDI.SalesDocument,
                 key SDI.SalesDocumentItem,
 
-                    " Sales Document
+                    // Sales Document
                     SD.AdditionalValueDays,
                     SD.CreationDate,
                     SD.CreationTime,
@@ -36,18 +36,18 @@ Fields      :   key SDI.SalesDocument,
                     SD.SDDocumentCategory,
                     SD.SDPricingProcedure,
 
-                    SD.SoldToParty                               as Supplier,
-                    _SupplierName.SupplierName                   as SupplierName,
+                    SD.SoldToParty,
+                    _SoldToParty.CustomerName                    as SoldToPartyName,
 
                     SD.StatisticsCurrency,
                     SD.TotalBlockStatus,
 
-                    " Sales Document Item
+                    // Sales Document Item
                     SDI.IncotermsClassification,
                     SDI.IsReturnsItem,
 
                     SDI.Material,
-                    SDI._MaterialText[Material = $projection.Material and Language = $session.system_language ].MaterialName,
+                    SDI._MaterialText[1: Language = $session.system_language ].MaterialName,
 
                     @Semantics.amount.currencyCode: 'TransactionCurrency'
                     SDI.NetAmount,
@@ -71,7 +71,7 @@ Fields      :   key SDI.SalesDocument,
                     _SalesQuoteFilter,
                     _SDIPartner
 
-Associations Used:   _SalesQuoteFilter (self, to exclude quotations already copied to a follow-on doc), _SDIPartner, _Supplier, _MaterialText
+Associations Used:   _SalesQuoteFilter (self, to exclude quotations already copied to a follow-on doc), _SDIPartner, _SoldToParty, _MaterialText
 
 Where       :   SD.SDDocumentCategory       =  'B' and
                 SDI.SalesDocumentRjcnReason =  ''  and
@@ -84,3 +84,11 @@ Common Use Cases :   - Open sales quotation reporting, excluding quotations alre
 Related CDS      :   I_SalesOrder, I_SalesDocumentScheduleLine, I_BillingDocument
 
 Notes            :   - _SalesQuoteFilter anti-join (is null) is what excludes already-referenced quotation items
+                     - A sold-to party is a customer: it is resolved through I_Customer, not
+                     I_Supplier. Aliasing SoldToParty as "Supplier" and joining a supplier
+                     view returns nothing meaningful.
+                     - The material text is read with a filtered path that carries a
+                     cardinality prefix - [1: ... ] - because the text association is
+                     to-many; without the prefix a to-many text join multiplies rows.
+Type             :   reference snippet
+Context          :   SAP standard reference

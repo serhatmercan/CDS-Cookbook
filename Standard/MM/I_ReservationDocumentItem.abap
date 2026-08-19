@@ -5,7 +5,7 @@ Using       :   as select from I_ReservationDocumentItem as RDI
 
                 left outer join t001w       as PlantDesc   on PlantDesc.Werks       = RDI.Plant
                 left outer join iprddescr   as ProductDesc on ProductDesc.Product   = RDI.Product 
-                                                          and ProductDesc.Language  = 'T'
+                                                          and ProductDesc.Language  = $session.system_language
                                         
 
 Fields      :   key RDI.Reservation,

@@ -7,7 +7,7 @@ Using       :   as select from I_PurchaseOrder                  as PO       on P
 Fields      :   key _POI.PurchaseOrder,
                 key _POI.PurchaseOrderItem,
                 
-                    PO.PurchasingGroup,
+                    PO.PurchasingGroup
 
 Where       :
 

@@ -1,22 +1,24 @@
-" ============================================================================
-" Type        : ZSM_I_VEHICLE_VH  (root value help view)
-" Module      : MM (IS-OIL)
-" Business Object : Vehicle
-" ----------------------------------------------------------------------------
-" Description
-"   Value help listing IS-OIL vehicle master records (OIGV) with vehicle
-"   type and language-dependent vehicle text (OIGVT), searchable by vehicle
-"   and vehicle type with high-ranking fuzzy search.
-"
-" Associations Used   (none - plain join in the FROM clause)
-"
-" Common Use Cases
-"   - F4 value help for vehicle number fields (e.g. ZZ1_TasitNumarasi_SDH
-"     in ZSD_I_ORDER)
-"
-" Related CDS
-"   ZSD_I_ORDER
-" ============================================================================
+// ============================================================================
+// Type       : complete CDS (view entity, value help)
+// Context    : reusable pattern
+// CDS        : ZSM_I_VEHICLE_VH  (root value help view)
+// Module      : MM (IS-OIL)
+// Business Object : Vehicle
+// ----------------------------------------------------------------------------
+// Description
+//   Value help listing IS-OIL vehicle master records (OIGV) with vehicle
+//   type and language-dependent vehicle text (OIGVT), searchable by vehicle
+//   and vehicle type with high-ranking fuzzy search.
+//
+// Associations Used   (none - plain join in the FROM clause)
+//
+// Common Use Cases
+//   - F4 value help for vehicle number fields (e.g. ZZ_VEHICLE_1 / ZZ_VEHICLE_2
+//     in ZSD_I_ORDER)
+//
+// Related CDS
+//   ZSD_I_ORDER
+// ============================================================================
 
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 

@@ -7,7 +7,7 @@ Using       :   inner join C_TicketItemTP  as TITP on TITP.NominationDoc     = I
 Fields      :   key TITP.NominationTicketItem,
                 key TITP.NominationTicketKey,
                 key TITP.NominationTicketVersion,
-                key TITP.NominationDoc,             " Optional
+                key TITP.NominationDoc,             // Optional
                     
                     TITP.BaseUnit,
                     TITP.DestinationPlant,
@@ -24,8 +24,7 @@ Fields      :   key TITP.NominationTicketItem,
  
 Where       :   
 
-Group By    :   TITP.NominationTicketKey,
-                TITP.NominationTicketItem   
+Group By    :   // no aggregation in this projection - nothing to group
 
 Module           :   OG (Oil & Gas - TSW / Nomination Management)
 Business Object  :   Nomination Ticket Item (transactional processing consumption view)

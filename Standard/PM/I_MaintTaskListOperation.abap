@@ -11,15 +11,18 @@ Fields      :   key MTLO.TaskListType,
 
                     'MIN' as OpWorkQuantityUnitMIN,
                     
-                    @DefaultAggregation: #SUM
+                    @Semantics.quantity.unitOfMeasure: 'OpWorkQuantityUnitMIN'
                     sum( case when MTLO.OpWorkQuantityUnit = 'MIN' then MTLO.OpPlannedWorkQuantity
                               when MTLO.OpWorkQuantityUnit = 'H'   then MTLO.OpPlannedWorkQuantity * 60 end ) as OpPlannedWorkQuan
 
-Where       :   MTLO.OperationControlProfile <> 'PMXX'
+Where       :   // Operation control profile scope is configuration:
+                //   MTLO.OperationControlProfile <> '...'
 
-Group By    :   MTLO.TaskListType, 
-                MTLO.TaskListGroup, 
-                MTLO.TaskListGroupCounter
+Group By    :   MTLO.TaskListType,
+                MTLO.TaskListGroup,
+                MTLO.TaskListGroupCounter,
+                MTLO.TaskListSequence,
+                MTLO.TaskListOperationInternalId
 
 Module           :   PM
 Business Object  :   Maintenance Task List Operation

@@ -7,25 +7,25 @@ Business Object  :   Sales Order
 Using       :   left outer join I_SalesOrder        as SO   on SO.SalesOrder        = I_NominationLineItem.NominationReferenceDocument
                 left outer join I_SalesOrderItem    as SOI  on SOI.SalesOrder       = I_NominationLineItem.NominationReferenceDocument
                                                            and SOI.SalesOrderItem   = I_NominationLineItem.NominationReferenceDocItem
-                left outer join but000              as SPT  on SPT.partner          = I_SalesOrder.SoldToParty
+                left outer join but000              as SPT  on SPT.partner          = SO.SoldToParty
 
-                association [0..1] to I_DistributionChannelText as _DCT     on _DCT.DistributionChannel = I_SalesOrder.DistributionChannel
+                association [0..1] to I_DistributionChannelText as _DCT     on _DCT.DistributionChannel = SO.DistributionChannel
                                                                            and _DCT.Language            = $session.system_language
-                association [0..1] to I_DivisionText            as _DT      on _DT.Division             = I_SalesOrder.OrganizationDivision
+                association [0..1] to I_DivisionText            as _DT      on _DT.Division             = SO.OrganizationDivision
                                                                            and _DT.Language             = $session.system_language
-                association [0..1] to I_SalesOrganizationText   as _SOT     on _SOT.SalesOrganization   = I_SalesOrder.SalesOrganization
+                association [0..1] to I_SalesOrganizationText   as _SOT     on _SOT.SalesOrganization   = SO.SalesOrganization
                                                                            and _SOT.Language            = $session.system_language
-                association [0..1] to I_ShippingTypeText        as _STT     on _STT.ShippingType        = I_SalesOrder.ShippingType
+                association [0..1] to I_ShippingTypeText        as _STT     on _STT.ShippingType        = SO.ShippingType
                                                                            and _STT.Language            = $session.system_language
 
 Fields      :   key SOI.SalesOrder,
                 key SOI.SalesOrderItem,
 
-                " Sales Order
+                // Sales Order
                 SO.DeliveryBlockReason,
 
                 SO.DistributionChannel,
-                _DT.DistributionChannelName,
+                _DCT.DistributionChannelName,
 
                 SO.OrganizationDivision,
                 _DT.DivisionName,
@@ -39,7 +39,7 @@ Fields      :   key SOI.SalesOrder,
                 SO.SoldToParty,
                 SPT.name_org1                   as SoldToPartyDesc,
 
-                " Sales Order Items
+                // Sales Order Items
                 SOI.CommittedDeliveryDate,
 
                 @Semantics.quantity.unitOfMeasure: 'ItemWeightUnit'
@@ -55,14 +55,16 @@ Fields      :   key SOI.SalesOrder,
 
                 @Semantics.quantity.unitOfMeasure: 'OrderQuantityUnit'
                 SOI.OrderQuantity,
-                SOI.OrderQuantityUnit,
+                SOI.OrderQuantityUnit
 
 Associations Used:   _DistributionChannelText, _DivisionText, _SalesOrganizationText, _ShippingTypeText; joins I_NominationLineItem (Commodity Mgmt nomination reference) and but000 (Business Partner)
 
 Where       :   SO.DeliveryBlockReason      = '' and
-                ( SO.SalesOrganization = '1200' or SO.SalesOrganization = '1300' or SO.SalesOrganization = '1400' ) and
-                ( SO.ShippingType      = '10'   or SO.ShippingType      = '40' ) and
                 SOI.SalesDocumentRjcnReason = ''
+                // Organisational and shipping-type scope intentionally not hard-coded.
+                // Add your own, e.g.:
+                //   and SO.SalesOrganization in ( ... )
+                //   and SO.ShippingType      in ( ... )
 
 Group By    :
 

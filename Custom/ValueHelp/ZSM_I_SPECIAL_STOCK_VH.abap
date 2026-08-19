@@ -1,17 +1,19 @@
-" ============================================================================
-" Type        : ZSM_I_SPECIAL_STOCK_VH  (root value help view)
-" Module      : MM
-" Business Object : Special Stock Indicator
-" ----------------------------------------------------------------------------
-" Description
-"   Value help listing distinct special stock indicators (T148) with their
-"   language-dependent short text (T148T).
-"
-" Associations Used   (none - plain join in the FROM clause)
-"
-" Common Use Cases
-"   - F4 value help for a Special Stock Indicator (SOBKZ) field
-" ============================================================================
+// ============================================================================
+// Type       : complete CDS (view entity, value help)
+// Context    : reusable pattern
+// CDS        : ZSM_I_SPECIAL_STOCK_VH  (root value help view)
+// Module      : MM
+// Business Object : Special Stock Indicator
+// ----------------------------------------------------------------------------
+// Description
+//   Value help listing distinct special stock indicators (T148) with their
+//   language-dependent short text (T148T).
+//
+// Associations Used   (none - plain join in the FROM clause)
+//
+// Common Use Cases
+//   - F4 value help for a Special Stock Indicator (SOBKZ) field
+// ============================================================================
 
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 

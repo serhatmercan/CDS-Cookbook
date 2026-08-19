@@ -1,10 +1,27 @@
+Value Help Index - DDIC key field -> CDS value-help entity
+==========================================================
+Type    : reference snippet (lookup index)
+Context : SAP standard reference, with project-local entries marked
+
+How to read this file
+  Key      the DDIC field / data element you need an F4 for
+  Name     the CDS entity that provides it
+  Element  the element the value help is bound to
+  Fields   what the value help returns
+
+  Rows marked are NOT SAP standard entities. They are
+  search-help-shaped custom artifacts recorded here because they were the ones
+  in use; they will not exist in your system. Everything else is an SAP
+  standard entity whose availability still depends on your release and
+  installed industry solutions (Oig_/Oih_/Oij_ keys are IS-OIL).
+
 CDS Entity VH
 Key             Name                            Element                     Description                             Fields
 Bukrs           I_CompanyCode                   Company Code                Company Code                            CompanyCode & CompanyCodeName
 Bukrs           I_CompanyCodeVH                 Company Code                Company Code                            CompanyCode & CompanyCodeName
 Bukrs           I_CompanyCodeStdVH              Company Code                Company Code Name                       CompanyCode & CompanyCodeName      
 Cuky5           I_Currency                      Currency                    Currency Code                           Currency
-Ebeln           SHSM_Ekpo                       Ebeln                       EKPO VH                                 Ebeln & Ebelp
+Ebeln           SHSM_Ekpo                       Ebeln                       EKPO VH                                 Ebeln & Ebelp   [PROJECT-LOCAL]
 Eqart           I_TechnicalObjectType           Technical Object Type       Techncial Object Type                   TechnicalObjectType
 Equnr           C_TechObjFlatVH                 Equipment                   Technical Object Details VH             TechnicalObject & TechObjIsEquipOrFuncnlLoc & 
 Equnr           I_Equipment                     Equipment                   Equipment                               Equipment 
@@ -18,10 +35,10 @@ Lgort           I_StorageLocationStdVH          Storage Location            Stor
 Lifnr           I_Supplier                      Supplier                    Supplier                                Supplier & SupplierFullName
 Maktx           I_MaterialText                  Material Name               Material Text                           Material & Language & MaterialName
 Matkl           I_ProductGroupVH                Material Group              Product Group VH                        ProductGroup
-Matkl           VC_Integration_T023T            Matkl                       Extraction for T023T                    Matkl & Wgbez & Wgbez60
+Matkl           VC_Integration_T023T            Matkl                       Extraction for T023T                    Matkl & Wgbez & Wgbez60   [PROJECT-LOCAL]
 Matnr           I_MaterialVH                    Material                    Material VH                             Material & MaterialType & MaterialGroup
 Matnr           I_ProductText                   Material                    Product                                 Product & ProductName
-Matnr           SHSM_M_MAT1L                    Matnr                                                               Maktg & Matkl & Matnr
+Matnr           SHSM_M_MAT1L                    Matnr                                                               Maktg & Matkl & Matnr   [PROJECT-LOCAL]
 Msehi           I_UnitOfMeasureStdVH            Unit                        Unit of Measure                         UnitOfMeasure
 Mtart           I_Producttypecodevh                                         Product Type Code                       ProductTypeCode
 Mtart           I_ProductTypeText                                           Product Type - Text                     ProductType & MaterialTypeName
@@ -37,4 +54,4 @@ Sgrnr           I_REProperty                    RealEstateProperty          Real
 Stlty           I_MaintBillOfMaterialCategory   BillOfMaterialCategory      Maintenance BOM Category                BillOfMaterialCategory & Language & MaintenanceBOMCategoryDesc
 Werks           I_Plant                         Plant                       Plant Name                              Plant & PlantName
 Werks           I_PlantStdVH                    Plant                       Plant Name                              Plant & PlantName
-Werks           SHSM_MT001W                     Werks                                                               Werks & Name1 & Name2
+Werks           SHSM_MT001W                     Werks                                                               Werks & Name1 & Name2   [PROJECT-LOCAL]

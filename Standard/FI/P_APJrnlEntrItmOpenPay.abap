@@ -44,3 +44,8 @@ Module          :   FI-AP (Accounts Payable)
 Business Object :   Open Accounts Payable Item (Journal Entry)
 Common Use Cases:   Accounts payable open/overdue item analysis as of a given key date
 Related CDS     :   P_APJrnlEntrItmOpenPay2
+Release note     :   P_* views belong to the private/internal VDM layer. They are not
+                     released reuse APIs: SAP may change or remove them. Treat this file as a
+                     record of what was used, and prefer a released alternative if one exists.
+Type             :   reference snippet
+Context          :   SAP standard reference

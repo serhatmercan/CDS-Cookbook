@@ -7,10 +7,10 @@ Using       :   inner join I_InboundDelivery        as InboundDelivery      on I
 Fields      :   key InboundDeliveryItem.InboundDelivery,
                 key InboundDeliveryItem.InboundDeliveryItem,
 
-                    " Inbound Delivery 
+                    // Inbound Delivery 
                     InboundDelivery.IsReturnsItem,
 
-                    " Inbound Delivery Item
+                    // Inbound Delivery Item
                     InboundDeliveryItem.OverallGoodsMovementStatus
 
 Where       :   

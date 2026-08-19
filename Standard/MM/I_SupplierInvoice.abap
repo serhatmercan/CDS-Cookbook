@@ -8,23 +8,23 @@ Using       :   as select from  I_SupplierInvoice               as SIHeader
                     inner join  I_SupplierInvoiceItemPurOrdRef  as SIItem       on  SIItem.SupplierInvoice  = SIHeader.SupplierInvoice
                                                                                and  SIItem.FiscalYear       = SIHeader.FiscalYear
                 left outer join I_MaterialText                  as MaterialText on  MaterialText.Material   = SIItem.PurchaseOrderItemMaterial
-                                                                               and  MaterialText.Language   = 'T'
+                                                                               and  MaterialText.Language   = $session.system_language
 
 Fields      :   key SIItem.SupplierInvoice,
                 key SIItem.FiscalYear,
                 key SIItem.SupplierInvoiceItem,
 
-                " Supplier Invoice
+                // Supplier Invoice
                 SIHeader.DocumentCurrency,
                 SIHeader.InvoicingParty,
                 SIHeader.PostingDate,
                 SIHeader.SupplierInvoiceIDByInvcgParty,
 
-                " Supplier Invoice -> Supplier
-                SIHeader.Supplier.SupplierName,
-                SIHeader.Supplier.TaxNumber2,
+                // Supplier Invoice -> Supplier
+                SIHeader._Supplier.SupplierName,
+                SIHeader._Supplier.TaxNumber2,
 
-                " Supplier Items
+                // Supplier Items
                 SIItem.InventoryValuationType,
 
                 SIItem.PurchaseOrderItemMaterial,
@@ -45,11 +45,13 @@ Fields      :   key SIItem.SupplierInvoice,
 
 Associations Used:
 
-Where       :   SIHeader.CompanyCode           = '1000' and
-                SIHeader.IsInvoice             = 'X'    and
+Where       :   SIHeader.IsInvoice             = 'X'    and
                 SIHeader.ReverseDocument       = ' '    and
-                SIHeader.SupplierInvoiceStatus = '5'    and
-                ( SIItem._Material.MaterialGroup = 'U007' or SIItem._Material.MaterialGroup = 'U008' )
+                SIHeader.SupplierInvoiceStatus = '5'
+                // Company code and material-group scope intentionally not hard-coded.
+                // Add your own, e.g.:
+                //   and SIHeader.CompanyCode              in ( ... )
+                //   and SIItem._Material.MaterialGroup    in ( ... )
 
 Group By    :
 

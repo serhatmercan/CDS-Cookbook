@@ -6,60 +6,55 @@ Business Object  :   Outbound Delivery
 
 Using       :   as select from I_DeliveryDocument     as DD
                     inner join I_DeliveryDocumentItem as DDI        on DDI.DeliveryDocument = DD.DeliveryDocument
-                    inner join I_Material             as Material   on Material.Material    = Material.Material
+                    inner join I_Material             as Material   on Material.Material    = DDI.Material
 
-Fields      :   key DDI.DeliveryDocument,
-                key DDI.DeliveryDocumentItem,
-                key DDI.ReferenceSDDocument                         as SalesDocument,       " Optional Key
-                key DDI.ReferenceSDDocumentItem                     as SalesDocumentItem,   " Optional Key
-                key DDI.Material                                    as Matnr,               " Optional Key
-                key DDI.Plant                                       as Werks,               " Optional Key
+Fields      :   // Aggregation level = the originating sales document item, so the
+                // delivery-item key is NOT part of the projection: every element
+                // below is either a grouping key or an aggregate.
+                key DDI.ReferenceSDDocument                         as SalesDocument,
+                key DDI.ReferenceSDDocumentItem                     as SalesDocumentItem,
+                key DDI.Material                                    as Matnr,
+                key DDI.Plant                                       as Werks,
 
-                    " Delivery Document
-                    DD.ActualGoodsMovementDate,
-                    DD.CreationDate,
-                    DD.DeliveryDocumentType,
-                    DD.OverallGoodsMovementStatus,
-                    DD.OverallProofOfDeliveryStatus,
-                    DD.ProofOfDeliveryDate,
-                    DD.SDDocumentCategory,
-
-                    " Delivery Document Items
-                    DDI.BaseUnit                                        as Meins,
-                    DDI.DeliveryDocumentItemCategory,
-                    DDI.DistributionChannel,
+                    DDI.DeliveryQuantityUnit                        as DeliveryUom,
+                    DDI.BaseUnit                                    as Meins,
+                    Material.MaterialType                           as Mtart,
 
                     @Semantics.quantity.unitOfMeasure: 'DeliveryUom'
-                    sum(DDI.ActualDeliveryQuantity)                     as ActualDeliveryQuantity,
-                    DDI.DeliveryQuantityUnit                            as DeliveryUom,
-
-                    DDI.GoodsMovementType                               as Bwart,
-
-                    @Semantics.quantity.unitOfMeasure: 'ITEMWEIGHTUNIT'
-                    DDI.ItemNetWeight,
-                    DDI.ItemWeightUnit,
+                    sum(DDI.ActualDeliveryQuantity)                 as ActualDeliveryQuantity,
 
                     @Semantics.quantity.unitOfMeasure: 'DeliveryUom'
-                    DDI.OriginalDeliveryQuantity,
-
-                    DDI.StorageLocation                                 as Lgort,
-
-                    " Material
-                    Material.MaterialType                               as Mtart
+                    sum(DDI.OriginalDeliveryQuantity)               as OriginalDeliveryQuantity
 
 Associations Used:
 
-Where       :   DD.DeliveryDocumentType             = 'ZT01'    and
-                DDI.DeliveryDocumentItemCategory    = 'KBN'     and
-                DDI.GoodsMovementStatus             = 'C'       and
-                ( DDI.GoodsMovementType = '601'  or  DDI.GoodsMovementType = '907' )
+Where       :   DDI.GoodsMovementStatus  = 'C'   and   // goods movement completed
+                DDI.GoodsMovementType    = '601'       // standard goods issue for delivery
+                // Delivery type, item category and any additional (custom) movement
+                // types are configuration. Add your own scope, e.g.:
+                //   and DD.DeliveryDocumentType          in ( ... )
+                //   and DDI.DeliveryDocumentItemCategory in ( ... )
+                //   and DDI.GoodsMovementType            in ( '601', ... )
 
 Group By    :   DDI.ReferenceSDDocument,
                 DDI.ReferenceSDDocumentItem,
-                DDI.DeliveryQuantityUnit
+                DDI.Material,
+                DDI.Plant,
+                DDI.DeliveryQuantityUnit,
+                DDI.BaseUnit,
+                Material.MaterialType
 
 Common Use Cases :   - Aggregate actual delivered quantity per originating sales document/item for goods-issue reporting
 
 Related CDS      :   I_SalesDocument, I_SalesOrder
 
-Notes            :   - Where-clause hardcodes DeliveryDocumentType 'ZT01' (custom) and GoodsMovementType 601/907 - scoped to a specific goods-issue/return scenario
+Notes            :   - Complete aggregation pattern: the projection contains only grouping keys
+                     and aggregates, so the GROUP BY matches it exactly. Adding delivery-item
+                     detail fields would require adding them to the GROUP BY too.
+                     - The material join is on DDI.Material; an ON condition of the form
+                     Material.Material = Material.Material is a Cartesian product against the
+                     whole material master.
+                     - Delivery type, item category and custom movement types are configuration
+                     and are intentionally not hard-coded.
+Type             :   reference snippet (complete aggregation pattern)
+Context          :   SAP standard reference

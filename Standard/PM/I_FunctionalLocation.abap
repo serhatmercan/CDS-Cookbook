@@ -7,7 +7,7 @@ Using       :   as select from  I_FunctionalLocation            as FL
 
 Fields      :   key FL.FunctionalLocation                                                                       as TechnicalObject,
 
-                    "Functional Location
+                    //Functional Location
                     FL.AuthorizationGroup,
                     FL.MaintObjectLocAcctAssgmtNmbr,
                     FL.MaintenancePlannerGroup,
@@ -18,7 +18,7 @@ Fields      :   key FL.FunctionalLocation                                       
 
                     FL._LocationAccountAssignment,
 
-                    " Functional Location Label
+                    // Functional Location Label
                     cast( _FLL.FunctionalLocationLabelName as eams_tech_obj_conv )                              as TechnicalObjectLabel
 
 Where       :   

@@ -3,10 +3,10 @@ Description : Purchase Order        & Purchase Order Item       & Purchase Order
 
 Using       : as select from I_PurchaseOrderAPI01           as POHeader
                   inner join I_PurchaseOrderItemAPI01       as POItem           on POItem.PurchaseOrder             = POHeader.PurchaseOrder
-                  inner join I_PurchaseOrderHistoryAPI01    as POHistory        on POHistory.PurchaseOrder          = POHeader.PurchaseOrder        " Optional
-                  inner join I_SuplrInvcItemPurOrdRefAPI01  as POReference      on POReference.PurchaseOrder        = POItem.PurchaseOrder          " Optional
+                  left outer join I_PurchaseOrderHistoryAPI01 as POHistory   on POHistory.PurchaseOrder          = POHeader.PurchaseOrder        // optional - now LEFT OUTER
+                  left outer join I_SuplrInvcItemPurOrdRefAPI01 as POReference on POReference.PurchaseOrder        = POItem.PurchaseOrder          // optional - now LEFT OUTER
                                                                                and POReference.PurchaseOrderItem    = POItem.PurchaseOrderItem
-                  inner join I_SupplierInvoiceAPI01         as SupplierInvoice  on SupplierInvoice.SupplierInvoice  = POReference.SupplierInvoice   " Optional
+                  left outer join I_SupplierInvoiceAPI01      as SupplierInvoice on SupplierInvoice.SupplierInvoice  = POReference.SupplierInvoice   // optional - now LEFT OUTER
                                                                                and SupplierInvoice.FiscalYear       = POReference.FiscalYear                                                                                     
               
               association [0..1] to I_MaterialText          as _MaterialText    on _MaterialText.Material   = $projection.Material
@@ -16,7 +16,7 @@ Using       : as select from I_PurchaseOrderAPI01           as POHeader
 Fields      :   key POItem.PurchaseOrder,
                 key POItem.PurchaseOrderItem,
 
-                    " Purchase Order Header
+                    // Purchase Order Header
                     POHeader.CompanyCode,
                     POHeader.CreatedByUser,
                     POHeader.CreationDate,
@@ -41,7 +41,7 @@ Fields      :   key POItem.PurchaseOrder,
 
                     POHeader.SupplyingPlant,
                     
-                    " Purchase Order Item
+                    // Purchase Order Item
                     POItem.AccountAssignmentCategory,
                     POItem.BaseUnit,
                     POItem.GoodsReceiptIsExpected,
@@ -95,8 +95,8 @@ Fields      :   key POItem.PurchaseOrder,
                     POItem.UnlimitedOverdeliveryIsAllowed,
                     POItem.ValuationType,
 
-                    " Purchase Order History
-                    POHistory.AccountAssignmentNumber,          " Key
+                    // Purchase Order History
+                    POHistory.AccountAssignmentNumber,          // Key
                     POHistory.AccountingDocumentCreationDate,
                     POHistory.CompanyCodeCurrency,
                     POHistory.Currency,
@@ -112,10 +112,10 @@ Fields      :   key POItem.PurchaseOrder,
                     POHistory.Material,
                     POHistory.PostingDate,
                     POHistory.PurchasingHistoryCategory,
-                    POHistory.PurchasingHistoryDocument,        " Key                                        
-                    POHistory.PurchasingHistoryDocumentItem,    " Key
+                    POHistory.PurchasingHistoryDocument,        // Key                                        
+                    POHistory.PurchasingHistoryDocumentItem,    // Key
                     POHistory.PurchasingHistoryDocumentType,
-                    POHistory.PurchasingHistoryDocumentYear,    " Key
+                    POHistory.PurchasingHistoryDocumentYear,    // Key
                     POHistory.PurgHistDocumentCreationTime,
 
                     @Semantics.amount.currencyCode: 'Currency'
@@ -131,13 +131,13 @@ Fields      :   key POItem.PurchaseOrder,
                     POHistory.ReferenceDocumentItem,
                     POHistory.TaxCode,
 
-                    " Purchase Order Ref of Supplier Invoice
+                    // Purchase Order Ref of Supplier Invoice
                     POReference.PurchaseOrderQuantityUnit,
                     POReference.SupplierInvoiceItem,
                     POReference.SupplierInvoiceItemAmount,
                     POReference.QuantityInPurchaseOrderUnit,
 
-                    " Supplier Invoice
+                    // Supplier Invoice
                     SupplierInvoice.DocumentCurrency,
                     SupplierInvoice.DocumentDate,
                     SupplierInvoice.FiscalYear,
@@ -145,11 +145,13 @@ Fields      :   key POItem.PurchaseOrder,
                     SupplierInvoice.SupplierInvoice,                    
                     SupplierInvoice.SupplierInvoiceIDByInvcgParty
 
-Where       :   ( POHeader.PurchasingOrganization = '1100' or POHeader.PurchasingOrganization = '1200' ) and  
-                POHeader.PurchaseOrderType like 'YN%'       and  
-                POItem.PurchasingDocumentDeletionCode = ''  or
-                ( POItem.MaterialGroup = 'H001' or POItem.MaterialGroup = 'U002' or POItem.MaterialGroup = 'U003' or POItem.MaterialGroup = 'U005' or POItem.MaterialGroup = 'U006' ) and
-                ( POHistory.PurchasingHistoryDocumentType = '2' or POHistory.PurchasingHistoryDocumentType = '3' )
+Where       :   POItem.PurchasingDocumentDeletionCode = '' and
+                POHistory.PurchasingHistoryDocumentType in ( '2', '3' )   // GR / IR history records
+                // Organisational and document-type scope intentionally not hard-coded.
+                // Add your own, e.g.:
+                //   and POHeader.PurchasingOrganization in ( ... )
+                //   and POHeader.PurchaseOrderType      in ( ... )
+                //   and POItem.MaterialGroup            in ( ... )
 
 Group By    :
 

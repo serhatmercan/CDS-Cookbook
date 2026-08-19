@@ -28,13 +28,12 @@ Fields      :   key NLI.NominationDoc                                           
                     NLI.LocationName                                                              as LocationNameDq,
                     NLI.LocationPartner                                                           as LocationPartnerOq,                  
                     NLI.MaterialDesc                                                              as MaterialDescDq,
-                    NLI.NominationCarrier                                                         as NominationCarrierOq,
                     NLI.NominationItemIsComplete                                                  as NominationItemIsComplete,  
 
                     NLI.NominationCarrier                                                         as NominationCarrier,
                     _CarrierName.SupplierFullName                                                 as NominationCarrierName,
 
-                    NLI.NominationPipelineCycleID                                                 as VehicleIdentifierOq,
+                    NLI.NominationPipelineCycleID                                                 as NominationPipelineCycleID,
                     NLI.NominationRefDocCode                                                      as NominationRefDocCode,
                     NLI.NominationScheduleDate                                                    as NominationScheduleDateDq,
                     NLI.NominationScheduleType                                                    as NominationScheduleType,
@@ -59,18 +58,26 @@ Fields      :   key NLI.NominationDoc                                           
                     NLI.ValuationTypeOrigin                                                       as ValuationTypeOrigin,                  
                     
                     NLI.VehicleId                                                                 as VehicleId,
-                    NLI._NominationVehicleIdVH.VehicleDescription                                 as VehicleDescription,            
+                    NLI._NominationVehicleIdVH.VehicleDescription                                 as VehicleDescription
 
-Where       :   NLI.NominationReferenceDocument <> '' or
-                NLI.NominationReferenceDocType = 'P' or
-                NLI.NominationReferenceDocType = 'T' or
-                NLI.NominationScheduleType like 'D%' || 'O%'
-              
-Group By    :   NLI.NominationReferenceDocument,
-                NLI.NominationReferenceDocItem
+Where       :   NLI.NominationReferenceDocument <> ''
+                and NLI.NominationReferenceDocType in ( 'P', 'T' )
+                and ( NLI.NominationScheduleType like 'D%' or NLI.NominationScheduleType like 'O%' )
+
+Group By    :   // no aggregation in this projection - nothing to group
 
 Module           :   OG (Oil & Gas - TSW / Nomination Management)
 Business Object  :   Nomination Line Item
 Common Use Cases :   - Main nomination ticket data source; enriches line item with carrier/shipper/
                    contract partner names and vehicle description
 Related CDS      :   I_NominationHeaderFld, I_NominationEvent, I_NominationTicketAddlQuantity
+Notes            :   - `||` is string concatenation in ABAP CDS, not a logical OR. Alternatives
+                     must be written with `in ( ... )` or with explicit `or` predicates - two
+                     LIKE patterns cannot be combined with `||`.
+                     - The predicates are AND-combined and parenthesised: an OR-chain starting
+                     with `ReferenceDocument <> ''` would have made the rest of the filter
+                     ineffective.
+                     - Demand ("D%") and offer ("O%") schedule types are standard IS-OIL/TSW
+                     schedule type values.
+Type             :   reference snippet
+Context          :   SAP standard reference

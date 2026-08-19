@@ -17,3 +17,8 @@ Associations Used:   plain join on ATPRelevantDocument, ATPRelevantDocumentItem,
 Common Use Cases :   - Restricting/scoping STO schedule lines that are relevant for aATP backorder processing (BOP)
 Notes            :   - Part of the standard Advanced ATP (ABOP) framework; normally consumed, not modified
 Related CDS      :   I_StockTransptOrdScheduleLine
+Release note     :   P_* views belong to the private/internal VDM layer. They are not
+                     released reuse APIs: SAP may change or remove them. Treat this file as a
+                     record of what was used, and prefer a released alternative if one exists.
+Type             :   reference snippet
+Context          :   SAP standard reference

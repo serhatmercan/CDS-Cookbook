@@ -1,7 +1,7 @@
 CDS         :   I_InspectionLot
 Description :   Inspection Lot
 
-Using       :   inner join I_InspectionLot on IL.DeliveryDocument = I_DeliveryDocumentItem.DeliveryDocument " or IL.DeliveryDocument = I_DeliveryDocument.DeliveryDocumentBySupplier
+Using       :   inner join I_InspectionLot as IL on IL.DeliveryDocument = I_DeliveryDocumentItem.DeliveryDocument // or IL.DeliveryDocument = I_DeliveryDocument.DeliveryDocumentBySupplier
 
 Fields      :   key IL.InspectionLot,
                     

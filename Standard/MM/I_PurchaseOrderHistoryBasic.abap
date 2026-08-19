@@ -26,7 +26,12 @@ Fields      :   key POHB.PurchaseOrder,
 
 Where            :
 
-Group By         :
+Group By         :   POHB.PurchaseOrder,
+                     POHB.PurchaseOrderItem,
+                     POHB.PurchasingHistoryCategory,
+                     POHB.PurchasingHistoryDocument,
+                     POHB.PurchasingHistoryDocumentYear,
+                     POHB.Currency
 
 Module           :   MM
 Business Object  :   Purchase Order History (GR/IR)

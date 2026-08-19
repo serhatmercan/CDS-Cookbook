@@ -22,3 +22,8 @@ Related CDS      :   I_SalesDocumentScheduleLine
 
 Notes            :   - No additional fields are exposed by this view in this reference; it is used purely
                    as an inner join filter to restrict a schedule-line query to ATP/BOP-relevant rows
+Release note     :   P_* views belong to the private/internal VDM layer. They are not
+                     released reuse APIs: SAP may change or remove them. Treat this file as a
+                     record of what was used, and prefer a released alternative if one exists.
+Type             :   reference snippet
+Context          :   SAP standard reference

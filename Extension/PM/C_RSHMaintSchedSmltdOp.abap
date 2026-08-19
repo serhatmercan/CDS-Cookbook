@@ -1,26 +1,36 @@
-" ============================================================================
-" Extension   : C_RSHMaintSchedSmltdOp  (extend view ... with ZSM_I_EXT_RSH_MSSO)
-" Module      : PM
-" Business Object : Maintenance Scheduling - Simulated Operation
-" ----------------------------------------------------------------------------
-" Description
-"   Adds a virtual, read-only TextI field carrying a custom operation text
-"   (AFVC-ZZ_TEXT_1), computed and filterable through the SADL exit class
-"   ZSM_CL_RSH_MSSO.
-"
-" Fields Added
-"   TextI - virtual element, calculated by ABAP class ZSM_CL_RSH_MSSO
-"           (joins AFVC on maintorderroutingnumber/operation to read ZZ_TEXT_1)
-"
-" Common Use Cases
-"   - Resource Scheduling (RSH) Gantt/board: show custom operation text
-"
-" Notes
-"   - Implements if_sadl_exit_calc_element_read (CALCULATE) and
-"     if_sadl_exit_filter_transform (MAP_ATOM); filter only applies when
-"     entity is C_RSHMAINTOPERATIONASSIGNMENT
-"   - Field is @ObjectModel.readOnly: true
-" ============================================================================
+// ============================================================================
+// Extension   : C_RSHMaintSchedSmltdOp  (extend view ... with ZSM_I_EXT_RSH_MSSO)
+// Module      : PM
+// Business Object : Maintenance Scheduling - Simulated Operation
+// ----------------------------------------------------------------------------
+// Description
+//   Adds a virtual, read-only TextI field carrying a custom operation text
+//   (AFVC-ZZ_TEXT_1), computed and filterable through the SADL exit class
+//   ZSM_CL_RSH_MSSO.
+//
+// Fields Added
+//   Text1 - virtual element, calculated by ABAP class ZSM_CL_RSH_MSSO
+//           (joins AFVC on maintorderroutingnumber/operation to read ZZ_TEXT_1)
+//
+// Common Use Cases
+//   - Resource Scheduling (RSH) Gantt/board: show custom operation text
+//
+// Notes
+//   - Implements if_sadl_exit_calc_element_read (CALCULATE) and
+//     if_sadl_exit_filter_transform (MAP_ATOM); filter only applies when
+//     entity is C_RSHMAINTOPERATIONASSIGNMENT
+//   - Field is @ObjectModel.readOnly: true
+//   - The CDS element name and the structure component the exit class writes
+//     must be the SAME name. An earlier revision declared the element as
+//     "TextI" while the class filled "text1", so the virtual element stayed
+//     empty and the filter never matched. Both are now Text1.
+//   - This file is an anthology: the CDS extension above the "---" separator
+//     and the exit class below it are two separate objects. Create them as two
+//     sources; they are kept together because neither works without the other.
+//
+// Type       : extension + ABAP snippet (paired recipe, see the "---" separator)
+// Context    : reusable pattern
+// ============================================================================
 
 @AbapCatalog.sqlViewAppendName: 'ZSM_V_EXT_RSH_MSSO'
 @EndUserText.label: 'C_RSHMaintSchedSmltdOp Extend View'
@@ -31,9 +41,9 @@ extend view C_RSHMaintSchedSmltdOp with ZSM_I_EXT_RSH_MSSO
         filter.transformedBy: 'ABAP:ZSM_CL_RSH_MSSO',
         readOnly: true,
         virtualElement: true,
-        virtualElementCalculatedBy: 'ABAP:ZSM_CL_RSH_MSSO',
+        virtualElementCalculatedBy: 'ABAP:ZSM_CL_RSH_MSSO'
     }
-    cast('' as zsm_e_textI) as TextI
+    cast('' as zsm_e_text1) as Text1
 }
 
 ---
@@ -72,15 +82,19 @@ METHOD if_sadl_exit_calc_element_read~calculate.
       RETURN.
     ENDIF.
   
-    SELECT t1~aufpl, t1~vornr, t1~zz_text_1       
-      FROM afvc AS t1
-      INNER JOIN c_rshmaintschedsmltdop AS t2
-        ON t2~maintorderroutingnumber EQ t1~aufpl
-      INTO TABLE @DATA(lt_table).
-  
+    " Read only the rows of the current page. Selecting from AFVC joined to the
+    " CDS view without a restriction would read every operation in the system on
+    " every request - a virtual element runs per result page, so it must be
+    " bounded by the data it was handed.
+    SELECT aufpl, vornr, zz_text_1
+      FROM afvc
+      FOR ALL ENTRIES IN @lt_rsh_msso
+      WHERE aufpl = @lt_rsh_msso-maintorderroutingnumber
+      INTO TABLE @DATA(lt_afvc).
+
     LOOP AT lt_rsh_msso ASSIGNING FIELD-SYMBOL(<fs_rsh_msso>).
-        <fs_rsh_msso>-text1 = VALUE #( lt_table[ aufpl = <fs_rsh_msso>-maintorderroutingnumber
-                                                 vornr = <fs_rsh_msso>-maintenanceorderoperation ]-zz_text_1 OPTIONAL ).
+      <fs_rsh_msso>-text1 = VALUE #( lt_afvc[ aufpl = <fs_rsh_msso>-maintorderroutingnumber
+                                              vornr = <fs_rsh_msso>-maintenanceorderoperation ]-zz_text_1 OPTIONAL ).
     ENDLOOP.
   
     ct_calculated_data = CORRESPONDING #( lt_rsh_msso ).

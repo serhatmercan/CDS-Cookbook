@@ -22,7 +22,7 @@ Fields      :   key TDF.NominationTicketKey             as TicketKey,
                     TDF.NominationTicketType,
                     TDF.SDDocumentCategoryName          as DocumentCategoryName,
                     TDF.SourceDocumentItem              as MaterialDocumentItem,
-                    TDF.TicketDocumentStatus,
+                    TDF.TicketDocumentStatus
 
 Where       :   TDF.MaterialDocumentYear <> '0000'
 

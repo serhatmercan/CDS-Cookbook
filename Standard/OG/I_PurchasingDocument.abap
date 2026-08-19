@@ -7,7 +7,7 @@ Using       :   as select from I_PurchasingDocument     as PD   on PD.Purchasing
 Fields      :   key PD.PurchasingDocument,
                 key PD.PurchasingDocumentItem,
 
-                    " Purchasing Document            
+                    // Purchasing Document            
                     PD.CashDiscount1Days,           
                     PD.CompanyCode,                   
                     PD.DocumentCurrency,             
@@ -16,11 +16,11 @@ Fields      :   key PD.PurchasingDocument,
                     PD.PaymentTerms,                  
                     PD.PurchasingDocumentCondition,
                     PD.PurchasingDocumentOrderDate,   
-                    PD.PurchasingOrganization,          " Key (Optional)        
+                    PD.PurchasingOrganization,          // Key (Optional)        
                     PD.PurchasingGroup,
                     PD.Supplier,
                     
-                    " Purchasing Document Item
+                    // Purchasing Document Item
                     PDI.DocumentCurrency,
                     PDI.Material,
 
@@ -33,9 +33,11 @@ Fields      :   key PD.PurchasingDocument,
                     PDI.Plant,
                     PDI.PurchasingDocumentItemText
 
-Where       :   PD.PurchasingDocumentType = 'YN01' and  
-                PD.PurchasingOrganization = '1200' and
-                ( PDI.MaterialGroup = 'U002' or PDI.MaterialGroup = 'U003' or PDI.MaterialGroup = 'U006' )
+Where       :   // Purchasing document type, organisation and material-group scope are
+                // installation-specific and intentionally not hard-coded here. Add your own:
+                //   PD.PurchasingDocumentType in ( ... ) and
+                //   PD.PurchasingOrganization in ( ... ) and
+                //   PDI.MaterialGroup         in ( ... )
 
 Group By    :   
 
@@ -43,6 +45,6 @@ Module           :   MM
 Business Object  :   Purchasing Document (header + item)
 Common Use Cases :   - PO header/item enrichment for OG nomination reference-document reporting
                    (incoterms, payment terms, net price/amount, plant, material)
-Notes            :   - Filtered to PurchasingDocumentType 'YN01', PurchasingOrganization '1200' and
-                   material groups U002/U003/U006 - all client-specific
+Notes            :   - Document type, purchasing organisation and material-group scope were all
+                     installation configuration and are intentionally not hard-coded here.
 Related CDS      :   I_PurchasingDocumentItem, I_PurchaseOrder, I_PurchaseOrderItem

@@ -1,18 +1,20 @@
-" ============================================================================
-" Extension   : C_MaintNotificationTP  (extend view ... with ZSM_I_EXT_MN_TP)
-" Module      : PM
-" Business Object : Maintenance Notification (Transactional Projection)
-" ----------------------------------------------------------------------------
-" Description
-"   Adds Maintenance Activity Type to the Maintenance Notification
-"   transactional projection view.
-"
-" Fields Added
-"   MaintenanceActivityType - _MaintNotificationTP.MaintenanceActivityType
-"
-" Common Use Cases
-"   - Maintenance Notification app: display/filter by activity type
-" ============================================================================
+// ============================================================================
+// Type       : extension (classic extend view + append)
+// Context    : reusable pattern
+// Extension   : C_MaintNotificationTP  (extend view ... with ZSM_I_EXT_MN_TP)
+// Module      : PM
+// Business Object : Maintenance Notification (Transactional Projection)
+// ----------------------------------------------------------------------------
+// Description
+//   Adds Maintenance Activity Type to the Maintenance Notification
+//   transactional projection view.
+//
+// Fields Added
+//   MaintenanceActivityType - _MaintNotificationTP.MaintenanceActivityType
+//
+// Common Use Cases
+//   - Maintenance Notification app: display/filter by activity type
+// ============================================================================
 
 @AbapCatalog.sqlViewAppendName: 'ZSM_V_EXT_MN_TP'
 

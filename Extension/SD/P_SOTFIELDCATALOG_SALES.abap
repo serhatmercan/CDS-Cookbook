@@ -1,30 +1,32 @@
-" ============================================================================
-" Extension   : P_SOTFIELDCATALOG_SALES  (extend view ... with ZSM_I_EXT_SFC_SALES)
-" Module      : SD
-" Business Object : Sales Order Field Catalog (Sales Order Fiori app)
-" ----------------------------------------------------------------------------
-" Description
-"   Adds a large set of Sales Document header and item fields (plus their
-"   foreign-key/text associations) to the "Manage Sales Orders" field
-"   catalog, so they become available as extra columns/filters in the app.
-"
-" Fields Added
-"   CreatedByUser, OrderCreationDate, OrderCreationTime,
-"   PurchaseOrderByCustomer, SDDocumentReason, SoldToParty,
-"   DeliveryBlockReason, DistributionChannel, Division, SDDocumentType,
-"   SalesGroup, SalesOffice, SalesOrganization, SDDocumentCategory,
-"   ShippingType                                    - from _SalesDocument (+ FK associations)
-"   CompletionRule, DeliveryDateQuantityIsFixed, DeliveryGroup,
-"   FashionCancelDate, SalesDocumentRJCNReason,
-"   Batch, CustomerGroup, DeliveryPriority, ItemCategory, Material,
-"   MaterialGroup, MaterialSubstitutionReason, OriginallyRequestedMaterial,
-"   Plant, ShippingPoint, StorageLocation           - from _SalesDocumentItem (+ FK associations)
-"   ProductAvailabilityDate                          - PRODUCTAVAILABILITYDATE (product)
-"
-" Common Use Cases
-"   - Manage Sales Orders (Fiori) field catalog: extra columns/filters for
-"     list report and ALP variants
-" ============================================================================
+// ============================================================================
+// Type       : extension (classic extend view + append)
+// Context    : reusable pattern
+// Extension   : P_SOTFIELDCATALOG_SALES  (extend view ... with ZSM_I_EXT_SFC_SALES)
+// Module      : SD
+// Business Object : Sales Order Field Catalog (Sales Order Fiori app)
+// ----------------------------------------------------------------------------
+// Description
+//   Adds a large set of Sales Document header and item fields (plus their
+//   foreign-key/text associations) to the "Manage Sales Orders" field
+//   catalog, so they become available as extra columns/filters in the app.
+//
+// Fields Added
+//   CreatedByUser, OrderCreationDate, OrderCreationTime,
+//   PurchaseOrderByCustomer, SDDocumentReason, SoldToParty,
+//   DeliveryBlockReason, DistributionChannel, Division, SDDocumentType,
+//   SalesGroup, SalesOffice, SalesOrganization, SDDocumentCategory,
+//   ShippingType                                    - from _SalesDocument (+ FK associations)
+//   CompletionRule, DeliveryDateQuantityIsFixed, DeliveryGroup,
+//   FashionCancelDate, SalesDocumentRJCNReason,
+//   Batch, CustomerGroup, DeliveryPriority, ItemCategory, Material,
+//   MaterialGroup, MaterialSubstitutionReason, OriginallyRequestedMaterial,
+//   Plant, ShippingPoint, StorageLocation           - from _SalesDocumentItem (+ FK associations)
+//   ProductAvailabilityDate                          - PRODUCTAVAILABILITYDATE (product)
+//
+// Common Use Cases
+//   - Manage Sales Orders (Fiori) field catalog: extra columns/filters for
+//     list report and ALP variants
+// ============================================================================
 
 @AbapCatalog.sqlViewAppendName: 'ZSM_V_EXT_SFC_SALES'
 
@@ -33,7 +35,7 @@
 extend view P_SOTFIELDCATALOG_SALES with ZSM_I_EXT_SFC_SALES
 
 {
-  " Sales Document Header
+  // Sales Document Header
   _SalesDocument.CREATEDBYUSER                                              AS CreatedByUser,
 
   _SalesDocument.CREATIONDATE                                               AS OrderCreationDate,
@@ -42,7 +44,7 @@ extend view P_SOTFIELDCATALOG_SALES with ZSM_I_EXT_SFC_SALES
   _SalesDocument.SDDOCUMENTREASON                                           AS SDDocumentReason,
   _SalesDocument.SOLDTOPARTY                                                AS SoldToParty,
 
-  " Sales Document Header - Foreign Key
+  // Sales Document Header - Foreign Key
   _SalesDocument._DELIVERYBLOCKREASON.DELIVERYBLOCKREASON                   AS DeliveryBlockReason,
 
   _SalesDocument._DISTRIBUTIONCHANNEL.DISTRIBUTIONCHANNEL                   AS DistributionChannel,
@@ -54,7 +56,7 @@ extend view P_SOTFIELDCATALOG_SALES with ZSM_I_EXT_SFC_SALES
   _SalesDocument._SDDOCUMENTCATEGORY.SDDOCUMENTCATEGORY                     AS SDDocumentCategory,
   _SalesDocument._SHIPPINGTYPE.SHIPPINGTYPE                                 AS ShippingType,
 
-  " Sales Document Item
+  // Sales Document Item
   _SalesDocumentItem.COMPLETIONRULE                                         AS CompletionRule,
 
   _SalesDocumentItem.DELIVERYDATEQUANTITYISFIXED                            AS DeliveryDateQuantityIsFixed,
@@ -62,7 +64,7 @@ extend view P_SOTFIELDCATALOG_SALES with ZSM_I_EXT_SFC_SALES
   _SalesDocumentItem.FASHIONCANCELDATE                                      AS FashionCancelDate,
   _SalesDocumentItem.SALESDOCUMENTRJCNREASON                                AS SalesDocumentRJCNReason,
 
-  " Sales Document Item - Foreign Key
+  // Sales Document Item - Foreign Key
   _SalesDocumentItem._BATCH.BATCH                                           AS Batch,
 
   _SalesDocumentItem._CUSTOMERGROUP.CUSTOMERGROUP                           AS CustomerGroup,
@@ -76,6 +78,6 @@ extend view P_SOTFIELDCATALOG_SALES with ZSM_I_EXT_SFC_SALES
   _SalesDocumentItem._SHIPPINGPOINT.SHIPPINGPOINT                           AS ShippingPoint,
   _SalesDocumentItem._STORAGELOCATION.STORAGELOCATION                       AS StorageLocation,
 
-  " Product
+  // Product
   PRODUCTAVAILABILITYDATE                                                   AS ProductAvailabilityDate
 }

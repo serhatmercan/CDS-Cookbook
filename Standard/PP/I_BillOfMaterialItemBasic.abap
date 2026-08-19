@@ -10,9 +10,9 @@ Fields      :   key BOMItem.BillOfMaterialCategory,
 
                     BOMItem.BillOfMaterialComponent,
 
-                    BOMItem._Product,
+                    BOMItem._Product
 
-Where       :   BOMItem.BillOfMaterialCategory = 'E';
+Where       :   BOMItem.BillOfMaterialCategory = 'E'   // standard BOM category
 
 Group By    :   
 

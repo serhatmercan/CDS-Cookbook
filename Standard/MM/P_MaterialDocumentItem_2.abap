@@ -16,10 +16,19 @@ Fields      :   _MatDocItem.GoodsMovementType,
 Where       :   _MatDocItem.GoodsMovementType           = $parameters.p_move_type and
                 _MatDocItem.MaterialDocumentParentLine  = '000000'
 
-Group By    :
+Group By    :   _MatDocItem.GoodsMovementType,
+                _MatDocItem.InventoryValuationType,
+                _MatDocItem.MaterialBaseUnit,
+                _MatDocItem.MaterialDocumentParentLine,
+                _MatDocItem.PostingDate
 
 Module           :   MM
 Business Object  :   Material Document Item (RAP-based)
 Associations Used:   _MatDocItem -> P_MaterialDocumentItem_2 on MaterialDocument, MaterialDocumentYear
 Common Use Cases :   - Goods movement quantity for a specific movement type (parameter-driven), aggregated to parent line
 Related CDS      :   I_MaterialDocumentHeader, I_MaterialDocumentItem
+Release note     :   P_* views belong to the private/internal VDM layer. They are not
+                     released reuse APIs: SAP may change or remove them. Treat this file as a
+                     record of what was used, and prefer a released alternative if one exists.
+Type             :   reference snippet
+Context          :   SAP standard reference

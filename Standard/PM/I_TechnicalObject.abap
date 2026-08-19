@@ -1,20 +1,20 @@
 CDS         :   I_TechnicalObject
 Description :   Technical Object
 
-Using       :   as select from I_TechnicalObject as TO   
+Using       :   as select from I_TechnicalObject as TObj
 
-Fields      :   key TO.TechnicalObject                  as Tplnr, 
-                key TO.TechObjIsEquipOrFuncnlLoc,
+Fields      :   key TObj.TechnicalObject                  as Tplnr, 
+                key TObj.TechObjIsEquipOrFuncnlLoc,
 
-                    TO.Equipment,
-                    TO.FunctionalLocation,
-                    TO.MaintObjectInternalID            as Objnr,
-                    TO.TechnicalObjectCategory,
-                    TO.TechnicalObjectType
+                    TObj.Equipment,
+                    TObj.FunctionalLocation,
+                    TObj.MaintObjectInternalID            as Objnr,
+                    TObj.TechnicalObjectCategory,
+                    TObj.TechnicalObjectType
 
-Where       :   TO.IsDeleted                    = ''            and
-                TO.TechObjIsEquipOrFuncnlLoc    = 'EAMS_FL'     and
-                TO.TechObjStatusIsInactive      = '' 
+Where       :   TObj.IsDeleted                    = ''            and
+                TObj.TechObjIsEquipOrFuncnlLoc    = 'EAMS_FL'     and
+                TObj.TechObjStatusIsInactive      = '' 
                 
 
 Group By    :   

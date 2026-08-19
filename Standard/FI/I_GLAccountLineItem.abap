@@ -14,7 +14,7 @@ Fields      :   key GLALItem.SourceLedger,
                 key GLALItem.Ledger,
 
                     @Semantics.amount.currencyCode: 'CompanyCodeCurrency'
-                    GLALItemAmountInCompanyCodeCurrency,
+                    GLALItem.AmountInCompanyCodeCurrency,
 
                     GLALItem.BusinessArea,
                     GLALItem.ChartOfAccounts,
@@ -24,7 +24,7 @@ Fields      :   key GLALItem.SourceLedger,
                     GLALItem.FiscalPeriod,
                     
                     GLALItem.GLAccount,
-                    GLAccountText.GLAccountName
+                    GLAText.GLAccountName
 
 Where       :   GLALItem.SourceLedger = GLALItem.Ledger
 

@@ -3,7 +3,7 @@ Description :   Product     & Product Descriptions
 
 Using       :   inner join I_Product            as Product      on Product.Product      = I_EWM_InbDeliveryItemBasic.product
                 inner join I_ProductDescription as ProductDesc  on ProductDesc.Product  = Product.Product
-                                                               and ProductDesc.Language = 'T'
+                                                               and ProductDesc.Language = $session.system_language
 
 Fields      :   key Product.Product,
                     

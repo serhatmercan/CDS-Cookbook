@@ -1,7 +1,7 @@
 CDS         :   I_MaintOrderOperation_DEX
 Description :   Maintenance Order Operation Data
 
-Using       :   as select from I_MaintOrderOperation_DEX as MOODEX " or MOODEX.MaintenanceOrder = I_MaintOrderTP.MaintenanceOrder
+Using       :   as select from I_MaintOrderOperation_DEX as MOODEX // or MOODEX.MaintenanceOrder = I_MaintOrderTP.MaintenanceOrder
 
 Fields      :   key MOODEX.MaintOrderRoutingNumber,
                 key MOODEX.MaintenanceOrderRoutingNode,
@@ -9,9 +9,11 @@ Fields      :   key MOODEX.MaintOrderRoutingNumber,
                 sum( case when MOODEX.OperationPlannedWorkUnit = 'MIN' then MOODEX.OperationPlannedWork
                           when MOODEX.OperationPlannedWorkUnit = 'H'   then MOODEX.OperationPlannedWork * 60 end ) as OperationPlannedWork_MIN
 
-Where       :   MOODEX.OperationControlKey <> 'PMXX'  
+Where       :   // Operation control key scope is configuration:
+                //   MOODEX.OperationControlKey <> '...'
 
-Group By    :   MOODEX.MaintenanceOrder
+Group By    :   MOODEX.MaintOrderRoutingNumber,
+                MOODEX.MaintenanceOrderRoutingNode
 
 Module           :   PM
 Business Object  :   Maintenance Order Operation

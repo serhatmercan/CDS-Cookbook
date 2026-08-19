@@ -1,30 +1,53 @@
 " ============================================================================
-" Class       : ZSM_CL_AMDP  (AMDP class implementing table functions)
-" Module      : N/A
-" Business Object : N/A
+" Type       : AMDP (class implementing CDS table functions)
+" Context    : reusable pattern
+" Class      : ZSM_CL_AMDP
+" Module     : cross-application
 " ----------------------------------------------------------------------------
 " Description
-"   Central AMDP class (IF_AMDP_MARKER_HDB) providing the SQLScript
-"   implementations for the CDS table functions defined in ZSM_F_* (see
-"   AMDP/Function.abap for the corresponding signatures).
+"   AMDP class (IF_AMDP_MARKER_HDB) holding the SQLScript implementations of
+"   the CDS table functions declared in AMDP/Function.abap.
 "
 " Methods
-"   - get_amount            : aggregates ACDOCA amounts+unit per company code/fiscal year/document, comma-concatenated across lines
-"   - get_date               : latest change date/time from CDHDR/CDPOS for purchase requisition release (EBAN-FRGZU) changes
-"   - get_material           : material + description (MARA/MAKT) filtered by a dynamic selection option range
-"   - get_nomi_match         : matches nomination demand/offer schedule lines via OIJNOMI/OIJPEG pegging
-"   - get_nomi_match_prm     : parameter-driven variant of get_nomi_match
-"   - get_nomi_rows_no       : adds a row number per demand/offer pairing on top of the nomination match result
-"   - get_risk_docs          : working days between price validity begin/end dates for risk documents
-"   - get_technical_object   : recursively resolves subordinate technical objects (IFLOT hierarchy) assigned to a user
-"   - get_working_days       : working-day flag and month boundaries per calendar date and factory calendar
-"   - workdays_between       : thin wrapper exposing the SQLScript workdays_between() built-in as a table function
+"   - get_quantity_list    : STRING_AGG over ACDOCA, quantity + unit text per
+"                            accounting document
+"   - get_change_date      : RANK() window function - latest change document
+"                            entry per table key (CDHDR/CDPOS)
+"   - get_material         : APPLY_FILTER with an explicit trust boundary
+"   - get_nomi_match       : set-based nomination / pegging join with
+"                            ROW_NUMBER de-duplication (OIJNOMI/OIJPEG)
+"   - get_nomi_rows_no     : ROW_NUMBER over a consuming CDS view
+"   - get_risk_docs        : WORKDAYS_BETWEEN over price validity dates
+"   - get_technical_object : recursive CTE walking the functional location
+"                            hierarchy (IFLOT) below a user's assignments
+"   - get_working_days     : bounded calendar read with working-day flags
+"   - workdays_between     : thin wrapper over the WORKDAYS_BETWEEN built-in
 "
-" Common Use Cases
-"   - Reusable AMDP logic backing CDS table functions for calculations SQL/CDS views can't express directly (recursion, string aggregation, procedural loops)
+" SQLScript patterns demonstrated
+"   window functions (RANK, ROW_NUMBER) - STRING_AGG with ORDER BY -
+"   common table expressions - recursive CTE hierarchy traversal -
+"   APPLY_FILTER with a generated condition - typed table variables -
+"   HANA date functions (WORKDAYS_BETWEEN, ADD_MONTHS, LAST_DAY,
+"   DATS_ADD_DAYS)
 "
-" Notes
-"   - get_amount has a stray space in "p _gjahr" in its WHERE clause - left as-is
+" Client safety (applies to EVERY method here)
+"   Each client-dependent table is restricted with :p_client, and every join
+"   between client-dependent tables carries the client column. See
+"   AMDP/Function.abap for the matching client-handling annotations and the
+"   release note. A missing client predicate in an AMDP method is a
+"   cross-client read: the CDS layer cannot add it for you.
+"
+" Release note
+"   get_technical_object uses a recursive common table expression
+"   (WITH RECURSIVE), which requires a HANA release that supports it. Verify
+"   support on your target database before copying that recipe.
+"
+" Comment-syntax note
+"   This file is ABAP, so ABAP " comments are correct here. Files whose
+"   content is CDS DDL use // comments instead.
+"
+" Related
+"   AMDP/Function.abap
 " ============================================================================
 
 CLASS zsm_cl_amdp DEFINITION
@@ -34,473 +57,359 @@ CLASS zsm_cl_amdp DEFINITION
   PUBLIC SECTION.
     INTERFACES if_amdp_marker_hdb.
 
-    CLASS-METHODS get_amount            FOR TABLE FUNCTION zsm_f_amount.
-    CLASS-METHODS get_date              FOR TABLE FUNCTION zsm_f_date.
-    CLASS-METHODS get_material          FOR TABLE FUNCTION zsm_f_material.
-    CLASS-METHODS get_nomi_match        FOR TABLE FUNCTION zsm_f_nomi_match.
-    CLASS-METHODS get_nomi_match_prm    FOR TABLE FUNCTION zsm_f_nomi_match_prm.
-    CLASS-METHODS get_nomi_rows_no      FOR TABLE FUNCTION zsm_f_nomi_rows.
-    CLASS-METHODS get_risk_docs         FOR TABLE FUNCTION zsm_f_risk_docs.
-    CLASS-METHODS get_technical_object  FOR TABLE FUNCTION zsm_f_technical_object.
-    CLASS-METHODS get_working_days      FOR TABLE FUNCTION zsm_f_working_days.
-    CLASS-METHODS workdays_between      FOR TABLE FUNCTION zsm_f_workdays_between.
+    CLASS-METHODS get_quantity_list    FOR TABLE FUNCTION zsm_f_quantity_list.
+    CLASS-METHODS get_change_date      FOR TABLE FUNCTION zsm_f_change_date.
+    CLASS-METHODS get_material         FOR TABLE FUNCTION zsm_f_material.
+    CLASS-METHODS get_nomi_match       FOR TABLE FUNCTION zsm_f_nomi_match.
+    CLASS-METHODS get_nomi_rows_no     FOR TABLE FUNCTION zsm_f_nomi_rows.
+    CLASS-METHODS get_risk_docs        FOR TABLE FUNCTION zsm_f_risk_docs.
+    CLASS-METHODS get_technical_object FOR TABLE FUNCTION zsm_f_technical_object.
+    CLASS-METHODS get_working_days     FOR TABLE FUNCTION zsm_f_working_days.
+    CLASS-METHODS workdays_between     FOR TABLE FUNCTION zsm_f_workdays_between.
 ENDCLASS.
 
 
 CLASS zsm_cl_amdp IMPLEMENTATION.
-  METHOD get_amount BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING acdoca t006a.
-    lt_data = SELECT DISTINCT t1.rclnt,
+
+  " --------------------------------------------------------------------------
+  " STRING_AGG: collapse the quantity + unit text of every document line into
+  " one comma-separated string per accounting document.
+  " Ledger '0L' is the standard leading ledger, not customer configuration.
+  " --------------------------------------------------------------------------
+  METHOD get_quantity_list BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT
+                           OPTIONS READ-ONLY
+                           USING acdoca t006a.
+
+    lt_line = SELECT DISTINCT t1.rclnt,
                               t1.rldnr,
                               t1.rbukrs,
                               t1.gjahr,
                               t1.belnr,
                               t1.docln,
-                              t1.msl,
-                              concat( t1.msl , t2.msehl ) as amount,
-                              t1.mwskz
+                              t1.mwskz,
+                              concat( t1.msl, t2.msehl ) AS qty_text
                          FROM acdoca AS t1
-                   INNER JOIN t006a  AS t2 
-                           ON t2.msehi = t1.runit
-                        WHERE t1.rldnr  = '0L'
-                          AND t1.rbukrs = : p_bukrs
-                          AND t1.gjahr  = : p _gjahr
-                          AND t1.ktosl  <> 'VST'
-                          AND t1.koart  <> 'K'
-                          AND t2.spras  =  'T';
+                   INNER JOIN t006a  AS t2
+                           ON  t2.mandt = t1.rclnt
+                          AND  t2.msehi = t1.runit
+                          AND  t2.spras = :p_langu
+                        WHERE t1.rclnt  = :p_client
+                          AND t1.rldnr  = '0L'
+                          AND t1.rbukrs = :p_bukrs
+                          AND t1.gjahr  = :p_gjahr;
 
-
-    RETURN
-      SELECT rclnt  as Client,
-             rldnr  as Rldnr,
-             rbukrs as Bukrs,
-             gjahr  as Gjahr,
-             belnr  as Belnr,
-             mwskz  as Mwskz,
-             STRING_AGG(amount,',' order by msl) as Amount
-        FROM :lt_data
-    GROUP BY rclnt,
-             rldnr,
-             rbukrs,
-             gjahr,
-             belnr,
-             mwskz;                          
+    RETURN SELECT rclnt                                        AS Client,
+                  rldnr                                        AS Ledger,
+                  rbukrs                                       AS CompanyCode,
+                  gjahr                                        AS FiscalYear,
+                  belnr                                        AS Document,
+                  mwskz                                        AS TaxCode,
+                  string_agg( qty_text, ',' ORDER BY docln )    AS QuantityList
+             FROM :lt_line
+         GROUP BY rclnt,
+                  rldnr,
+                  rbukrs,
+                  gjahr,
+                  belnr,
+                  mwskz;
   ENDMETHOD.
 
-  METHOD get_date BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING cdpos cdhdr.
-    WITH lt_ranked_data AS ( SELECT cdpos.mandant  AS Client,
-                                    cdhdr.objectid AS ObjectID,
-                                    cdpos.tabkey   AS Tabkey,
-                                    cdhdr.udate    AS Odate,
-                                    cdhdr.utime    AS Otime,
-                                    RANK() OVER ( PARTITION BY cdpos.mandant, cdpos.tabkey
-                                                  ORDER BY cdhdr.udate DESC, cdhdr.utime DESC ) AS Rank
-                              FROM cdhdr 
-                        INNER JOIN cdpos 
-                                ON cdhdr.objectclas = cdpos.objectclas
-                               AND cdhdr.objectid   = cdpos.objectid
-                               AND cdhdr.changenr   = cdpos.changenr
-                             WHERE cdhdr.objectclas = 'BANF'
-                               AND cdpos.tabname    = 'EBAN'
-                               AND cdpos.fname      = 'FRGZU' )
 
-    SELECT Client,
-           ObjectID,
-           Tabkey,
-           Odate,
-           Otime
-      FROM lt_ranked_data
-     WHERE Rank = 1;
+  " --------------------------------------------------------------------------
+  " RANK() window function: newest change document entry per table key.
+  " Object class, table and field name are parameters - the recipe is not
+  " bound to one business object.
+  " --------------------------------------------------------------------------
+  METHOD get_change_date BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT
+                         OPTIONS READ-ONLY
+                         USING cdhdr cdpos.
+
+    RETURN WITH lt_ranked AS ( SELECT h.mandant  AS client,
+                                      h.objectid AS objectid,
+                                      p.tabkey   AS tabkey,
+                                      h.udate    AS udate,
+                                      h.utime    AS utime,
+                                      RANK( ) OVER ( PARTITION BY h.mandant, p.tabkey
+                                                     ORDER BY h.udate DESC, h.utime DESC ) AS latest_rank
+                                 FROM cdhdr AS h
+                           INNER JOIN cdpos AS p
+                                   ON  p.mandant    = h.mandant
+                                  AND  p.objectclas = h.objectclas
+                                  AND  p.objectid   = h.objectid
+                                  AND  p.changenr   = h.changenr
+                                WHERE h.mandant    = :p_client
+                                  AND h.objectclas = :p_object_class
+                                  AND p.tabname    = :p_table_name
+                                  AND p.fname      = :p_field_name )
+
+           SELECT client   AS Client,
+                  objectid AS ObjectID,
+                  tabkey   AS TableKey,
+                  udate    AS ChangeDate,
+                  utime    AS ChangeTime
+             FROM lt_ranked
+            WHERE latest_rank = 1;
   ENDMETHOD.
 
-  METHOD get_material BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING mara makt.
-    RETURN  WITH lt_mara AS ( SELECT * 
-                                FROM APPLY_FILTER( mara, :p_sel_opt ) )
-            SELECT mara.mandt AS Client, 
-                   mara.matnr AS Matnr, 
-                   makt.maktx AS Maktx
-              FROM lt_mara AS mara
-        INNER JOIN makt
-                ON mara.mandt EQ makt.mandt
-               AND mara.matnr EQ makt.matnr;
+
+  " --------------------------------------------------------------------------
+  " APPLY_FILTER - SECURITY BOUNDARY
+  "
+  " APPLY_FILTER attaches a dynamic WHERE condition to a data source. SAP's
+  " own security documentation names it as an SQL-injection vector when the
+  " condition is combined with input from outside that is not validated
+  " appropriately. Parsing the string is NOT validation.
+  "
+  " Therefore :p_filter_condition must be a condition GENERATED on the ABAP
+  " side from structured input (select-options / RANGE tables), for example
+  " with CL_SHDB_SELTAB=>COMBINE_SELTABS( ), which turns typed selection
+  " tables into a WHERE fragment. Verify the availability and signature of
+  " that class for your target release.
+  "
+  " Never accept a condition string supplied by a consumer, a UI, an OData
+  " query option, or any other external caller and pass it here unchanged.
+  " If you cannot guarantee the string was generated from validated
+  " structured input, do not use this pattern.
+  " --------------------------------------------------------------------------
+  METHOD get_material BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT
+                      OPTIONS READ-ONLY
+                      USING mara makt.
+
+    RETURN WITH lt_mara AS ( SELECT *
+                               FROM APPLY_FILTER( mara, :p_filter_condition ) )
+
+           SELECT m.mandt AS Client,
+                  m.matnr AS Material,
+                  t.maktx AS MaterialName
+             FROM lt_mara AS m
+       INNER JOIN makt     AS t
+               ON  t.mandt = m.mandt
+              AND  t.matnr = m.matnr
+              AND  t.spras = :p_langu
+            WHERE m.mandt = :p_client;
   ENDMETHOD.
 
-  METHOD get_nomi_match BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING oijnomi oijpeg.
-    declare v_count integer;
-    declare v_i integer;
-    declare nomtk "$ABAP.type( oij_nomtk )";
-    declare item  "$ABAP.type( oij_item )";
-    declare pegid "$ABAP.type( oij_pegid )";
 
-    t_nomi =  SELECT oijnomi.mandt   AS Clnt,
-                     oijnomi.nomtk   AS NominationDocDQ,
-                     oijnomi.nomit   AS NominationdocItemDQ,
-                     oijnomi.nomtk   AS NominationDocOQ,
-                     oijnomi.nomit   AS NominationDocItemOQ,
-                     oijnomi.sityp   AS Sityp,
-                     oijnomi.docind  AS Docind,
-                     oijnomi.delind  AS Delind
-                FROM oijnomi
-               WHERE oijnomi.mandt = :p_client
-                 AND delind = '';
+  " --------------------------------------------------------------------------
+  " Set-based nomination / pegging join.
+  "
+  " Business-rule note: an earlier revision walked every nomination line in a
+  " FOR loop to derive a demand/offer pairing by searching backwards for the
+  " nearest preceding offer item. That rule was project-specific, and two
+  " variants of this method contradicted each other, so the pairing rule is
+  " deliberately NOT reproduced here rather than guessed. What remains is the
+  " structurally safe part: the client-correct OIJNOMI/OIJPEG pegging join
+  " with ROW_NUMBER de-duplication. Add your own pairing rule on top.
+  " --------------------------------------------------------------------------
+  METHOD get_nomi_match BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT
+                        OPTIONS READ-ONLY
+                        USING oijnomi oijpeg.
 
-    t_oijpeg = SELECT oijpeg.pegid,
-                      oijpeg.docno,
-                      oijpeg.item,
-                      oijnomi.sityp,
-                      oijnomi.docind
-                 FROM oijpeg
-                 INNER JOIN oijnomi on oijnomi.nomtk = oijpeg.docno 
-                                   and oijnomi.nomit = oijpeg.item;
+    -- An empty p_nomit means "all items of the document".
+    lt_nomi = SELECT n.mandt  AS client,
+                     n.nomtk  AS nomtk,
+                     n.nomit  AS nomit,
+                     n.sityp  AS sityp,
+                     n.docind AS docind
+                FROM oijnomi AS n
+               WHERE n.mandt  = :p_client
+                 AND n.delind = ''
+                 AND n.nomtk  = :p_nomtk
+                 AND ( :p_nomit = '' OR n.nomit = :p_nomit );
 
-    FOR v_i IN 1..record_count( :t_nomi ) DO
-        nomtk = :t_nomi.NominationDocDQ[ :v_i ];
-        item  = :t_nomi.NominationdocItemDQ[ :v_i ];
+    -- One pegging record per nomination item; ROW_NUMBER keeps the result
+    -- unique when an item carries several pegging entries.
+    lt_peg = SELECT g.mandt AS client,
+                    g.docno AS docno,
+                    g.item  AS item,
+                    g.pegid AS pegid,
+                    ROW_NUMBER( ) OVER ( PARTITION BY g.mandt, g.docno, g.item
+                                         ORDER BY g.pegid ) AS peg_row
+               FROM oijpeg AS g
+              WHERE g.mandt = :p_client
+                AND g.docno = :p_nomtk;
 
-        lt_pegid = SELECT pegid 
-                     FROM :t_oijpeg
-                    WHERE docno = :p_nomtk
-                      AND item  = :item;
-
-        pegid = :lt_pegid.pegid[ 1 ];
-
-        lt_item = SELECT item
-                    FROM :t_oijpeg
-                   WHERE pegid = :pegid
-                     AND sityp LIKE 'O%';
-
-        IF is_empty( :lt_item ) THEN
-            IF NOT :t_nomi.sityp[ :v_i ] LIKE 'O%' THEN
-                lt_oijnom = SELECT nominationdocdq,
-                                   nominationdocitemdq,
-                                   sityp,
-                                   docind
-                              FROM :t_nomi
-                             WHERE nominationdocdq = :p_nomtk
-                               AND nominationdocitemdq < :item
-                               AND sityp LIKE 'O%'
-                             ORDER BY nominationdocitemdq desc;
-
-                t_nomi.nominationdocitemoq[ :v_i ] = :lt_oijnom.nominationdocitemdq[ 1 ];
-            ELSE
-                t_nomi.nominationdocitemoq[ :v_i ] = :t_nomi.nominationdocitemdq[ :v_i ];
-            END IF;
-        ELSE
-            t_nomi.nominationdocitemoq[ :v_i ] = :lt_item.item[ 1 ];
-        END IF;
-    END FOR;
-
-    RETURN 
-        SELECT clnt,
-               nominationdocdq,
-               nominationdocitemdq,
-               nominationdocoq,
-               nominationdocitemoq,
-               sityp  AS nominationscheduletype,
-               docind AS nominationreferencedoctype
-          FROM :t_nomi
-         WHERE sityp like 'D%'
-        UNION ALL
-        SELECT clnt,
-               '' nominationdocdq,
-               '' nominationdocitemdq,
-               nominationdocoq,
-               nominationdocitemoq,
-               sityp  AS nominationscheduletype,
-               docind AS nominationreferencedoctype
-          FROM :t_nomi n1
-          WHERE n1.sityp LIKE 'O%'
-            AND NOT EXISTS ( SELECT *
-                               FROM :t_nomi n2
-                              WHERE n2.nominationdocoq     = n1.nominationdocoq
-                                AND n2.nominationdocitemoq = n1.nominationdocitemoq
-                                AND sityp LIKE 'D%' );
+    RETURN SELECT n.client                  AS Client,
+                  n.nomtk                   AS NominationDoc,
+                  n.nomit                   AS NominationDocItem,
+                  coalesce( p.pegid, '' )   AS PeggingID,
+                  n.sityp                   AS NominationScheduleType,
+                  n.docind                  AS NominationReferenceDocType
+             FROM :lt_nomi AS n
+  LEFT OUTER JOIN :lt_peg  AS p
+               ON  p.client  = n.client
+              AND  p.docno   = n.nomtk
+              AND  p.item    = n.nomit
+              AND  p.peg_row = 1;
   ENDMETHOD.
 
-  METHOD get_nomi_match_prm BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING oijnomi oijpeg.
-    declare v_count integer;
-    declare v_i integer;
-    declare nomtk "$ABAP.type( oij_nomtk )";
-    declare item  "$ABAP.type( oij_item )";
-    declare pegid "$ABAP.type( oij_pegid )";
 
-    t_nomi =  SELECT mandt  AS Clnt,
-                     nomtk  AS NominationDocDQ,
-                     nomit  AS NominationdocItemDQ,
-                     nomtk  AS NominationDocOQ,
-                     nomit  AS NominationDocItemOQ,
-                     sityp  AS Sityp,
-                     docind AS Docind,
-                     delind AS Delind
-                FROM oijnomi
-               WHERE oijnomi.mandt = :p_client
-                 AND delind = '';
+  " --------------------------------------------------------------------------
+  " ROW_NUMBER over a consuming CDS view.
+  " A CDS entity may be used as an AMDP data source and listed in USING.
+  " Dependency: ZSM_I_NOMI_MATCH is the CDS view that consumes
+  " ZSM_F_NOMI_MATCH and exposes its elements (Client first).
+  " --------------------------------------------------------------------------
+  METHOD get_nomi_rows_no BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT
+                          OPTIONS READ-ONLY
+                          USING zsm_i_nomi_match.
 
-    SELECT COUNT(*)
-      FROM :t_nomi 
-      INTO v_count;
+    lt_match = SELECT m.client                     AS client,
+                      m.nominationdoc              AS nominationdoc,
+                      m.nominationdocitem          AS nominationdocitem,
+                      m.peggingid                  AS peggingid,
+                      m.nominationscheduletype     AS nominationscheduletype,
+                      m.nominationreferencedoctype AS nominationreferencedoctype,
+                      ROW_NUMBER( ) OVER ( PARTITION BY m.nominationdoc
+                                           ORDER BY m.nominationdocitem ) AS row_no
+                 FROM zsm_i_nomi_match AS m
+                WHERE m.client = :p_client;
 
-    t_oijpeg = SELECT oijpeg.pegid,
-                      oijpeg.docno,
-                      oijpeg.item,
-                      oijnomi.sityp,
-                      oijnomi.docind
-                 FROM oijpeg
-                 INNER JOIN oijnomi ON oijnomi.nomtk = oijpeg.docno 
-                                   AND oijnomi.nomit = oijpeg.item;
-
-    FOR v_i IN 1..record_count( :t_nomi ) DO
-        nomtk = :t_nomi.nominationdocdq[ :v_i ];
-        item  = :t_nomi.nominationdocitemdq[ :v_i ];
-
-        lt_pegid = SELECT pegid 
-                     FROM :t_oijpeg
-                    WHERE docno = :p_nomtk
-                      AND item  = :item;
-
-        pegid = :lt_pegid.pegid[ 1 ];
-
-        lt_item = SELECT item
-                    FROM :t_oijpeg
-                   WHERE pegid = :pegid
-                     AND sityp LIKE 'O%';
-
-        IF is_empty( :lt_item ) THEN
-            IF NOT :t_nomi.sityp[ :v_i ] like 'O%' THEN
-                lt_oijnom = SELECT nominationdocdq,
-                                   nominationdocitemdq,
-                                   sityp,
-                                   docind
-                              FROM :t_nomi
-                             WHERE nominationdocdq = :p_nomtk
-                               AND nominationdocitemdq < :item
-                               AND sityp LIKE 'O%'
-                          ORDER BY nominationdocitemdq DESC;
-
-                t_nomi.nominationdocitemoq[ :v_i ] = :lt_oijnom.nominationdocitemdq[ 1 ];
-            ELSE
-                t_nomi.nominationdocitemoq[ :v_i ] = :t_nomi.nominationdocitemdq[ :v_i ];
-            END IF;
-        ELSE
-            t_nomi.nominationdocitemoq[ :v_i ] = :lt_item.item[ 1 ];
-        END IF;
-    END FOR;
-
-    RETURN 
-      SELECT clnt as Client,
-             nominationdocdq,
-             nominationdocitemdq,
-             nominationdocoq,
-             nominationdocitemoq,
-             sityp  AS nominationscheduletype,
-             docind AS nominationreferencedoctype
-        FROM :t_nomi
-       WHERE sityp LIKE 'D%'
-      UNION ALL
-      SELECT clnt as Client,
-             '' nominationdocdq,
-             '' nominationdocitemdq,
-             nominationdocoq,
-             nominationdocitemoq,
-             sityp  AS nominationscheduletype,
-             docind AS nominationreferencedoctype
-       FROM :t_nomi t1
-       WHERE NOT EXISTS ( SELECT *
-                            FROM :t_nomi t2
-                            WHERE t2.nominationdocdq = t1.nominationdocdq
-                              AND sityp LIKE 'D%' );
+    RETURN SELECT client                     AS Client,
+                  nominationdoc              AS NominationDoc,
+                  nominationdocitem          AS NominationDocItem,
+                  peggingid                  AS PeggingID,
+                  nominationscheduletype     AS NominationScheduleType,
+                  nominationreferencedoctype AS NominationReferenceDocType,
+                  row_no                     AS RowNo
+             FROM :lt_match;
   ENDMETHOD.
 
-  METHOD get_nomi_rows_no BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING zsm_i_nomi_match.
-    t_nomi =  SELECT p_client as Mandt,
-                     NominationDocDQ,
-                     NominationDocItemDQ,
-                     NominationDocOQ,
-                     NominationDocItemOQ,
-                     NominationScheduleType,
-                     NominationReferenceDocType,
-                     NominationScheduleTypeO,
-                     NominationReferenceDocTypeO,
-                ROW_NUMBER(  ) 
-                OVER ( PARTITION BY nominationdocoq,nominationdocitemoq ORDER BY nominationdocdq,nominationdocitemdq,nominationdocoq,nominationdocitemoq ) as RowNo
-                FROM zsm_i_nomi_match;
 
-    RETURN SELECT Mandt as Client,
-                  NominationDocDQ,
-                  NominationDocItemDQ,
-                  NominationDocOQ,
-                  NominationDocItemOQ,
-                  NominationScheduleType,
-                  NominationReferenceDocType,
-                  NominationScheduleTypeO,
-                  NominationReferenceDocTypeO,
-                  RowNo
-             FROM :t_nomi;
+  " --------------------------------------------------------------------------
+  " WORKDAYS_BETWEEN over price validity dates.
+  " The factory calendar is a parameter, not a literal.
+  " "+ 1" makes the interval inclusive of the end date - drop it if your
+  " business definition is exclusive.
+  " Dependency: ZSM_I_RISK_DOCS exposes the price validity dates per
+  " condition document item, with a Client element.
+  " --------------------------------------------------------------------------
+  METHOD get_risk_docs BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT
+                       OPTIONS READ-ONLY
+                       USING zsm_i_risk_docs.
+
+    RETURN SELECT DISTINCT
+                  d.client                                                          AS Client,
+                  d.docno                                                           AS DocNo,
+                  d.docitemno                                                       AS DocItemNo,
+                  d.docitemguid                                                     AS DocItemGuid,
+                  d.pricebegindate                                                  AS PriceBeginDate,
+                  d.priceenddate                                                    AS PriceEndDate,
+                  workdays_between( :p_calendar, d.pricebegindate, d.priceenddate ) + 1
+                                                                                    AS WorkingDays
+             FROM zsm_i_risk_docs AS d
+            WHERE d.client = :p_client;
   ENDMETHOD.
 
-  METHOD get_risk_docs BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING zsm_i_risk_docs.
-    RETURN SELECT DISTINCT p_client                                                      as Client,
-                           docno                                                         as DocNo,
-                           docitemno                                                     as DocItemNo,
-                           docitemguid                                                   as DocItemGuid,
-                           pricebegintime                                                as PriceBeginTime,
-                           pricebegindate                                                as PriceBeginDate,
-                           priceendtime                                                  as PriceEndTime,
-                           priceenddate                                                  as PriceEndDate,
-                           workdays_between( 'PI', pricebegindate, priceenddate ) + 1    as WorkingDay
-                      FROM zsm_i_risk_docs;
+
+  " --------------------------------------------------------------------------
+  " Recursive CTE hierarchy traversal.
+  "
+  " Starts from the functional locations assigned to the user in
+  " ZSM_T_USER_TO and descends the IFLOT superior-location hierarchy
+  " (IFLOT-TPLMA points to the superior functional location).
+  "
+  " An earlier revision did this with nested WHILE loops that appended to the
+  " very table they were iterating, read an uninitialised table variable, and
+  " indexed table variables without an emptiness guard. The recursive CTE
+  " replaces all of that and terminates on the depth guard below.
+  "
+  " Depth is bounded (hlevel < 10) so a cyclic or unexpectedly deep
+  " hierarchy cannot run away. Raise or lower it to fit your hierarchy.
+  " --------------------------------------------------------------------------
+  METHOD get_technical_object BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT
+                              OPTIONS READ-ONLY
+                              USING zsm_t_user_to iflot.
+
+    RETURN WITH RECURSIVE lt_hier ( client, bname, werks, tplnr, hlevel ) AS (
+
+             -- Anchor: the functional locations directly assigned to the user
+             SELECT u.mandt,
+                    u.bname,
+                    u.werks,
+                    u.tplnr,
+                    0
+               FROM zsm_t_user_to AS u
+         INNER JOIN iflot         AS f
+                 ON  f.mandt = u.mandt
+                AND  f.tplnr = u.tplnr
+              WHERE u.mandt = :p_client
+                AND u.bname = :p_bname
+
+             UNION ALL
+
+             -- Recursion: every functional location below the current one
+             SELECT h.client,
+                    h.bname,
+                    h.werks,
+                    f.tplnr,
+                    h.hlevel + 1
+               FROM lt_hier AS h
+         INNER JOIN iflot   AS f
+                 ON  f.mandt = h.client
+                AND  f.tplma = h.tplnr
+              WHERE h.hlevel < 10
+           )
+
+           SELECT client AS Client,
+                  bname  AS UserName,
+                  werks  AS Plant,
+                  tplnr  AS FunctionalLocation,
+                  hlevel AS HierarchyLevel
+             FROM lt_hier;
   ENDMETHOD.
 
-  METHOD get_technical_object BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING zsm_t_user_to iflot.
-    declare gt_temp_user_to TABLE ( client   "$ABAP.type( MANDT )",
-                                    user     "$ABAP.type( XUBNAME )",
-                                    tplnr    "$ABAP.type( TPLNR )",
-                                    werks    "$ABAP.type( WERKS_D )",
-                                    sub_hier "$ABAP.type( XFELD )" 
-                                  );
 
-     declare lv_index integer;
-     declare lv_line integer;
-     declare lv_index1 integer;
-     declare lv_line1 integer;
-     declare lv_add_index integer;
+  " --------------------------------------------------------------------------
+  " Bounded calendar read with working-day flags.
+  " The date range is a parameter pair: reading the whole calendar view is
+  " not a reasonable reusable default.
+  " IsWorkingDay is a genuine flag here - the result is NOT pre-filtered to
+  " working days, so the caller can use it in either direction.
+  " --------------------------------------------------------------------------
+  METHOD get_working_days BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT
+                          OPTIONS READ-ONLY
+                          USING i_calendardate.
 
-     declare gt_temp_user_to2 TABLE LIKE :gt_temp_user_to;
-     declare gt_temp_user_to3 TABLE LIKE :gt_temp_user_to;
+    lt_calendar = SELECT :p_client                                   AS client,
+                         d.calendardate                             AS calendardate,
+                         :p_calendar                                 AS fabkl,
+                         d.firstdayofmonthdate                      AS month_first,
+                         last_day( d.calendardate )                 AS month_last,
+                         workdays_between( :p_calendar,
+                                           d.firstdayofmonthdate,
+                                           add_months( d.firstdayofmonthdate, 1 ) ) AS wd_in_month,
+                         workdays_between( :p_calendar,
+                                           d.calendardate,
+                                           dats_add_days( d.calendardate, 1, 'INITIAL' ) ) AS is_working_day
+                    FROM i_calendardate AS d
+                   WHERE d.calendardate BETWEEN :p_date_from AND :p_date_to;
 
-     gt_user_to = SELECT t1.mandt,
-                         t1.bname,
-                         t1.tplnr,
-                         t1.werks,
-                         CASE t3.tplnr WHEN '' THEN ''
-                                               ELSE 'X'
-                         END AS sub_hier
-                    FROM zsm_t_user_to  AS t1
-              INNER JOIN iflot          AS t2 on t2.tplnr EQ t1.tplnr and t2.mandt EQ t1.mandt
-         LEFT OUTER JOIN iflot          AS t3 on t3.tplnr EQ t2.tplma and t3.mandt EQ t1.mandt
-                   WHERE t1.mandt EQ p_client
-                     AND t1.bname EQ p_bname;
-
-      lv_index = 1;
-      lv_line  = record_count( :gt_user_to );
-
-      IF lv_line <> 0 then
-          WHILE lv_index BETWEEN 1 AND lv_line DO
-
-            gt_temp_user_to3.client[ 1 ]    = :gt_user_to.mandt[ :lv_index ];
-            gt_temp_user_to3.user[ 1 ]      = :gt_user_to.bname[ :lv_index ];
-            gt_temp_user_to3.werks[ 1 ]     = :gt_user_to.werks[ :lv_index ];
-            gt_temp_user_to3.tplnr[ 1 ]     = :gt_user_to.tplnr[ :lv_index ];
-            gt_temp_user_to3.sub_hier[ 1 ]  = :gt_user_to.sub_hier[ :lv_index ];
-
-            gt_temp_user_to2 = SELECT t1.client, t1.user, t1.tplnr, t1.werks,  t1.sub_hier
-                                 FROM :gt_temp_user_to  AS t1
-                           INNER JOIN :gt_temp_user_to3 AS t2 
-                                   ON t2.client EQ t1.client
-                                  AND t2.user   EQ t1.user
-                                  AND t2.werks  EQ t1.werks
-                                  AND t2.tplnr  EQ t1.tplnr;
-
-            lv_line1 = record_count( :gt_temp_user_to2 );
-
-            IF lv_line1 = 0 THEN
-
-              gt_temp_user_to.client[ :lv_index ]   = :gt_user_to.mandt[ :lv_index ];
-              gt_temp_user_to.user[ :lv_index ]     = :gt_user_to.bname[ :lv_index ];
-              gt_temp_user_to.werks[ :lv_index ]    = :gt_user_to.werks[ :lv_index ];
-              gt_temp_user_to.tplnr[ :lv_index ]    = :gt_user_to.tplnr[ :lv_index ];
-              gt_temp_user_to.sub_hier[ :lv_index ] = :gt_user_to.sub_hier[ :lv_index ];
-
-
-              gt_temp_user_to2 = SELECT *
-                                  FROM :gt_temp_user_to
-                                  WHERE sub_hier EQ 'X';
-
-              lv_index1 = 1;
-              lv_line1  = record_count( :gt_temp_user_to2 );
-
-              IF lv_line1 <> 0 THEN
-                gt_sub_tplnr = SELECT t1.mandt,
-                                      t1.tplnr,
-                                      CASE t3.tplnr WHEN '' THEN ''
-                                                            ELSE 'X'
-                                      END AS sub_hier
-                                FROM iflot AS t1
-                          INNER JOIN :gt_temp_user_to2 AS t2 
-                                  ON t2.tplnr EQ t1.tplma
-                      LEFT OUTER JOIN iflot AS t3 
-                                  ON t3.tplma = t1.tplnr 
-                                  AND t3.mandt = t1.mandt
-                                WHERE t1.mandt = p_client;
-
-                lv_line1 = record_count( :gt_temp_user_to );
-
-                  WHILE lv_index1 BETWEEN 1 AND lv_line1 DO
-                      IF :gt_temp_user_to.sub_hier[ :lv_index1 ] = 'X' THEN
-                          gt_temp_user_to.sub_hier[ :lv_index1 ] = '';
-                      END IF;
-                      lv_index1 = :lv_index1 + 1;
-                  END WHILE ;
-              END IF;
-
-              lv_index1 = 1;
-              lv_line1  = record_count( :gt_sub_tplnr );
-
-              IF lv_line1 <> 0 THEN
-                WHILE lv_index1 BETWEEN 1 AND lv_line1 DO
-                  lv_add_index = record_count( :gt_user_to ) + 1;
-
-                  gt_user_to.mandt[ :lv_add_index ]    = :gt_user_to.mandt[ :lv_index ];
-                  gt_user_to.bname[ :lv_add_index ]    = :gt_user_to.bname[ :lv_index ];
-                  gt_user_to.werks[ :lv_add_index ]    = :gt_user_to.werks[ :lv_index ];
-                  gt_user_to.tplnr[ :lv_add_index ]    = :gt_sub_tplnr.tplnr[ :lv_index1 ];
-                  gt_user_to.sub_hier[ :lv_add_index ] = :gt_sub_tplnr.sub_hier[ :lv_index1 ];
-
-                  lv_index1 = :lv_index1 + 1;
-                END WHILE;
-              END IF;
-            END IF;
-
-            lv_line = record_count( :gt_user_to );
-
-            gt_sub_tplnr = SELECT * FROM :gt_sub_tplnr WHERE mandt = '000';
-
-            lv_index = :lv_index + 1;
-          END WHILE;
-      END IF;
-
-      RETURN SELECT clnt  as Client,
-                    werks as Werks,
-                    user  as Bname,
-                    tplnr as Tplnr
-               FROM :gt_temp_user_to;
+    RETURN SELECT client         AS Client,
+                  calendardate   AS CalendarDate,
+                  fabkl          AS FactoryCalendar,
+                  month_first    AS MonthFirstDate,
+                  month_last     AS MonthLastDate,
+                  wd_in_month    AS WorkingDaysInMonth,
+                  is_working_day AS IsWorkingDay
+             FROM :lt_calendar;
   ENDMETHOD.
 
-  METHOD get_working_days BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING i_calendardate.
-    t_calendar = SELECT p_client                                                                                      as Client,
-                        ID.calendardate                                                                               as CalendarDate,
-                        p_fabkl                                                                                       as FactoryCalendar,
-                        ID.firstdayofmonthdate                                                                        as MonthFirstDate,
-                        last_day( ID.calendardate )                                                                   as MonthLastDate,
-                        workdays_between( p_fabkl, ID.firstdayofmonthdate, add_months( ID.firstdayofmonthdate,1  ) )  as WorkingDaySmonth,
-                        workdays_between( p_fabkl, ID.calendardate, dats_add_days(ID.calendardate,1,'INITIAL')  )     as IsWorkingDay
-                   FROM i_calendardate                                                                                as ID;
 
-    RETURN SELECT Client,
-                  CalendarDate,
-                  FactoryCalendar,
-                  MonthFirstDate,
-                  MonthLastDate,
-                  WorkingDaySmonth,
-                  IsWorkingDay
-             FROM :t_calendar
-            WHERE IsWorkingDay <> 0;
-  ENDMETHOD.
+  " --------------------------------------------------------------------------
+  " Thin wrapper exposing the WORKDAYS_BETWEEN built-in as a table function,
+  " so plain CDS views can consume it. SELECT ... FROM dummy returns exactly
+  " one row.
+  " --------------------------------------------------------------------------
+  METHOD workdays_between BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT
+                          OPTIONS READ-ONLY.
 
-  METHOD workdays_between BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY.
-    RETURN SELECT p_client    as Client,
-                  p_first_day as FirstDay,
-                  p_last_day  as LastDay,
-                  workdays_between( p_calendar, p_fday, p_lday ) + 1 as Workday
+    RETURN SELECT :p_client                                                  AS Client,
+                  :p_date_from                                               AS DateFrom,
+                  :p_date_to                                                 AS DateTo,
+                  workdays_between( :p_calendar, :p_date_from, :p_date_to ) + 1
+                                                                             AS WorkingDays
              FROM dummy;
   ENDMETHOD.
+
 ENDCLASS.

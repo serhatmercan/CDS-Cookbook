@@ -1,18 +1,20 @@
-" ============================================================================
-" Extension   : I_SalesDocumentItem  (extend view ... with ZSM_I_EXT_SDI)
-" Module      : SD
-" Business Object : Sales Document Item
-" ----------------------------------------------------------------------------
-" Description
-"   Adds Valuation Type to the Sales Document Item view, read directly from
-"   the underlying VBAP table.
-"
-" Fields Added
-"   ValuationType - vbap.bwtar
-"
-" Common Use Cases
-"   - Sales order item list/reporting: batch/valuation-managed material context
-" ============================================================================
+// ============================================================================
+// Type       : extension (classic extend view + append)
+// Context    : reusable pattern
+// Extension   : I_SalesDocumentItem  (extend view ... with ZSM_I_EXT_SDI)
+// Module      : SD
+// Business Object : Sales Document Item
+// ----------------------------------------------------------------------------
+// Description
+//   Adds Valuation Type to the Sales Document Item view, read directly from
+//   the underlying VBAP table.
+//
+// Fields Added
+//   ValuationType - vbap.bwtar
+//
+// Common Use Cases
+//   - Sales order item list/reporting: batch/valuation-managed material context
+// ============================================================================
 
 @AbapCatalog.sqlViewAppendName: 'ZSM_V_EXT_SDI'
 

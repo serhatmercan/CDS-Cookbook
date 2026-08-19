@@ -15,7 +15,7 @@ Fields      :   key COCV.ClfnObjectID,
                 
                     COCV.CharcValue
 
-Where       :   ( COCV.CharcValue != '' or COCV.CharcValue = 'A' or COCV.CharcValue = 'B' ) and
+Where       :   COCV.CharcValue <> ''               and   // the OR-list that followed was subsumed by this
                 COCV.ClassType          =  '001'    and
                 COCV.ClfnObjectTable    =  'MARA'   and
                 COCV.ClfnObjectType     =  'O'      

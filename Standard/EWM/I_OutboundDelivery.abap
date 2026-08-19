@@ -8,11 +8,11 @@ Using       :   as select from I_OutboundDelivery       as OD  on OD.Reservation
 Fields      :   key ODI.OutboundDelivery,
                 key ODI.OutboundDeliveryItem,
 
-                    " Outbound Delivery Document Items
+                    // Outbound Delivery Document Items
                     ODI.OrderID
 
 Where       :   ODI.GoodsMovementStatus <> 'C' and 
-                ODI.OrderID <> '' ;
+                ODI.OrderID <> ''
 
 Group By    :   
 Module          :   LE / SD
