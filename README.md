@@ -1,98 +1,163 @@
-# CDS Cookbook — SAP CDS Cookbook & Reference Library
+# CDS Cookbook — Practical SAP CDS & AMDP Patterns
 
-A personal, searchable collection of practical **SAP CDS View** examples pulled from real SAP projects — Standard views, Custom views, Extensions, Value Helps, AMDP implementations, and reusable snippets.
-
-This is **not** a tutorial. It doesn't explain CDS syntax or SAP concepts. It's a reference you search when you already know what you're looking for and just need a working example.
-
-## Purpose
-
-- Skip searching through an SAP system (or SAP Help) for a CDS view's structure, associations, or fields.
-- Find ready-to-adapt patterns for common SD/MM/PM/QM/FI/... requirements.
-- Keep a personal record of Extensions, Value Helps, and AMDP implementations built across projects.
-
-## Intended audience
-
-SAP developers and consultants (ABAP/CDS, RAP, Fiori backend) who already know CDS and want a fast-lookup reference — not people learning CDS from scratch. For a learning-oriented walkthrough, see the author's separate [ABAP Guide](https://github.com/serhatmercan) and CDS Guide repositories.
-
-## Folder structure
+A searchable SAP CDS and AMDP pattern library for experienced SAP developers — built for
+**lookup**, not for step-by-step learning. You arrive knowing what you need (a filtered path
+expression, a conditional aggregate, a table function with a recursive CTE, a plant-dependent
+value help), find the pattern, and adapt it.
 
 ```
-/
-├── Standard/          SAP standard CDS views, grouped by module
-│   ├── BASIS/
-│   ├── EWM/
-│   ├── FI/
-│   ├── HR/
-│   ├── MD/
-│   ├── MM/
-│   ├── OG/
-│   ├── PM/
-│   ├── PP/
-│   ├── PS/
-│   ├── QM/
-│   └── SD/
-│
-├── Custom/            Custom (Z*) CDS views
-│   ├── Implemantation/    Custom CDS + AMDP implementation class pairs
-│   ├── SD/                 Custom SD views
-│   └── ValueHelp/           Custom value help views
-│
-├── Extension/         CDS view extensions (extend view / DDIC extension includes), grouped by module
-│   ├── MM/ OG/ PM/ QM/ SD/
-│
-├── AMDP/              Standalone AMDP class/function examples
-│
-├── User/              User- and authorization-related CDS views
-│
-├── Util/              Reusable building blocks: joins, aggregations, parameters, value helps
-│
-├── List.abap          Loose SQL/ABAP snippets not tied to a specific CDS view
-│
-├── LICENSE
-└── README.md
+Standard/  how SAP standard CDS artifacts are consumed, by module
+Custom/    custom view entities, value helps, custom-entity + query-provider pairs
+Extension/ CDS view extensions, virtual elements, SADL exits
+AMDP/      CDS table functions + their SQLScript implementations
+Util/       reusable building blocks: joins, aggregation, parameters, value helps
 ```
 
-Each folder is organized by SAP module (BASIS, MM, SD, PM, QM, FI, HR, PS, EWM, MD, OG, PP) so examples from the same functional area stay together.
+## Scope & Provenance
 
-## How to search examples
+- **Everything here is user-authored** — examples the author wrote, and reference notes the author
+  took while building them.
+- **`Standard/` does not contain copied SAP source.** Those files are notes on *how a standard
+  artifact was consumed*: the working element subset, the association and join shape, the filter
+  shape. See [`Standard/README.md`](Standard/README.md).
+- **SAP standard names are referenced as dependencies and interfaces.** Entity names, element
+  names, data elements and annotation vocabulary belong to SAP.
+- **The custom examples are genericised enterprise patterns** distilled from practical S/4HANA
+  development. Customer-specific field vocabulary, organisational scope and Customizing values are
+  deliberately removed; custom append fields appear under neutral `ZZ_*` names. What remains is
+  the structure worth reusing.
+- **Mainly S/4HANA on-premise oriented.** Classic CDS and classic extensions are intentionally
+  represented, because that is what on-premise projects use.
+- **Not official SAP documentation.** Verify against SAP Help and your own system.
 
-- **By module** — browse `Standard/<MODULE>` or `Extension/<MODULE>` (e.g. `Standard/SD` for sales documents, `Standard/MM` for purchasing).
-- **By CDS view name** — use GitHub's repo search or `grep`/`Ctrl+F` for the view name (e.g. `I_SalesDocument`, `I_PurchaseOrder`). Most files are named after the primary CDS view they contain.
-- **By field or association** — search for the SAP field name (e.g. `SalesOrganization`) or association name (e.g. `_SalesDocumentItem`) across the repo; CDS views commonly reuse the same field and association names.
-- **By keyword** — search for a business term (e.g. `Delivery`, `Invoice`, `Nomination`) since filenames and descriptions are kept close to SAP terminology.
+## Highlights
 
-## Naming conventions
+- **AMDP / SQLScript table functions** — window functions (`RANK`, `ROW_NUMBER`), `STRING_AGG`,
+  CTEs, a **recursive CTE** for hierarchy traversal, `APPLY_FILTER` with an explicit trust
+  boundary, HANA date functions, and client-correct joins throughout.
+- **Standard CDS usage references** across 12 modules (MM, SD, PM, QM, FI, PP, PS, EWM, MD, HR,
+  BASIS, plus IS-OIL/TSW).
+- **Custom view entities** — text-table associations, item/header fallback, conditional
+  aggregation, parameters, anti-joins via `IS NULL`.
+- **Extensions** — classic `extend view` appends across five modules, analytics query extensions,
+  **virtual elements with SADL exit classes** (read + filter).
+- **Value-help patterns** — `additionalBinding`, `localConstant`, `distinctValues`, fuzzy search,
+  plus a DDIC-key → value-help **index**.
+- **Order → delivery → invoice chain** — three views that model a real document-flow projection.
+- **Custom entity + query provider** — when the result set cannot be expressed in SQL.
 
-| Type | Convention | Example |
-|---|---|---|
-| SAP standard CDS view | Original SAP name (`I_`, `C_`, `R_`, `P_`, `A_`) | `I_SalesDocument.abap` |
-| Custom CDS view | `Z*` namespace, prefixed per project convention | `ZSD_I_ORDER.abap` |
-| Custom Value Help | `ZSM_I_*_VH` | `ZSM_I_VEHICLE_VH.abap` |
-| CDS Extension | Named after the extended standard view | `C_SalesDocumentItemDEX_1.abap` |
-| Template files | `Template.abap` in each category folder | `Standard/Template.abap` |
+## Guide vs Cookbook
 
-Files use the `.abap` extension regardless of whether they contain CDS DDL, DCL, AMDP, or plain ABAP/SQL — this keeps syntax highlighting consistent across editors.
+[**CDSGuide**](https://github.com/serhatmercan/CDSGuide) is the structured route: concepts in
+order, syntax explained, a learning and engineering reference you read front to back.
+**CDS Cookbook** is the lookup route: production-shaped patterns you search, copy and adapt when
+you already know what you are doing. Same subject, opposite reading mode — and the AMDP,
+virtual-element and query-provider material here has no counterpart in the guide.
 
-`Standard/Template.abap` and `Custom/ValueHelp/Template.abap` define the lightweight documentation header (`CDS` / `Description` / `Using` / `Fields` / `Where` / `Group`) used to annotate examples where useful. Applying it is optional and never a reason to rewrite an existing example's code.
+## Pattern Categories
 
-## SAP versions
+Organised by **mechanism**, which is usually how you search:
 
-Examples are collected from S/4HANA on-premise projects. CDS syntax and available annotations vary by release and Support Package — where an example depends on a specific release feature, this is noted in the file itself. Always validate against your own system's CDS version before reuse.
+| Mechanism | Where to look |
+|---|---|
+| Associations, filtered paths (`[1: … ]`), joins | `Standard/**`, `Custom/SD`, `Util/LeftOuterJoin.abap` |
+| Aggregation & grouping | `Util/Max.abap`, `Util/Min.abap`, `Util/Sum.abap`, `Standard/PM`, `Standard/MM` |
+| Parameters (`$parameters`) | `Util/Parameters.abap`, `Custom/ValueHelp/ZSM_I_USER_STATUS_VH.abap`, `AMDP/Function.abap` |
+| Session variables, client handling | `Standard/**` (`$session.system_language`), `AMDP/**` (client parameter) |
+| Extensions & appends | `Extension/**` |
+| Virtual elements & SADL exits | `Extension/PM/C_ObjPgMaintOrderAndOperation.abap`, `Extension/PM/C_RSHMaintSchedSmltdOp.abap`, `Util/Class.abap` |
+| Value helps | `Custom/ValueHelp/**`, `Util/ValueHelp.abap`, `Standard/ValueHelp.txt` |
+| Table functions & AMDP | `AMDP/Function.abap` (contracts), `AMDP/Class.abap` (SQLScript) |
+| Custom entity + query provider | `Custom/Implementation/**` |
+
+## Repository Map
+
+| Path | Contents |
+|---|---|
+| `Standard/<MODULE>/` | **User-authored reference notes on SAP standard CDS artifacts; not SAP source.** See `Standard/README.md` |
+| `Standard/ValueHelp.txt` | DDIC key field → CDS value-help entity index |
+| `Custom/SD/` | Order → delivery → invoice chain (genericised) |
+| `Custom/ValueHelp/` | Custom value helps + a consumption-annotation snippet |
+| `Custom/Implementation/` | Custom entity and its query-provider class |
+| `Extension/<MODULE>/` | CDS view extensions; two files pair an extension with its exit class |
+| `AMDP/` | `Function.abap` = table-function contracts, `Class.abap` = SQLScript implementations |
+| `Util/` | Reusable building blocks |
+| `User/` | User master reporting view (privacy boundary documented) |
+| `List.abap` | Loose ABAP SQL snippet |
+
+Most complete artifacts and mixed examples carry a short Type: and Context: line; for Standard/, the folder README carries the default.
+
+## Find a Pattern
+
+- **By module** — `Standard/<MODULE>` or `Extension/<MODULE>`.
+- **By CDS entity name** — repo search or `grep` for the name; files are named after the artifact.
+- **By field or association** — search the SAP field (`SalesOrganization`) or association
+  (`_SalesDocumentItem`); names recur across files.
+- **By business term** — `Delivery`, `Invoice`, `Nomination`, `Inspection`, `Maintenance`.
+- **By mechanism** — see the table above; or grep an annotation (`@Semantics.quantity`,
+  `virtualElementCalculatedBy`, `additionalBinding`, `STRING_AGG`, `WITH RECURSIVE`).
+- **For a value help** — start at [`Standard/ValueHelp.txt`](Standard/ValueHelp.txt).
+
+Files use the `.abap` extension whatever they contain (CDS DDL, AMDP, ABAP, notes) so syntax
+highlighting stays consistent. CDS DDL files use `//` comments; genuine ABAP files use `"`.
+
+## Compatibility / Lifecycle
+
+- Examples span several on-premise S/4HANA / ABAP generations. Classic `define view` and classic
+  `extend view` appends are kept on purpose alongside `define view entity`.
+- The existence and release status of SAP standard objects **varies by release, Support Package
+  and installed industry solution**. An `I_`, `C_`, `R_` or `P_` name alone is not a promise that
+  the artifact is a released API in your system — `P_` and `R_` are private / restricted-use
+  layers, and files referencing them say so.
+- Release-sensitive features are flagged in the file that uses them (view entities, table
+  functions, recursive CTEs, virtual elements, extension mechanisms, client-handling annotations).
+- **No ABAP Cloud compatibility is claimed.** These patterns use direct table access, classic
+  views, classic appends and function-module calls.
+- Always validate against your target system before reuse.
+
+## Adaptation & Security Notes
+
+- These are **patterns, not drop-in solutions**. Adapt names, scope and types to your model.
+- **Organisational and Customizing values are intentionally genericised.** Where a filter is
+  needed, the file shows where to add your own instead of shipping one installation's values.
+- **Authorization is your design decision.** `@AccessControl.authorizationCheck: #NOT_REQUIRED`
+  means no check is applied. `#CHECK` only takes effect when a DCL role exists — with no
+  applicable role it protects nothing. This repository ships no DCL roles and does not invent any.
+- **Dynamic SQL and dynamic filters need a trusted boundary.** The `APPLY_FILTER` recipe in
+  `AMDP/Class.abap` documents this explicitly: the condition must be *generated* from structured,
+  validated ABAP selection input — never a raw condition string from a consumer.
+- **Do not project personal data just because the source has it.** Several examples deliberately
+  omit email, phone, tax and identity fields, and say so.
 
 ## Contributing
 
-This repository favors small, focused, reversible changes:
+Small, focused, reversible changes:
 
-1. One example (or one closely related group of examples) per commit/PR.
-2. Do not modify unrelated examples in the same change.
-3. Preserve existing CDS code, aliases, comments, and field ordering — fix only genuine technical errors, not style.
-4. Keep additions consistent with the existing folder-by-module structure.
-5. New examples should be self-contained and runnable/adaptable on their own, without depending on other files in the repo.
+1. One example (or one closely related group) per commit/PR.
+2. Don't touch unrelated examples in the same change.
+3. **Fix genuine technical defects; don't rewrite working code for style.** Preserve existing
+   aliases, comments and field ordering otherwise.
+4. Never leave knowingly broken syntax in place as "the example" — fix it and note the trap.
+5. Keep the folder-by-module structure, and set `Type:` / `Context:` on new files.
+6. Reference snippets are welcome and don't need to be activatable — label them as such.
 
 ## License
 
 Released under the [MIT License](LICENSE).
 
-## Contact
+**Scope:** the MIT licence covers this repository's own examples, notes and documentation. It
+grants no rights over SAP-owned names, APIs, artifacts, data models or other intellectual property
+referenced by the examples — those remain SAP's, and being visible in an SAP system does not make
+them redistributable.
+
+## Related Repositories
+
+| Repository | What it is |
+|---|---|
+| [CDSGuide](https://github.com/serhatmercan/CDSGuide) | Structured ABAP CDS learning and engineering reference |
+| [ABAPGuide](https://github.com/serhatmercan/ABAPGuide) | ABAP language and technique reference |
+| [GWGuide](https://github.com/serhatmercan/GWGuide) | SAP Gateway / OData service development |
+
+## Author
 
 Serhat Mercan — [github.com/serhatmercan](https://github.com/serhatmercan)
