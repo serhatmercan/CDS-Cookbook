@@ -63,6 +63,14 @@ Coding rules: CDSGuide's docs/CDS-Development-Rules.md (planned; until it exists
   append names verify in your system); append fields `ZZ_*`.
 - Existing `ZSD_`, `ZMM_`, `ZPM_` names are not precedent. Renames are done
   per dependency chain in one commit; a rename never changes element aliases.
+- In ABAP and AMDP code, naming follows SAP's Clean ABAP style guide:
+  descriptive names without type or scope prefixes (`sales_orders`, not
+  `lt_vbak`). Exceptions: names fixed by a signature you do not own
+  (SEGW-generated methods and types, BAPI and function module interfaces,
+  inherited or interface methods) stay as they are. Existing examples are
+  migrated in the planned recipe pass; legacy-labelled examples keep their
+  construct but use current naming. CDS element aliases keep their
+  existing rule.
 - Organisational and Customizing values become parameters marked
   `// configuration`; SAP domain-value literals are named as such.
 - `#NOT_REQUIRED` is never presented as protection; `#CHECK` needs a DCL role.
