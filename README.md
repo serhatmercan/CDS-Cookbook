@@ -141,6 +141,26 @@ Small, focused, reversible changes:
 5. Keep the folder-by-module structure, and set `Type:` / `Context:` on new files.
 6. Reference snippets are welcome and don't need to be activatable — label them as such.
 
+## Related Guides
+
+| Guide | Focus |
+|---|---|
+| [ABAPGuide](https://github.com/serhatmercan/ABAPGuide) | ABAP language and techniques, classic to modern |
+| [CDSGuide](https://github.com/serhatmercan/CDSGuide) | ABAP CDS, structured route through both generations |
+| **CDS-Cookbook** (this repository) | CDS and AMDP pattern library |
+| [GWGuide](https://github.com/serhatmercan/GWGuide) | SAP Gateway: SEGW and OData V2 |
+| [UIGuide](https://github.com/serhatmercan/UIGuide) | SAPUI5 and Fiori control and pattern reference |
+| [JSGuide](https://github.com/serhatmercan/JSGuide) | Plain JavaScript and browser APIs |
+| [PYGuide](https://github.com/serhatmercan/PYGuide) | Python reference with verified outputs |
+
+## Author
+
+**Serhat Mercan** — SAP BTP & AI Technical Lead | Generative AI for SAP | ABAP & SAP Fiori/UI5
+
+- LinkedIn: [serhat-mercan](https://www.linkedin.com/in/serhat-mercan/)
+- E-mail: serhatmercan94@gmail.com
+- GitHub: [serhatmercan](https://github.com/serhatmercan)
+
 ## License
 
 Released under the [MIT License](LICENSE).
@@ -149,15 +169,3 @@ Released under the [MIT License](LICENSE).
 grants no rights over SAP-owned names, APIs, artifacts, data models or other intellectual property
 referenced by the examples — those remain SAP's, and being visible in an SAP system does not make
 them redistributable.
-
-## Related Repositories
-
-| Repository | What it is |
-|---|---|
-| [CDSGuide](https://github.com/serhatmercan/CDSGuide) | Structured ABAP CDS learning and engineering reference |
-| [ABAPGuide](https://github.com/serhatmercan/ABAPGuide) | ABAP language and technique reference |
-| [GWGuide](https://github.com/serhatmercan/GWGuide) | SAP Gateway / OData service development |
-
-## Author
-
-Serhat Mercan — [github.com/serhatmercan](https://github.com/serhatmercan)
